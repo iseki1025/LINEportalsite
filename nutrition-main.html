@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>透析情報ポータル | 栄養情報</title>
+    <!-- 共通のCSSファイルを読み込み -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<!-- bodyタグには栄養テーマのクラスを指定 -->
+<body class="theme-nutrition">
+    <div class="container">
+        <!-- ▼▼▼ ここは常に固定で表示される部分 ▼▼▼ -->
+        <header>
+            <h1>透析患者さんのための栄養情報</h1>
+        </header>
+        <nav class="page-nav">
+            <!-- data-target属性で、どの内容を表示するかを指定 -->
+            <a href="#" class="nav-button active" data-target="info">栄養の基本</a>
+            <a href="#" class="nav-button" data-target="recipe">おすすめレシピ</a>
+            <a href="#" class="nav-button" data-target="quiz">栄養クイズ</a>
+            <a href="#" class="nav-button" data-target="qa">栄養Q&A</a>
+        </nav>
+        <!-- ▲▲▲ ここまでが固定部分 ▲▲▲ -->
+
+        <main id="content-area">
+            <!-- ▼▼▼ ここから下が、ボタンに応じて表示が切り替わる部分 ▼▼▼ -->
+
+            <!-- ① 栄養の基本 の内容（元 nutrition-info.html） -->
+            <section id="info" class="content-section active">
+                <h2>透析と食事のたいせつな関係</h2>
+                <p>透析治療を受けている方にとって、日々の食事管理は治療そのものと同じくらい重要です。適切な食事を心がけることで、透析による体の負担を減らし、合併症を予防し、より良い体調を維持することができます。ここでは、食事療法の基本的なポイントをご紹介します。</p>
+                
+                <h3>食事療法の5つの基本ポイント</h3>
+                <ul>
+                    <li><strong>水分・塩分のコントロール</strong><br>
+                        体内に余分な水分が溜まるのを防ぎ、血圧の上昇や心臓への負担を軽減します。塩分を控えることが、水分の摂りすぎを防ぐ一番のポイントです。</li>
+                    <li><strong>カリウムの制限</strong><br>
+                        カリウムは野菜や果物に多く含まれます。摂りすぎると血液中のカリウム濃度が高くなり、不整脈など心臓に影響を及ぼす危険があるため、量を管理したり、調理法を工夫（茹でこぼしなど）したりする必要があります。</li>
+                    <li><strong>リンの制限</strong><br>
+                        リンは加工食品や乳製品、たんぱく質の多い食品に含まれます。リンが高い状態が続くと、骨がもろくなったり、血管が硬くなる動脈硬化の原因になったりします。</li>
+                    <li><strong>適切なたんぱく質の摂取</strong><br>
+                        たんぱく質は体を作る大切な栄養素ですが、摂りすぎると体内に老廃物が溜まりやすくなります。医師や管理栄養士の指示に従い、良質なたんぱく質を適量摂ることが大切です。</li>
+                    <li><strong>十分なエネルギーの確保</strong><br>
+                        食事制限によってエネルギー不足になると、体力や免疫力が低下してしまいます。たんぱく質や塩分を制限しながらも、炭水化物（ごはん、パン）や脂質を上手に利用して、必要なエネルギーをしっかり確保しましょう。</li>
+                </ul>
+            </section>
+
+            <!-- ② おすすめレシピ の内容（元 nutrition-recipe.html） -->
+            <section id="recipe" class="content-section">
+                <h2>おすすめレシピ</h2>
+                <p>スマートフォンなど一部の環境ではPDF上部のツールバーが表示されることがあります。見にくい場合は「全画面で見る」リンクをご利用ください。</p>
+
+                <!--
+                ==================================================================
+                【管理者向け】新しいPDFレシピの追加手順
+                ==================================================================
+                1. 新しいレシピのPDFファイルを「pdfs」フォルダの中に入れる。
+                2. 下の「レシピ追加テンプレート」の行をコピーして貼り付ける。
+                3. 貼り付けた行の "ファイル名.pdf" の部分を、2箇所とも
+                   新しいPDFのファイル名に書き換える。
+                ==================================================================
+                -->
+
+                <div class="recipe-grid">
+
+                    <!-- ▼▼▼ レシピ追加テンプレート ▼▼▼ -->
+                    <!-- <div class="recipe-item"><iframe src="pdfs/ファイル名.pdf#toolbar=0"></iframe><a href="pdfs/ファイル名.pdf" target="_blank">PDFを全画面で見る / ダウンロード</a></div> -->
+
+                    <!-- ===== 現在登録されているレシピ ===== -->
+                    <div class="recipe-item">
+                        <iframe src="pdfs/ドライカレーオムライスこいのぼり.pdf#toolbar=0"></iframe>
+                        <a href="pdfs/ドライカレーオムライスこいのぼり.pdf" target="_blank" class="pdf-link">PDFを全画面で見る / ダウンロード</a>
+                    </div>
+                    
+                    <div class="recipe-item">
+                        <iframe src="pdfs/2020年秋冬2.pdf#toolbar=0"></iframe>
+                        <a href="pdfs/2020年秋冬2.pdf" target="_blank" class="pdf-link">PDFを全画面で見る / ダウンロード</a>
+                    </div>
+
+                    <!-- 新しいレシピは、この下に追加していきます -->
+
+                </div>
+            </section>
+
+            <!-- ③ 栄養クイズ の内容（元 nutrition-quiz-info.html） -->
+            <section id="quiz" class="content-section">
+                <div class="quiz-section">
+                    <h2>挑戦してみよう！透析栄養クイズ</h2>
+                    <p>毎日の食事管理に役立つ知識が、ゲーム感覚で楽しく身につきます。<br>あなたの栄養知識レベルをチェックしてみませんか？</p>
+                    <a href="nutrition-quiz.html" class="quiz-button">クイズに挑戦する！</a>
+                    <p style="margin-top: 15px; font-size: 0.9em;">（※現在、楽しいクイズページを準備中です。もうしばらくお待ちください。）</p>
+                </div>
+            </section>
+
+            <!-- ④ 栄養Q&A の内容（元 nutrition-qa.html） -->
+            <section id="qa" class="content-section">
+                <h2>栄養についての よくあるご質問 (Q&A)</h2>
+
+                <!-- Q&Aのテンプレートと本体 -->
+                <!-- ▼▼▼ ここからコピー【Q&A追加テンプレート】 ▼▼▼ -->
+                <article class="qa-item">
+                    <div class="question"><span class="q-icon">Q.</span>ここに質問文を書きます。</div>
+                    <div class="answer"><span class="a-icon">A.</span>ここに答えの文章を書きます。改行も自由に入れられます。</div>
+                </article>
+                <!-- ▲▲▲ ここまでコピー【Q&A追加テンプレート】 ▲▲▲ -->
+
+                <article class="qa-item">
+                    <div class="question"><span class="q-icon">Q.</span>外食やコンビニ食で気をつけることは何ですか？</div>
+                    <div class="answer">
+                        <span class="a-icon">A.</span>
+                        塩分とリンが多くなりがちなので注意が必要です。麺類の汁は飲まずに残す、ハムやソーセージなどの加工食品は避ける、といった工夫が有効です。可能であれば、おかずを自分で選べる定食形式のお店を選ぶとバランスが取りやすくなります。成分表示を確認する習慣も大切です。
+                    </div>
+                </article>
+
+                <article class="qa-item">
+                    <div class="question"><span class="q-icon">Q.</span>リンの値がなかなか下がりません。どうしたら良いですか？</div>
+                    <div class="answer">
+                        <span class="a-icon">A.</span>
+                        まず、処方されたリン吸着薬を食事の直前や直後に忘れず飲むことが基本です。食事では、特に加工食品（インスタント食品、練り物など）や乳製品、レバーなどに多く含まれる「無機リン」は体に吸収されやすいため注意が必要です。食品の成分表示にある「リン酸塩」という表記は添加物なので、なるべく避けるようにしましょう。
+                    </div>
+                </article>
+                
+                <article class="qa-item">
+                    <div class="question"><span class="q-icon">Q.</span>水分制限が辛いです。何か良い方法はありますか？</div>
+                    <div class="answer">
+                        <span class="a-icon">A.</span>
+                        お気持ちお察しします。水分制限は、喉の渇きを引き起こす「塩分」を控えることが最も効果的です。その上で、氷を口に含んでゆっくり溶かしたり、うがいをしたり、目盛りのついた小さなコップを使ったりするなどの工夫があります。また、薬を飲むときも、食事中の汁物などで一緒に飲むと、飲水量を節約できます。
+                    </div>
+                </article>
+            </section>
+            <!-- ▲▲▲ ここまでが切り替わる部分 ▲▲▲ -->
+        </main>
+
+        <!-- フッターも固定で表示 -->
+        <footer>
+            <p><small>&copy; 2025 透析情報ポータル</small></p>
+        </footer>
+    </div>
+
+    <!-- 切り替え用のJavaScriptを読み込む -->
+    <script src="tab-script.js"></script>
+</body>
+</html>

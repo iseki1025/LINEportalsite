@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEB問診票</title>
+    <style>
+        /* ↓↓↓ ここから下がデザイン部分です。自由に変更できます。↓↓↓ */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f0f8ff; /* 薄い青色 */
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .form-container {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 30px;
+            width: 100%;
+            max-width: 500px;
+            box-sizing: border-box;
+        }
+        .form-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .form-header h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        .submit-button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            background-color: #007bff; /* 青色のボタン */
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .submit-button:hover {
+            background-color: #0056b3;
+        }
+        #submit-message {
+            text-align: center;
+            margin-top: 20px;
+            color: green;
+            font-weight: bold;
+        }
+        /* ↑↑↑ ここまでがデザイン部分です。 ↑↑↑ */
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <div class="form-header">
+            <h1>WEB問診票</h1>
+        </div>
+        <!-- 見た目のフォーム -->
+        <form id="custom-form">
+            <div class="form-group">
+                <label for="name">お名前</label>
+                <!-- 重要(1): name属性をステップ1で調べた「お名前」のものに書き換える -->
+                <input type="text" id="name" name="【entry.xxxxxx】" required>
+            </div>
+            <div class="form-group">
+                <label for="patient-id">診察券番号</label>
+                <!-- 重要(2): name属性をステップ1で調べた「診察券番号」のものに書き換える -->
+                <input type="text" id="patient-id" name="【entry.yyyyyy】" required>
+            </div>
+            <button type="submit" class="submit-button">送信する</button>
+        </form>
+        <!-- 送信完了メッセージ -->
+        <div id="submit-message" style="display: none;">
+            <p>送信が完了しました。<br>ありがとうございました。</p>
+        </div>
+    </div>
+
+    <!-- Googleフォームにデータを送るためのiframe（画面には表示されない） -->
+    <iframe name="hidden-iframe" id="hidden-iframe" style="display: none;"></iframe>
+
+    <script>
+        document.getElementById('custom-form').addEventListener('submit', function(e) {
+            e.preventDefault(); // 本来のフォーム送信をキャンセル
+
+            const form = e.target;
+            // フォームの送信先をGoogleフォームに設定し、結果を非表示のiframeで受け取る
+            form.target = 'hidden-iframe';
+            // 重要(3): action属性をステップ1で調べたURLに書き換える
+            form.action = '【https://docs.google.com/forms/u/0/d/e/xxxxx/formResponse】';
+            form.method = 'POST';
+            
+            // データを送信
+            form.submit();
+
+            // 送信完了メッセージを表示
+            document.getElementById('custom-form').style.display = 'none';
+            document.getElementById('submit-message').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
