@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>透析状況 更新ツール</title>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; color: #333; max-width: 700px; margin: 20px auto; padding: 20px; background-color: #f4f4f4; }
+        .container { background-color: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #005a9c; }
+        .clinic-group { margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .clinic-group label { font-weight: bold; display: block; margin-bottom: 8px; }
+        .clinic-group select, .clinic-group input { width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc; box-sizing: border-box; }
+        .clinic-group input { margin-top: 8px; }
+        button { display: block; width: 100%; padding: 15px; background-color: #007bff; color: white; border: none; border-radius: 5px; font-size: 1.2em; cursor: pointer; transition: background-color 0.3s; }
+        button:hover { background-color: #0056b3; }
+        #output-area { margin-top: 25px; }
+        #output-area h2 { font-size: 1.2em; border-bottom: 2px solid #007bff; padding-bottom: 5px; }
+        #generated-code { width: 100%; height: 250px; font-family: monospace; font-size: 0.9em; padding: 10px; border: 1px solid #ccc; border-radius: 4px; background-color: #e9ecef; white-space: pre; overflow-wrap: normal; overflow-x: scroll; }
+        .copy-button { display: block; width: 100%; padding: 10px; margin-top: 10px; background-color: #28a745; color: white; border: none; border-radius: 5px; font-size: 1em; cursor: pointer; }
+        .copy-button:hover { background-color: #218838; }
+        .instructions { margin-top: 15px; padding: 15px; background-color: #fffbe6; border: 1px solid #ffeeba; border-radius: 5px; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>透析状況 更新ツール</h1>
+
+        <div id="form-area">
+            <!-- 本院 -->
+            <div class="clinic-group">
+                <label for="honin-status">本院</label>
+                <select id="honin-status" onchange="toggleReason('honin')">
+                    <option value="ok" selected>透析可</option>
+                    <option value="ng">透析不可</option>
+                </select>
+                <input type="text" id="honin-reason" placeholder="（透析不可の場合）理由を入力" style="display: none;">
+            </div>
+
+            <!-- なかもず分院 -->
+            <div class="clinic-group">
+                <label for="nakamozu-status">なかもず分院</label>
+                <select id="nakamozu-status" onchange="toggleReason('nakamozu')">
+                    <option value="ok">透析可</option>
+                    <option value="ng" selected>透析不可</option>
+                </select>
+                <input type="text" id="nakamozu-reason" placeholder="（透析不可の場合）理由を入力" value="断水のため">
+            </div>
+
+            <!-- 三国ケ丘分院 -->
+            <div class="clinic-group">
+                <label for="mikunigaoka-status">三国ケ丘分院</label>
+                <select id="mikunigaoka-status" onchange="toggleReason('mikunigaoka')">
+                    <option value="ok" selected>透析可</option>
+                    <option value="ng">透析不可</option>
+                </select>
+                <input type="text" id="mikunigaoka-reason" placeholder="（透析不可の場合）理由を入力" style="display: none;">
+            </div>
+
+            <button onclick="generateCode()">更新用コードを生成</button>
+        </div>
+
+        <div id="output-area" style="display: none;">
+            <h2>1. 生成されたコード</h2>
+            <p>下のボックス内のテキストをすべてコピーしてください。</p>
+            <textarea id="generated-code" readonly></textarea>
+            <button class="copy-button" onclick="copyToClipboard()">クリップボードにコピー</button>
+            <div class="instructions">
+                <h2>2. 更新手順</h2>
+                <ol>
+                    <li>上の「クリップボードにコピー」ボタンを押します。</li>
+                    <li>`index.html` ファイルをメモ帳などのテキストエディタで開きます。</li>
+                    <li>ファイル内の `▼▼▼ 透析状況 更新エリア ここから ▼▼▼` から `▲▲▲ 透析状況 更新エリア ここまで ▲▲▲` までの間の部分を、すべて削除します。</li>
+                    <li>削除した場所に、コピーした内容を貼り付けます。</li>
+                    <li>`index.html` を上書き保存し、サーバーにアップロードして完了です。</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleReason(clinicName) {
+            const statusSelect = document.getElementById(clinicName + '-status');
+            const reasonInput = document.getElementById(clinicName + '-reason');
+            reasonInput.style.display = (statusSelect.value === 'ng') ? 'block' : 'none';
+        }
+
+        function generateCode() {
+            const clinics = [
+                { name: '本院', id: 'honin' },
+                { name: 'なかもず分院', id: 'nakamozu' },
+                { name: '三国ケ丘分院', id: 'mikunigaoka' }
+            ];
+
+            let html = '<div class="status-container">\n';
+
+            clinics.forEach(clinic => {
+                const status = document.getElementById(clinic.id + '-status').value;
+                const reason = document.getElementById(clinic.id + '-reason').value;
+
+                html += `    <!-- ${clinic.name} -->\n`;
+                html += '    <div class="status-item">\n';
+                html += `        <h3>${clinic.name}</h3>\n`;
+
+                if (status === 'ok') {
+                    html += '        <p class="status-text status-ok">透析可</p>\n';
+                } else {
+                    const reasonText = reason ? ` <span class="reason">（${reason}）</span>` : '';
+                    html += `        <p class="status-text status-ng">透析不可${reasonText}</p>\n`;
+                }
+                html += '    </div>\n';
+            });
+            html += '</div>';
+
+            document.getElementById('generated-code').value = html;
+            document.getElementById('output-area').style.display = 'block';
+        }
+
+        function copyToClipboard() {
+            const textarea = document.getElementById('generated-code');
+            textarea.select();
+            document.execCommand('copy');
+            alert('コピーしました！');
+        }
+    </script>
+</body>
+</html>
