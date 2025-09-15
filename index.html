@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>総合情報ポータル</title>
+    <!-- 共通のCSSファイルを読み込み -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ▼▼▼ 透析状況のお知らせ（全ページ共通で表示させることも可能） ▼▼▼ -->
+    <section id="dialysis-status">
+        <div class="container">
+            <h2>透析状況のお知らせ</h2>
+            <div class="status-container">
+                <!-- 本院 -->
+                <div class="status-item">
+                    <h3>本院</h3>
+                    <p class="status-text status-ok">透析可</p>
+                </div>
+                <!-- なかもず分院 -->
+                <div class="status-item">
+                    <h3>なかもず分院</h3>
+                    <p class="status-text status-ng">透析不可 <span class="reason">（断水のため）</span></p>
+                </div>
+                <!-- 三国ケ丘分院 -->
+                <div class="status-item">
+                    <h3>三国ケ丘分院</h3>
+                    <p class="status-text status-ok">透析可</p>
+                </div>
+            </div>
+            <p class="status-note">※これは表示サンプルです。実際の状況は別途ご確認ください。</p>
+        </div>
+    </section>
+    <!-- ▲▲▲ 透析状況のお知らせ ▲▲▲ -->
+
+    <div class="container">
+        <header class="portal-header">
+            <h1>総合情報ポータル</h1>
+            <p>目的のページを選択してください</p>
+        </header>
+
+        <main>
+            <nav class="portal-nav">
+                <!-- 栄養情報ページへのリンク -->
+                <a href="nutrition-main.html" class="portal-button theme-nutrition">
+                    <span class="button-title">透析患者さんのための栄養情報</span>
+                    <span class="button-desc">食事の基本やおすすめレシピ、栄養に関するQ&Aなどをご覧いただけます。</span>
+                </a>
+
+                <!-- 災害情報ページへのリンク -->
+                <a href="disaster-main.html" class="portal-button theme-disaster">
+                    <span class="button-title">災害情報ポータル</span>
+                    <span class="button-desc">災害時の備え、備蓄リスト、避難場所の確認方法などをまとめています。</span>
+                </a>
+
+                <!-- ▼▼▼ 今後、新しいページを追加する際のテンプレート ▼▼▼ -->
+                <!-- 
+                <a href="新しいファイル名.html" class="portal-button theme-new">
+                    <span class="button-title">新しいページのタイトル</span>
+                    <span class="button-desc">このページに関する簡単な説明をここに書きます。</span>
+                </a>
+                -->
+            </nav>
+        </main>
+
+        <footer>
+            <p><small>&copy; 2025 総合情報ポータル</small></p>
+        </footer>
+    </div>
+
+</body>
+</html>
