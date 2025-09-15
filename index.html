@@ -4,36 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>総合情報ポータル</title>
-    <!-- 共通のCSSファイルを読み込み -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
     <section id="dialysis-status">
         <div class="container">
             <h2>透析状況のお知らせ</h2>
-
-            <!-- ▼▼▼ 透析状況 更新エリア ここから ▼▼▼ -->
-            <div class="status-container">
-                <!-- 本院 -->
-                <div class="status-item">
-                    <h3>本院</h3>
-                    <p class="status-text status-ok">透析可</p>
-                </div>
-                <!-- なかもず分院 -->
-                <div class="status-item">
-                    <h3>なかもず分院</h3>
-                    <p class="status-text status-ng">透析不可 <span class="reason">（断水のため）</span></p>
-                </div>
-                <!-- 三国ケ丘分院 -->
-                <div class="status-item">
-                    <h3>三国ケ丘分院</h3>
-                    <p class="status-text status-ok">透析可</p>
-                </div>
+            <!-- ▼▼▼ JavaScriptによって情報がここに挿入されます ▼▼▼ -->
+            <div class="status-container" id="status-container">
+                <p>状況を読み込んでいます...</p>
             </div>
-            <!-- ▲▲▲ 透析状況 更新エリア ここまで ▲▲▲ -->
-
-            <p class="status-note">※これは表示サンプルです。実際の状況は別途ご確認ください。</p>
+            <!-- ▲▲▲ ここまで ▲▲▲ -->
+            <p class="status-note">※この情報はリアルタイムで更新されています。</p>
         </div>
     </section>
 
@@ -42,7 +24,6 @@
             <h1>総合情報ポータル</h1>
             <p>目的のページを選択してください</p>
         </header>
-
         <main>
             <nav class="portal-nav">
                 <!-- 栄養情報ページへのリンク -->
@@ -56,13 +37,66 @@
                     <span class="button-title">災害情報ポータル</span>
                     <span class="button-desc">災害時の備え、備蓄リスト、避難場所の確認方法などをまとめています。</span>
                 </a>
+
+                <!-- シャント管理ページへのリンク -->
+                <a href="shunt-management.html" class="portal-button theme-shunt">
+                    <span class="button-title">シャント管理について</span>
+                    <span class="button-desc">シャントを長持ちさせるための、日々の観察ポイントや注意点を解説します。</span>
+                </a>
+
+                <!-- お友達健康特典ページへのリンク -->
+                <a href="friend-benefit.html" class="portal-button theme-friend">
+                    <span class="button-title">お友達健康特典プログラム</span>
+                    <span class="button-desc">大切なご友人をご紹介いただくことで、双方に特典を進呈するプログラムです。</span>
+                </a>
             </nav>
         </main>
-
         <footer>
             <p><small>&copy; 2025 総合情報ポータル</small></p>
         </footer>
     </div>
 
+    <script>
+        // status.jsonを非同期で読み込んで表示する
+        async function fetchStatus() {
+            const container = document.getElementById('status-container');
+            try {
+                // キャッシュを避けるためにタイムスタンプを追加
+                const response = await fetch(`status.json?t=${new Date().getTime()}`);
+                if (!response.ok) throw new Error('ファイルの読み込みに失敗しました。');
+                
+                const statusData = await response.json();
+                
+                const clinics = [
+                    { id: 'honin', name: '本院' },
+                    { id: 'nakamozu', name: 'なかもず分院' },
+                    { id: 'mikunigaoka', name: '三国ケ丘分院' }
+                ];
+
+                let html = '';
+                clinics.forEach(clinic => {
+                    const info = statusData[clinic.id];
+                    const statusClass = info.status === 'ok' ? 'status-ok' : 'status-ng';
+                    const statusText = info.status === 'ok' ? '透析可' : '透析不可';
+                    const reasonHtml = (info.status === 'ng' && info.reason) ? `<span class="reason">（${info.reason}）</span>` : '';
+
+                    html += `
+                        <div class="status-item">
+                            <h3>${clinic.name}</h3>
+                            <p class="status-text ${statusClass}">${statusText}${reasonHtml}</p>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+
+            } catch (error) {
+                container.innerHTML = '<p style="color: red;">エラー: 状況を読み込めませんでした。</p>';
+                console.error(error);
+            }
+        }
+        
+        // ページが読み込まれたら実行
+        document.addEventListener('DOMContentLoaded', fetchStatus);
+    </script>
 </body>
 </html>
