@@ -10,12 +10,29 @@
     <section id="dialysis-status">
         <div class="container">
             <h2>透析状況のお知らせ</h2>
-            <!-- ▼▼▼ JavaScriptによって情報がここに挿入されます ▼▼▼ -->
-            <div class="status-container" id="status-container">
-                <p>状況を読み込んでいます...</p>
+
+            <!-- ▼▼▼ 透析状況 更新エリア ここから ▼▼▼ -->
+            <!-- admin.htmlで生成したコードをこの部分に貼り付けてください -->
+            <div class="status-container">
+                <!-- 本院 -->
+                <div class="status-item">
+                    <h3>本院</h3>
+                    <p class="status-text status-ok">透析可</p>
+                </div>
+                <!-- なかもず分院 -->
+                <div class="status-item">
+                    <h3>なかもず分院</h3>
+                    <p class="status-text status-ng">透析不可 <span class="reason">（断水のため）</span></p>
+                </div>
+                <!-- 三国ケ丘分院 -->
+                <div class="status-item">
+                    <h3>三国ケ丘分院</h3>
+                    <p class="status-text status-ok">透析可</p>
+                </div>
             </div>
-            <!-- ▲▲▲ ここまで ▲▲▲ -->
-            <p class="status-note">※この情報はリアルタイムで更新されています。</p>
+            <!-- ▲▲▲ 透析状況 更新エリア ここまで ▲▲▲ -->
+
+            <p class="status-note">※これは表示サンプルです。実際の状況は別途ご確認ください。</p>
         </div>
     </section>
 
@@ -55,48 +72,7 @@
             <p><small>&copy; 2025 総合情報ポータル</small></p>
         </footer>
     </div>
-
-    <script>
-        // status.jsonを非同期で読み込んで表示する
-        async function fetchStatus() {
-            const container = document.getElementById('status-container');
-            try {
-                // キャッシュを避けるためにタイムスタンプを追加
-                const response = await fetch(`status.json?t=${new Date().getTime()}`);
-                if (!response.ok) throw new Error('ファイルの読み込みに失敗しました。');
-                
-                const statusData = await response.json();
-                
-                const clinics = [
-                    { id: 'honin', name: '本院' },
-                    { id: 'nakamozu', name: 'なかもず分院' },
-                    { id: 'mikunigaoka', name: '三国ケ丘分院' }
-                ];
-
-                let html = '';
-                clinics.forEach(clinic => {
-                    const info = statusData[clinic.id];
-                    const statusClass = info.status === 'ok' ? 'status-ok' : 'status-ng';
-                    const statusText = info.status === 'ok' ? '透析可' : '透析不可';
-                    const reasonHtml = (info.status === 'ng' && info.reason) ? `<span class="reason">（${info.reason}）</span>` : '';
-
-                    html += `
-                        <div class="status-item">
-                            <h3>${clinic.name}</h3>
-                            <p class="status-text ${statusClass}">${statusText}${reasonHtml}</p>
-                        </div>
-                    `;
-                });
-                container.innerHTML = html;
-
-            } catch (error) {
-                container.innerHTML = '<p style="color: red;">エラー: 状況を読み込めませんでした。</p>';
-                console.error(error);
-            }
-        }
-        
-        // ページが読み込まれたら実行
-        document.addEventListener('DOMContentLoaded', fetchStatus);
-    </script>
+    
+    <!-- 動的更新用のスクリプトは削除しました -->
 </body>
 </html>
