@@ -1,121 +1,215 @@
-/* --- 基本スタイル（共通部分） --- */
-body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif; line-height: 1.8; color: #333; margin: 0; padding: 0; background-color: #f9f9f9; }
-.container { max-width: 800px; margin: 20px auto; padding: 20px; background-color: #fff; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-.page-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 20px 0; padding-bottom: 20px; border-bottom: 1px solid #ddd; }
-.nav-button { display: inline-block; padding: 10px 20px; background-color: #f0f0f0; color: #333; text-decoration: none; border-radius: 5px; border: 1px solid #ccc; font-weight: bold; transition: all 0.3s; }
-.nav-button:hover { background-color: #e0e0e0; border-color: #bbb; }
-h2 { border-bottom: 2px solid #eee; padding-bottom: 10px; margin-top: 40px; }
-h3 { border-left: 5px solid #ccc; padding-left: 10px; }
-ul, ol { padding-left: 25px; }
-li { margin-bottom: 10px; }
-footer { text-align: center; margin-top: 40px; color: #777; }
+/* Noto Sans JP from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap');
 
-/* ポータルへ戻るボタン */
+/* --- CSS変数定義（カラーパレットと共通設定） --- */
+:root {
+    --font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --text-color: #212529;
+    --text-color-muted: #6c757d;
+    --bg-color: #f8f9fa;
+    --surface-color: #ffffff;
+    --border-color: #dee2e6;
+    --border-radius: 12px;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
+
+    /* Theme Colors (Slightly muted for a calmer look) */
+    --c-nutrition: #0d6efd;
+    --c-disaster: #dc3545;
+    --c-shunt: #198754;
+    --c-friend: #6f42c1;
+    --c-status: #ffc107;
+}
+
+/* --- 基本スタイル（リセットと共通部分） --- */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-family);
+    line-height: 1.8;
+    color: var(--text-color);
+    margin: 0;
+    background-color: var(--bg-color);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 40px;
+    background-color: var(--surface-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
+}
+
+footer {
+    text-align: center;
+    margin-top: 50px;
+    color: var(--text-color-muted);
+    font-size: 0.9em;
+}
+
+/* --- タイポグラフィ --- */
+h1, h2, h3 {
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+h1 { font-size: 2.5em; }
+
+h2 {
+    font-size: 1.8em;
+    margin-top: 60px;
+    padding-bottom: 15px;
+    border-bottom: 3px solid var(--border-color);
+}
+
+h3 {
+    font-size: 1.3em;
+    padding-left: 15px;
+    border-left: 5px solid var(--border-color);
+}
+
+a {
+    color: var(--c-nutrition);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+/* --- ポータルページ (index.html) 専用スタイル --- */
+#dialysis-status {
+    background-color: var(--surface-color);
+    padding: 30px 10px;
+    border-bottom: 1px solid var(--border-color);
+    text-align: center;
+}
+#dialysis-status h2 {
+    margin: 0 0 25px 0;
+    color: var(--text-color);
+    font-size: 1.5em;
+    border: none;
+}
+.status-container { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+.status-item {
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-top: 5px solid var(--c-status);
+    border-radius: var(--border-radius);
+    padding: 15px 25px;
+    min-width: 220px;
+    box-shadow: var(--shadow);
+}
+.status-item h3 { margin: 0 0 8px 0; font-size: 1.1em; border: none; padding: 0; }
+.status-text { margin: 0; font-size: 1.3em; font-weight: 700; }
+.status-ok { color: #198754; }
+.status-ng { color: #dc3545; }
+.status-text .reason { font-size: 0.8em; font-weight: 400; color: var(--text-color-muted); display: block; margin-top: 4px; }
+.status-note { font-size: 0.9em; color: var(--text-color-muted); margin-top: 25px; }
+
+.portal-header { text-align: center; margin-bottom: 40px; padding-bottom: 20px; border-bottom: 1px solid var(--border-color); }
+.portal-header h1 { font-size: 2.8em; margin: 0; }
+.portal-header p { font-size: 1.1em; color: var(--text-color-muted); margin-top: 5px; }
+
+.portal-nav { display: flex; flex-direction: column; gap: 25px; }
+.portal-button {
+    display: block;
+    padding: 25px 30px;
+    text-decoration: none;
+    color: #fff;
+    border-radius: var(--border-radius);
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+    background-size: 150%;
+}
+.portal-button:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.1), 0 3px 6px rgba(0,0,0,0.08); }
+.portal-button .button-title { font-size: 1.5em; font-weight: 700; margin-bottom: 8px; }
+.portal-button .button-desc { font-size: 1em; opacity: 0.9; }
+
+/* --- 下層ページ 共通スタイル --- */
+.page-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin: 30px 0; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); }
+.nav-button {
+    padding: 10px 20px;
+    background-color: transparent;
+    color: var(--text-color-muted);
+    text-decoration: none;
+    border-radius: 8px;
+    border: none;
+    border-bottom: 3px solid transparent;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+.nav-button:hover { color: var(--text-color); }
+
 .back-to-portal-button {
     display: inline-block;
     background-color: #6c757d;
     color: white;
     padding: 8px 15px;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     text-decoration: none;
-    border-radius: 5px;
+    border-radius: 8px;
     font-size: 0.9em;
     transition: background-color 0.3s;
 }
-.back-to-portal-button:hover {
-    background-color: #5a6268;
-}
-
-/* --- タブ切り替え用のスタイル --- */
-.content-section { display: none; }
-.content-section.active { display: block; }
+.back-to-portal-button:hover { background-color: #5a6268; text-decoration: none; }
 
 /* --- テーマ別スタイル --- */
-/* 栄養テーマ (青) */
-.theme-nutrition header { text-align: center; padding-bottom: 20px; border-bottom: 2px solid #007bff; }
-.theme-nutrition header h1 { color: #007bff; margin: 0; }
-.theme-nutrition .nav-button.active { background-color: #007bff; color: white; border-color: #007bff; }
-.theme-nutrition h2 { color: #0056b3; }
-.theme-nutrition h3 { border-left-color: #007bff; }
+.theme-nutrition header h1 { color: var(--c-nutrition); }
+.theme-nutrition h3 { border-left-color: var(--c-nutrition); }
+.theme-nutrition .nav-button.active { color: var(--c-nutrition); border-bottom-color: var(--c-nutrition); font-weight: 700; }
+.portal-button.theme-nutrition { background-image: linear-gradient(45deg, #0d6efd, #3c8aff); }
+.theme-nutrition .qa-item .q-icon, .theme-nutrition .qa-item .a-icon { color: var(--c-nutrition); }
+.theme-nutrition .qa-item .question { background-color: #e7f1ff; }
 
-/* 災害テーマ (赤) */
-.theme-disaster header { text-align: center; padding-bottom: 20px; border-bottom: 2px solid #dc3545; }
-.theme-disaster header h1 { color: #dc3545; margin: 0; }
-.theme-disaster .nav-button.active { background-color: #dc3545; color: white; border-color: #dc3545; }
-.theme-disaster h2 { color: #b22222; }
-.theme-disaster h3 { border-left-color: #dc3545; }
+.theme-disaster header h1 { color: var(--c-disaster); }
+.theme-disaster h3 { border-left-color: var(--c-disaster); }
+.theme-disaster .nav-button.active { color: var(--c-disaster); border-bottom-color: var(--c-disaster); font-weight: 700; }
+.portal-button.theme-disaster { background-image: linear-gradient(45deg, #dc3545, #e45a67); }
+.theme-disaster .qa-item .q-icon, .theme-disaster .qa-item .a-icon { color: var(--c-disaster); }
+.theme-disaster .qa-item .question { background-color: #fbe9e7; }
 
-/* シャント管理テーマ (緑) */
-.theme-shunt header { text-align: center; padding-bottom: 20px; border-bottom: 2px solid #28a745; }
-.theme-shunt header h1 { color: #28a745; margin: 0; }
-.theme-shunt h2 { color: #218838; }
-.theme-shunt h3 { border-left-color: #28a745; }
+.theme-shunt header h1 { color: var(--c-shunt); }
+.theme-shunt h3 { border-left-color: var(--c-shunt); }
+.portal-button.theme-shunt { background-image: linear-gradient(45deg, #198754, #2abb77); }
 
-/* お友達特典テーマ (紫) */
-.theme-friend header { text-align: center; padding-bottom: 20px; border-bottom: 2px solid #6f42c1; }
-.theme-friend header h1 { color: #6f42c1; margin: 0; }
-.theme-friend h2 { color: #5a349a; }
-.theme-friend h3 { border-left-color: #6f42c1; }
+.theme-friend header h1 { color: var(--c-friend); }
+.theme-friend h3 { border-left-color: var(--c-friend); }
+.portal-button.theme-friend { background-image: linear-gradient(45deg, #6f42c1, #8d62d9); }
 
-/* --- Q&Aページ専用スタイル --- */
+/* --- コンポーネントの再デザイン --- */
+/* タブ */
+.content-section { display: none; }
+.content-section.active { display: block; animation: fadeIn 0.5s; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* Q&A */
 .qa-item { margin-bottom: 30px; }
-.qa-item .question { font-weight: bold; padding: 15px; border-radius: 8px 8px 0 0; display: flex; align-items: center; }
-.qa-item .answer { background-color: #f8f9fa; padding: 15px; border-top: none; border-radius: 0 0 8px 8px; }
-.qa-item .q-icon, .qa-item .a-icon { font-size: 1.5em; font-weight: bold; margin-right: 10px; }
-.theme-nutrition .qa-item .question { background-color: #e9f5ff; border: 1px solid #e9f5ff; }
-.theme-nutrition .qa-item .answer { border: 1px solid #e9f5ff; border-top: none;}
-.theme-nutrition .qa-item .q-icon, .theme-nutrition .qa-item .a-icon { color: #007bff; }
-.theme-disaster .qa-item .question { background-color: #fbe9e7; border: 1px solid #fbe9e7; }
-.theme-disaster .qa-item .answer { border: 1px solid #fbe9e7; border-top: none; }
-.theme-disaster .qa-item .q-icon, .theme-disaster .qa-item .a-icon { color: #dc3545; }
+.qa-item .question { font-weight: 700; padding: 20px; border-radius: 10px; display: flex; align-items: flex-start; }
+.qa-item .answer { background-color: transparent; padding: 20px; border: 1px solid var(--border-color); border-top: none; border-radius: 0 0 10px 10px; display: flex; align-items: flex-start; }
+.qa-item .q-icon, .qa-item .a-icon { font-size: 1.5em; font-weight: 700; margin-right: 15px; flex-shrink: 0; }
 
-/* --- クイズページ専用スタイル --- */
-.quiz-section { text-align: center; padding: 30px; border-radius: 8px; margin-top: 40px; }
-.quiz-button { display: inline-block; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-size: 1.2em; font-weight: bold; transition: background-color 0.3s; }
+/* クイズ & 避難場所リンク */
+.quiz-section { text-align: center; padding: 40px; border-radius: var(--border-radius); margin-top: 40px; }
+.quiz-button { display: inline-block; color: white !important; padding: 15px 35px; text-decoration: none; border-radius: 50px; font-size: 1.2em; font-weight: 700; transition: all 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+.quiz-button:hover { transform: translateY(-3px); box-shadow: 0 7px 20px rgba(0,0,0,0.15); text-decoration: none; }
 .theme-nutrition .quiz-section { background-color: #e9f5ff; }
-.theme-nutrition .quiz-button { background-color: #28a745; }
-.theme-nutrition .quiz-button:hover { background-color: #218838; }
+.theme-nutrition .quiz-button { background-color: #198754; }
 .theme-disaster .quiz-section { background-color: #fbe9e7; }
-.theme-disaster .quiz-button { background-color: #dc3545; }
-.theme-disaster .quiz-button:hover { background-color: #c82333; }
+.theme-disaster .quiz-button { background-color: var(--c-disaster); }
 
-/* --- レシピページ専用スタイル --- */
-.recipe-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; }
-.recipe-item { border: 1px solid #ddd; border-radius: 8px; padding: 15px; background-color: #fafafa; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-.recipe-item iframe { width: 100%; height: 600px; border: none; border-radius: 4px; }
-.recipe-item .pdf-link { display: block; text-align: center; margin-top: 10px; font-size: 0.9em; text-decoration: none; }
-.recipe-item .pdf-link:hover { text-decoration: underline; }
-.theme-nutrition .recipe-item .pdf-link { color: #007bff; }
-
-/* --- レスポンシブ対応 --- */
-@media (max-width: 768px) {
-    .recipe-grid { grid-template-columns: 1fr; }
-}
-
-/* --- ポータルページ (index.html) 専用スタイル --- */
-#dialysis-status { background-color: #fffbe6; padding: 20px 10px; border-bottom: 3px solid #ffc107; text-align: center; }
-#dialysis-status h2 { margin: 0 0 15px 0; color: #856404; border: none; }
-.status-container { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
-.status-item { background-color: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 10px 20px; min-width: 200px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-.status-item h3 { margin: 0 0 5px 0; font-size: 1.1em; border: none; padding: 0; }
-.status-text { margin: 0; font-size: 1.3em; font-weight: bold; }
-.status-ok { color: #155724; }
-.status-ng { color: #721c24; }
-.status-text .reason { font-size: 0.7em; font-weight: normal; color: #555; display: block; }
-.status-note { font-size: 0.8em; color: #856404; margin-top: 15px; }
-
-.portal-header { text-align: center; margin-bottom: 40px; padding-bottom: 20px; border-bottom: 2px solid #eee; }
-.portal-header h1 { font-size: 2.2em; margin: 0; }
-.portal-header p { font-size: 1.1em; color: #555; margin-top: 5px; }
-
-.portal-nav { display: flex; flex-direction: column; gap: 25px; }
-.portal-button { display: block; padding: 25px; text-decoration: none; color: #fff; border-radius: 8px; transition: transform 0.2s, box-shadow 0.2s; border-left: 10px solid; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-.portal-button:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
-.portal-button .button-title { display: block; font-size: 1.5em; font-weight: bold; margin-bottom: 8px; }
-.portal-button .button-desc { display: block; font-size: 1em; opacity: 0.9; }
-
-/* 各ボタンのテーマカラー */
-.portal-button.theme-nutrition { background-color: #007bff; border-color: #0056b3; }
-.portal-button.theme-disaster { background-color: #dc3545; border-color: #b22222; }
-.portal-button.theme-shunt { background-color: #28a745; border-color: #1e7e34; }
-.portal-button.theme-friend { background-color: #6f42c1; border-color: #5a349a; }
+/* PDFセレクター */
+.pdf-selector-container { margin: 30px 0; padding: 25px; background-color: var(--bg-color); border-radius: var(--border-radius); }
+.pdf-selector-container label { display: block; margin-bottom: 10px; font-weight: 500; color: var(--text-color); }
+.pdf-selector-container select { width: 100%; padding: 12px; font-size: 1.1em; border-radius: 8px; border: 1px solid var(--border-color); cursor: pointer; }
+.pdf-viewer-container { margin-top: 20px; }
+.pdf-viewer-container iframe { width: 100%; height: auto; aspect-ratio: 1 / 1.414; border: 1px solid var(--border-color); border-radius: 8px; display: block; }
+.pdf-viewer-container .pdf-link { display: block; text-align: center; margin-top: 15px; }
+.theme-nutrition a { color: var(--c-nutrition); } /* リンクカラーをテーマに合わせる */
