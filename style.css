@@ -106,22 +106,59 @@ h1 {
 
 h2 {
     font-size: clamp(1.5rem, 3vw, 2rem);
-    margin: 40px 0 24px 0;
-    padding: 20px 30px;
-    background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--surface) 100%);
-    border-left: 5px solid var(--border-medium);
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow-sm);
+    margin: 50px auto 32px auto;
+    padding: 24px 32px;
+    background: linear-gradient(135deg, var(--surface) 0%, var(--bg-primary) 100%);
+    border: 2px solid var(--border-light);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-lg);
+    text-align: center;
+    position: relative;
+    max-width: 600px;
+    font-weight: 700;
+}
+
+h2::before {
+    content: "📋";
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, var(--surface) 0%, var(--bg-primary) 100%);
+    padding: 8px 12px;
+    border-radius: 50%;
+    border: 2px solid var(--border-light);
+    font-size: 1.2em;
+    box-shadow: var(--shadow);
 }
 
 h3 {
     font-size: clamp(1.1rem, 2.5vw, 1.4rem);
-    margin: 32px 0 16px 0;
-    padding: 16px 24px;
-    background-color: var(--bg-primary);
-    border-radius: var(--border-radius);
-    border-left: 4px solid var(--border-strong);
+    margin: 32px auto 20px auto;
+    padding: 20px 28px;
+    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--surface) 100%);
+    border: 2px solid var(--border-light);
+    border-radius: var(--border-radius-lg);
     font-weight: 600;
+    text-align: center;
+    position: relative;
+    max-width: 500px;
+    box-shadow: var(--shadow);
+}
+
+h3::before {
+    content: "▶";
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--c-nutrition);
+    color: white;
+    padding: 6px 10px;
+    border-radius: 50%;
+    font-size: 0.8em;
+    font-weight: 700;
+    box-shadow: var(--shadow-sm);
 }
 
 p {
@@ -359,6 +396,13 @@ a:hover {
 }
 
 /* --- 下層ページ共通スタイル --- */
+header {
+    text-align: center;
+    padding: 40px 40px 20px 40px;
+    background: linear-gradient(135deg, var(--surface) 0%, var(--bg-primary) 100%);
+    border-bottom: 1px solid var(--border-light);
+}
+
 .page-nav { 
     display: flex; 
     flex-wrap: wrap; 
@@ -763,6 +807,10 @@ a:hover {
         padding: 20px;
     }
     
+    header {
+        padding: 30px 20px 20px 20px;
+    }
+    
     #content-area {
         padding: 20px;
     }
@@ -780,6 +828,18 @@ a:hover {
         gap: 16px;
     }
     
+    h2 {
+        margin: 40px 10px 24px 10px;
+        padding: 20px 24px;
+        max-width: none;
+    }
+    
+    h3 {
+        margin: 24px 10px 16px 10px;
+        padding: 16px 20px;
+        max-width: none;
+    }
+    
     ul li, ol li {
         padding: 12px 0 12px 35px;
     }
@@ -792,53 +852,3 @@ a:hover {
         left: 12px;
     }
 }
-
-/* --- ▼▼▼【追加】ここから (下層ページ内リンクボタン用) ▼▼▼ --- */
-
-.content-link-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    margin-top: 30px;
-}
-
-.content-link-button {
-    display: block;
-    padding: 20px;
-    border-radius: var(--border-radius);
-    text-decoration: none;
-    color: white;
-    background-image: linear-gradient(45deg, #6f42c1, #8d62d9);
-    box-shadow: var(--shadow);
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.content-link-button:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 15px rgba(0,0,0,0.1), 0 3px 6px rgba(0,0,0,0.08);
-    text-decoration: none;
-    color: white;
-}
-
-.content-link-button .button-title {
-    display: block;
-    font-weight: 700;
-    font-size: 1.2em;
-    margin-bottom: 8px;
-}
-
-.content-link-button .button-desc {
-    display: block;
-    font-size: 0.9em;
-    opacity: 0.9;
-    line-height: 1.6;
-}
-
-/* スマホ用のレスポンシブ対応 */
-@media (max-width: 768px) {
-    .content-link-container {
-        grid-template-columns: 1fr; /* 1列にする */
-    }
-}
-
-/* --- ▲▲▲【追加】ここまで ▲▲▲ --- */
