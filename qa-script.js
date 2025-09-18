@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // CSVファイルを読み込んで解析する関数
     function loadQAData() {
         // CSVファイルへのパス。キャッシュを避けるためにタイムスタンプを追加
-        const csvFilePath = `files/qa-data.csv?t=${new Date().getTime()}`;
+        const csvFilePath = `qa-data.csv?t=${new Date().getTime()}`;
 
         Papa.parse(csvFilePath, {
             download: true,
