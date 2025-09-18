@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 初期メッセージを表示する関数
     function showInitialMessage() {
-        resultsContainer.innerHTML = '<p class="qa-initial-message">検索したい文字を入力してください</p>';
+        resultsContainer.innerHTML = '<p class="qa-initial-message">検索したい文字を上の枠に入力してください</p>';
     }
 
     // CSVファイルを読み込んで解析する関数
