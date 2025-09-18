@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const answerHeader = results.meta.fields.find(h => h.includes('回答例'));
 
                 if (!taskHeader || !answerHeader) {
-                    resultsContainer.innerHTML = '<p class="qa-no-result">エラー: CSVの3行目に「タスク」および「回答例」の列が見つかりません。</p>';
+                    resultsContainer.innerHTML = '<p class="qa-no-result">エラー: CSVの4行目に「タスク」および「回答例」の列が見つかりません。</p>';
                     console.error("必要なヘッダーが見つかりません:", results.meta.fields);
                     return;
                 }
