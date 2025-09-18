@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q&A 検索</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body class="theme-qa">
+    <div class="container">
+        <header>
+            <h1>Q&A 検索</h1>
+        </header>
+        <main>
+            <div class="qa-search-container">
+                <input type="search" id="qa-search-input" placeholder="キーワードを入力して質問を検索 (例: 塩分, カリウム)">
+            </div>
+            
+            <div id="qa-results-container">
+                <!-- 検索結果がここに表示されます -->
+            </div>
+        </main>
+        
+        <a href="index.html" class="back-to-portal-button">総合情報ポータルへ戻る</a>
+
+        <footer>
+            <p><small>&copy; 2025 総合情報ポータル</small></p>
+        </footer>
+    </div>
+
+    <!-- CSV解析ライブラリ (Papa Parse) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <!-- Q&Aページの検索ロジック -->
+    <script src="qa-script.js"></script>
+</body>
+</html>

@@ -823,3 +823,79 @@ header {
         left: 12px;
     }
 }
+
+/* Q&Aページのテーマカラー */
+.theme-qa { --theme-color: #fd7e14; } /* オレンジ */
+
+.theme-qa header h1 { color: var(--theme-color); }
+.portal-button.theme-qa { background-image: linear-gradient(45deg, #fd7e14, #ff9b40); }
+
+/* 検索ボックス */
+.qa-search-container {
+    margin-bottom: 40px;
+}
+#qa-search-input {
+    width: 100%;
+    padding: 15px 20px;
+    font-size: 1.1em;
+    border-radius: 50px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05) inset;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+#qa-search-input:focus {
+    outline: none;
+    border-color: var(--theme-color);
+    box-shadow: 0 0 0 4px rgba(253, 126, 20, 0.25);
+}
+
+/* 検索結果 */
+#qa-results-container {
+    border-top: 1px solid var(--border-color);
+}
+.qa-search-item {
+    border-bottom: 1px solid var(--border-color);
+}
+.qa-search-question {
+    padding: 20px;
+    font-weight: 500;
+    font-size: 1.1em;
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.3s;
+}
+.qa-search-question:hover {
+    background-color: #f8f9fa;
+}
+
+/* 開閉アイコン (矢印) */
+.qa-search-question::after {
+    content: '▼';
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%) rotate(0deg);
+    transition: transform 0.3s;
+    font-size: 0.8em;
+    color: var(--text-color-muted);
+}
+.qa-search-item.active .qa-search-question::after {
+    transform: translateY(-50%) rotate(180deg);
+}
+
+.qa-search-answer {
+    display: none; /* 初期状態は非表示 */
+    padding: 0 20px 20px 40px; /* 左に少しインデント */
+    line-height: 1.9;
+    color: #343a40;
+    animation: fadeIn 0.5s;
+}
+.qa-search-item.active .qa-search-answer {
+    display: block; /* activeクラスが付いたら表示 */
+}
+
+.qa-no-result {
+    padding: 40px 20px;
+    text-align: center;
+    color: var(--text-color-muted);
+}
