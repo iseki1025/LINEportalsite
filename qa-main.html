@@ -17,11 +17,11 @@
         </header>
         <main>
             <div class="qa-search-container">
-                <input type="search" id="qa-search-input" placeholder="キーワードを入力して質問を検索 (例: 塩分, カリウム)">
+                <input type="search" id="qa-search-input" placeholder="キーワードを入力して質問を検索 (例: 塩分, カリウム)" autocomplete="off">
             </div>
             
             <div id="qa-results-container">
-                <!-- 検索結果がここに表示されます -->
+                <p class="qa-loading">データを読み込んでいます...</p>
             </div>
         </main>
         
@@ -32,9 +32,10 @@
         </footer>
     </div>
 
-    <!-- CSV解析ライブラリ (Papa Parse) -->
+    <!-- CSV解析ライブラリ (Papa Parse) の読み込み -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
-    <!-- Q&Aページの検索ロジック -->
+    
+    <!-- Q&Aページの検索ロジックを読み込み -->
     <script src="qa-script.js"></script>
 </body>
 </html>
