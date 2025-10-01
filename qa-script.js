@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     showInitialMessage('検索エンジンの準備をしています...');
 
     // --- kuromoji.jsの初期化 ---
-    kuromoji.builder({ dicPath: "https://cdn.jsdelivr.net/npm/kuromoji@0.1.2/dict/" }).build((err, builtTokenizer) => {
+    kuromoji.builder({ dicPath: "//cdn.jsdelivr.net/npm/kuromoji@0.1.2/dict/" }).build((err, builtTokenizer) => {
         if (err) {
             console.error("Kuromoji.jsの初期化に失敗しました:", err);
             showInitialMessage('エラー: 検索エンジンの準備に失敗しました。');
