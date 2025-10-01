@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
         resultsContainer.innerHTML = '<p class="qa-initial-message">検索したい文字を上の枠に入力してください</p>';
     }
 
-    // CSVファイルを読み込んで解析する関数
+// CSVファイルを読み込んで解析する関数
     function loadQAData() {
         const csvFilePath = `files/qa-data.csv?t=${new Date().getTime()}`;
 
@@ -17,28 +17,29 @@ document.addEventListener('DOMContentLoaded', () => {
             header: true, // ヘッダー行を自動で認識させる
             skipEmptyLines: true,
 
-            // ===== ▼▼▼【重要】ここが今回の修正の核です ▼▼▼ =====
-            // データを変換する処理を追加
+            // ヘッダーをトリムする処理は維持
             transformHeader: (header, index) => {
-                // 3行目(indexが2)のヘッダーをトリムして返す
                 return header.trim();
             },
-            beforeFirstChunk: (chunk) => {
-                // 最初のデータチャンクを受け取り、最初の2行を削除する
-                const lines = chunk.split('\n'); // データを改行で分割
-                lines.splice(0, 5); // 最初の2行（0番目と1番目）を削除
-                return lines.join('\n'); // 再度文字列に結合して返す
-            },
-            // ▲▲▲ ここまでが修正の核 ▲▲▲
+            // ここが今回の主な修正点: beforeFirstChunkを削除または正しく修正
+            // 現在のCSVでは最初の行がヘッダーなので、この処理は不要です
+            // もしCSVの先頭に確実にスキップすべき行がある場合は、その行数に合わせて調整
+            // 例: もし最初の行と2行目が不要で、3行目からがヘッダーなら lines.splice(0, 2);
+            // 今回のCSVではヘッダーが1行目なので、このブロック全体を削除します。
+            // beforeFirstChunk: (chunk) => {
+            //     const lines = chunk.split('\n');
+            //     lines.splice(0, 5); // 最初の5行を削除
+            //     return lines.join('\n');
+            // },
 
             complete: (results) => {
-                // 'タスク'列をquestion, '回答例'列をanswerとする
-                // results.meta.fields には3行目のヘッダー名が格納されている
-                const taskHeader = results.meta.fields.find(h => h.includes('Question'));
-                const answerHeader = results.meta.fields.find(h => h.includes('Answer'));
+                // 'Question'列と'Answer'列を直接指定
+                // results.meta.fields には正しいヘッダー名が格納されているはずです。
+                const taskHeader = 'Question'; // CSVのヘッダー名と完全に一致させる
+                const answerHeader = 'Answer'; // CSVのヘッダー名と完全に一致させる
 
-                if (!taskHeader || !answerHeader) {
-                    resultsContainer.innerHTML = '<p class="qa-no-result">エラー: CSVの4行目に「タスク」および「回答例」の列が見つかりません。</p>';
+                if (!results.meta.fields.includes(taskHeader) || !results.meta.fields.includes(answerHeader)) {
+                    resultsContainer.innerHTML = `<p class="qa-no-result">エラー: CSVのヘッダーに「${taskHeader}」または「${answerHeader}」の列が見つかりません。見つかったヘッダー: ${results.meta.fields.join(', ')}</p>`;
                     console.error("必要なヘッダーが見つかりません:", results.meta.fields);
                     return;
                 }
