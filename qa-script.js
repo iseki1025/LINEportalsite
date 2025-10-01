@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // テキストを正規化する関数（読みがなを含む）
+    // テキストを正規化する関数（読みがなを含む）- 検索時に実行
     function normalizeText(text) {
         if (!text) return { hira: '', reading: '' };
         const lowerText = text.toLowerCase();
@@ -83,18 +83,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
 
+                // ⭐ 重要な変更：読みがな解析を事前に行わない
                 qaData = results.data.map(row => {
                     const questionText = String(row[questionHeader] || '').trim();
                     const answerText = String(row[answerHeader] || '').trim();
                     return {
                         question: questionText,
-                        answer: answerText,
-                        normalizedQuestion: normalizeText(questionText),
-                        normalizedAnswer: normalizeText(answerText)
+                        answer: answerText
+                        // normalizedQuestion と normalizedAnswer は削除
                     };
                 }).filter(item => item.question && item.answer);
                 
-                console.log("✅ Q&Aデータの読み込みと、読みがな解析が完了しました。");
+                console.log("✅ Q&Aデータの読み込みが完了しました。データ件数:", qaData.length);
 
                 searchInput.disabled = false;
                 searchInput.placeholder = "検索キーワードを入力";
@@ -147,13 +147,17 @@ document.addEventListener('DOMContentLoaded', () => {
                                     .filter(keyword => keyword)
                                     .map(keyword => kataToHira(keyword.toLowerCase()));
 
+        // ⭐ 重要な変更：検索時にリアルタイムで読みがな解析を行う
         const filteredData = qaData.filter(item => {
+            const normalizedQuestion = normalizeText(item.question);
+            const normalizedAnswer = normalizeText(item.answer);
+            
             return searchKeywords.every(keyword => {
-                const questionMatch = item.normalizedQuestion.hira.includes(keyword) || 
-                                      item.normalizedQuestion.reading.includes(keyword);
+                const questionMatch = normalizedQuestion.hira.includes(keyword) || 
+                                      normalizedQuestion.reading.includes(keyword);
                 
-                const answerMatch = item.normalizedAnswer.hira.includes(keyword) || 
-                                    item.normalizedAnswer.reading.includes(keyword);
+                const answerMatch = normalizedAnswer.hira.includes(keyword) || 
+                                    normalizedAnswer.reading.includes(keyword);
                 
                 return questionMatch || answerMatch;
             });
