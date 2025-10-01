@@ -21,7 +21,7 @@
             </div>
             
             <div id="qa-results-container">
-                <p class="qa-loading">データを読み込んでいます...</p>
+                <!-- 初期メッセージはJavaScriptで制御 -->
             </div>
         </main>
         
@@ -32,10 +32,16 @@
         </footer>
     </div>
 
-    <!-- 1. まず専門家（kuromoji.js）をインターネットから呼んできます -->
-    <script src="https://cdn.jsdelivr.net/npm/kuromoji@0.1.2/build/kuromoji.js"></script>
+    <!-- ▼▼▼ 必要なライブラリとスクリプト（この順番が重要） ▼▼▼ -->
 
-    <!-- 2. 専門家が準備万端になった後で、自分のスクリプトを実行します -->
-    <script src="qa-script.js"></script> 
+    <!-- 1. CSV解析ライブラリ (Papa Parse) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+
+    <!-- 2. 漢字読みがな解析ライブラリ (kuromoji.js) -->
+    <script src="https://cdn.jsdelivr.net/npm/kuromoji@0.1.2/build/kuromoji.js"></script>
+    
+    <!-- 3. あなたの検索ロジック (qa-script.js) -->
+    <script src="qa-script.js"></script>
+
 </body>
 </html>

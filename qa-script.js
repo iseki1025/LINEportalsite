@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
     showInitialMessage('検索エンジンの準備をしています...');
 
     // --- kuromoji.jsの初期化 ---
-    // ▼▼▼【修正点1】辞書ファイルの場所を完全なURLで指定する ▼▼▼
     kuromoji.builder({ dicPath: "https://cdn.jsdelivr.net/npm/kuromoji@0.1.2/dict/" }).build((err, builtTokenizer) => {
         if (err) {
             console.error("Kuromoji.jsの初期化に失敗しました:", err);
@@ -45,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }).join('');
         } catch (e) {
             console.error("読みがなの生成に失敗しました:", text, e);
-            return ''; // エラーが発生した場合は空文字を返す
+            return '';
         }
     }
 
@@ -54,15 +53,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!text) return { hira: '', reading: '' };
         const lowerText = text.toLowerCase();
         return {
-            hira: kataToHira(lowerText), // 元のテキストのひらがな版
-            reading: getReading(text)     // 漢字の読みがな
+            hira: kataToHira(lowerText),
+            reading: getReading(text)
         };
     }
 
     // CSVファイルを読み込んで解析する関数
     function loadQAData() {
         showInitialMessage('Q&Aデータを読み込んでいます...');
-        // ▼▼▼【修正点2】CSVファイル名をリポジトリに合わせて修正 ▼▼▼
         const csvFilePath = `files/qa-data (2).csv?t=${new Date().getTime()}`;
 
         Papa.parse(csvFilePath, {
@@ -71,10 +69,9 @@ document.addEventListener('DOMContentLoaded', () => {
             skipEmptyLines: true,
             transformHeader: header => header.trim(),
             complete: (results) => {
-                // ファイルが見つからなかった場合のエラーチェック
                 if (results.errors.length > 0 && results.data.length === 0) {
                      console.error('CSV Parse Error:', results.errors);
-                     showInitialMessage('エラー: Q&Aデータの読み込みに失敗しました。ファイルパスを確認してください。');
+                     showInitialMessage('エラー: Q&Aデータの読み込みに失敗しました。ファイルパスやCSV形式を確認してください。');
                      return;
                 }
 
@@ -98,20 +95,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 }).filter(item => item.question && item.answer);
                 
                 console.log("✅ Q&Aデータの読み込みと、読みがな解析が完了しました。");
-                
-                // すべての準備が完了
+
                 searchInput.disabled = false;
                 searchInput.placeholder = "検索キーワードを入力";
                 showInitialMessage();
             },
-            error: (err) => { // 通信エラーなど
+            error: (err) => {
                 showInitialMessage('エラー: Q&Aデータの読み込みに失敗しました。');
                 console.error('CSV Load Error:', err);
             }
         });
     }
 
-    // 検索結果を表示する関数 (変更なし)
+    // 検索結果を表示する関数
     function displayResults(data) {
         resultsContainer.innerHTML = '';
         if (data.length === 0) {
@@ -138,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
         resultsContainer.appendChild(fragment);
     }
 
-    // 検索ボックスに入力があった時のイベント (変更なし)
+    // 検索ボックスに入力があった時のイベント
     searchInput.addEventListener('input', (e) => {
         const query = e.target.value.trim();
         
