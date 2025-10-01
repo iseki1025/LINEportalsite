@@ -8,7 +8,29 @@ document.addEventListener('DOMContentLoaded', () => {
         resultsContainer.innerHTML = '<p class="qa-initial-message">検索したい文字を上の枠に入力してください</p>';
     }
 
-// CSVファイルを読み込んで解析する関数
+    // ひらがなをカタカナに変換する関数
+    function hiraToKata(str) {
+        return str.replace(/[\u3041-\u3096]/g, function(match) {
+            return String.fromCharCode(match.charCodeAt(0) + 0x60);
+        });
+    }
+
+    // カタカナをひらがなに変換する関数
+    function kataToHira(str) {
+        return str.replace(/[\u30a1-\u30f6]/g, function(match) {
+            return String.fromCharCode(match.charCodeAt(0) - 0x60);
+        });
+    }
+
+    // テキストを正規化する関数（ひらがなとカタカナを両方考慮）
+    function normalizeText(text) {
+        if (!text) return '';
+        const hira = kataToHira(text.toLowerCase());
+        const kata = hiraToKata(text.toLowerCase());
+        return { hira, kata, original: text.toLowerCase() };
+    }
+
+    // CSVファイルを読み込んで解析する関数
     function loadQAData() {
         const csvFilePath = `files/qa-data.csv?t=${new Date().getTime()}`;
 
@@ -17,37 +39,31 @@ document.addEventListener('DOMContentLoaded', () => {
             header: true, // ヘッダー行を自動で認識させる
             skipEmptyLines: true,
 
-            // ヘッダーをトリムする処理は維持
-            transformHeader: (header, index) => {
+            transformHeader: (header) => {
                 return header.trim();
             },
-            // ここが今回の主な修正点: beforeFirstChunkを削除または正しく修正
-            // 現在のCSVでは最初の行がヘッダーなので、この処理は不要です
-            // もしCSVの先頭に確実にスキップすべき行がある場合は、その行数に合わせて調整
-            // 例: もし最初の行と2行目が不要で、3行目からがヘッダーなら lines.splice(0, 2);
-            // 今回のCSVではヘッダーが1行目なので、このブロック全体を削除します。
-            // beforeFirstChunk: (chunk) => {
-            //     const lines = chunk.split('\n');
-            //     lines.splice(0, 5); // 最初の5行を削除
-            //     return lines.join('\n');
-            // },
 
             complete: (results) => {
-                // 'Question'列と'Answer'列を直接指定
-                // results.meta.fields には正しいヘッダー名が格納されているはずです。
-                const taskHeader = 'Question'; // CSVのヘッダー名と完全に一致させる
-                const answerHeader = 'Answer'; // CSVのヘッダー名と完全に一致させる
+                const questionHeader = 'Question';
+                const answerHeader = 'Answer';
 
-                if (!results.meta.fields.includes(taskHeader) || !results.meta.fields.includes(answerHeader)) {
-                    resultsContainer.innerHTML = `<p class="qa-no-result">エラー: CSVのヘッダーに「${taskHeader}」または「${answerHeader}」の列が見つかりません。見つかったヘッダー: ${results.meta.fields.join(', ')}</p>`;
+                if (!results.meta.fields.includes(questionHeader) || !results.meta.fields.includes(answerHeader)) {
+                    resultsContainer.innerHTML = `<p class="qa-no-result">エラー: CSVのヘッダーに「${questionHeader}」または「${answerHeader}」の列が見つかりません。見つかったヘッダー: ${results.meta.fields.join(', ')}</p>`;
                     console.error("必要なヘッダーが見つかりません:", results.meta.fields);
                     return;
                 }
 
-                qaData = results.data.map(row => ({
-                    question: row[taskHeader] ? row[taskHeader].trim() : '',
-                    answer: row[answerHeader] ? row[answerHeader].trim() : ''
-                })).filter(item => item.question && item.answer);
+                qaData = results.data.map(row => {
+                    const questionText = row[questionHeader] ? row[questionHeader].trim() : '';
+                    const answerText = row[answerHeader] ? row[answerHeader].trim() : '';
+                    return {
+                        question: questionText,
+                        answer: answerText,
+                        // 検索用に正規化したテキストも保持
+                        normalizedQuestion: normalizeText(questionText),
+                        normalizedAnswer: normalizeText(answerText)
+                    };
+                }).filter(item => item.question && item.answer);
 
                 showInitialMessage();
             },
@@ -58,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 検索結果を表示する関数 (変更なし)
+    // 検索結果を表示する関数
     function displayResults(data) {
         resultsContainer.innerHTML = '';
 
@@ -91,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
         resultsContainer.appendChild(fragment);
     }
 
-    // 検索ボックスに入力があった時のイベント (変更なし)
+    // 検索ボックスに入力があった時のイベント
     searchInput.addEventListener('input', (e) => {
         const query = e.target.value.toLowerCase().trim();
         
@@ -100,10 +116,31 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const filteredData = qaData.filter(item => 
-            item.question.toLowerCase().includes(query) || 
-            item.answer.toLowerCase().includes(query)
-        );
+        // 検索クエリをスペースで分割し、それぞれのキーワードを正規化
+        const searchKeywords = query.split(/\s+/) // 1つ以上のスペースで分割
+                                    .filter(keyword => keyword) // 空のキーワードを除外
+                                    .map(keyword => ({
+                                        hira: kataToHira(keyword),
+                                        kata: hiraToKata(keyword),
+                                        original: keyword
+                                    }));
+
+        const filteredData = qaData.filter(item => {
+            // すべてのキーワードが質問または回答に含まれているかチェック
+            return searchKeywords.every(keyword => {
+                const questionMatch = (
+                    item.normalizedQuestion.hira.includes(keyword.hira) ||
+                    item.normalizedQuestion.kata.includes(keyword.kata) ||
+                    item.normalizedQuestion.original.includes(keyword.original)
+                );
+                const answerMatch = (
+                    item.normalizedAnswer.hira.includes(keyword.hira) ||
+                    item.normalizedAnswer.kata.includes(keyword.kata) ||
+                    item.normalizedAnswer.original.includes(keyword.original)
+                );
+                return questionMatch || answerMatch;
+            });
+        });
         displayResults(filteredData);
     });
 
