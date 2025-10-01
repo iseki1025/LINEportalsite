@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
             beforeFirstChunk: (chunk) => {
                 // 最初のデータチャンクを受け取り、最初の2行を削除する
                 const lines = chunk.split('\n'); // データを改行で分割
-                lines.splice(0, 3); // 最初の2行（0番目と1番目）を削除
+                lines.splice(0, 5); // 最初の2行（0番目と1番目）を削除
                 return lines.join('\n'); // 再度文字列に結合して返す
             },
             // ▲▲▲ ここまでが修正の核 ▲▲▲
