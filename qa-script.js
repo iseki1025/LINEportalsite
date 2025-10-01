@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ひらがなをカタカナに変換する関数
     function hiraToKata(str) {
+        if (!str) return ''; // nullやundefined対策
         return str.replace(/[\u3041-\u3096]/g, function(match) {
             return String.fromCharCode(match.charCodeAt(0) + 0x60);
         });
@@ -17,17 +18,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // カタカナをひらがなに変換する関数
     function kataToHira(str) {
+        if (!str) return ''; // nullやundefined対策
         return str.replace(/[\u30a1-\u30f6]/g, function(match) {
             return String.fromCharCode(match.charCodeAt(0) - 0x60);
         });
     }
 
-    // テキストを正規化する関数（ひらがなとカタカナを両方考慮）
+    // テキストを正規化する関数（ひらがな、カタカナ、オリジナル小文字）
     function normalizeText(text) {
-        if (!text) return '';
-        const hira = kataToHira(text.toLowerCase());
-        const kata = hiraToKata(text.toLowerCase());
-        return { hira, kata, original: text.toLowerCase() };
+        if (!text) return { hira: '', kata: '', original: '' }; // nullやundefined対策
+        const lowerText = text.toLowerCase();
+        return {
+            hira: kataToHira(lowerText),
+            kata: hiraToKata(lowerText),
+            original: lowerText
+        };
     }
 
     // CSVファイルを読み込んで解析する関数
@@ -54,16 +59,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 qaData = results.data.map(row => {
-                    const questionText = row[questionHeader] ? row[questionHeader].trim() : '';
-                    const answerText = row[answerHeader] ? row[answerHeader].trim() : '';
+                    const questionText = row[questionHeader] ? String(row[questionHeader]).trim() : ''; // String()で確実に文字列に
+                    const answerText = row[answerHeader] ? String(row[answerHeader]).trim() : '';     // String()で確実に文字列に
                     return {
                         question: questionText,
                         answer: answerText,
-                        // 検索用に正規化したテキストも保持
                         normalizedQuestion: normalizeText(questionText),
                         normalizedAnswer: normalizeText(answerText)
                     };
-                }).filter(item => item.question && item.answer);
+                }).filter(item => item.question && item.answer); // 質問と回答が両方あるもののみをフィルタ
 
                 showInitialMessage();
             },
@@ -119,11 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // 検索クエリをスペースで分割し、それぞれのキーワードを正規化
         const searchKeywords = query.split(/\s+/) // 1つ以上のスペースで分割
                                     .filter(keyword => keyword) // 空のキーワードを除外
-                                    .map(keyword => ({
-                                        hira: kataToHira(keyword),
-                                        kata: hiraToKata(keyword),
-                                        original: keyword
-                                    }));
+                                    .map(keyword => normalizeText(keyword)); // 各キーワードを正規化
 
         const filteredData = qaData.filter(item => {
             // すべてのキーワードが質問または回答に含まれているかチェック
