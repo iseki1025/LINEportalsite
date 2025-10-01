@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     showInitialMessage('検索エンジンの準備をしています...');
 
     // --- kuromoji.jsの初期化 ---
+    // ▼▼▼【修正点1】辞書ファイルの場所を完全なURLで指定する ▼▼▼
     kuromoji.builder({ dicPath: "https://cdn.jsdelivr.net/npm/kuromoji@0.1.2/dict/" }).build((err, builtTokenizer) => {
         if (err) {
             console.error("Kuromoji.jsの初期化に失敗しました:", err);
@@ -61,7 +62,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // CSVファイルを読み込んで解析する関数
     function loadQAData() {
         showInitialMessage('Q&Aデータを読み込んでいます...');
-        const csvFilePath = `files/qa-data.csv?t=${new Date().getTime()}`;
+        // ▼▼▼【修正点2】CSVファイル名をリポジトリに合わせて修正 ▼▼▼
+        const csvFilePath = `files/qa-data (2).csv?t=${new Date().getTime()}`;
 
         Papa.parse(csvFilePath, {
             download: true,
@@ -69,6 +71,13 @@ document.addEventListener('DOMContentLoaded', () => {
             skipEmptyLines: true,
             transformHeader: header => header.trim(),
             complete: (results) => {
+                // ファイルが見つからなかった場合のエラーチェック
+                if (results.errors.length > 0 && results.data.length === 0) {
+                     console.error('CSV Parse Error:', results.errors);
+                     showInitialMessage('エラー: Q&Aデータの読み込みに失敗しました。ファイルパスを確認してください。');
+                     return;
+                }
+
                 const questionHeader = 'Question';
                 const answerHeader = 'Answer';
 
@@ -89,22 +98,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 }).filter(item => item.question && item.answer);
                 
                 console.log("✅ Q&Aデータの読み込みと、読みがな解析が完了しました。");
-                // デバッグ用に最初のデータの解析結果を表示
-                if(qaData.length > 0) {
-                    console.log("--- 解析データサンプル ---");
-                    console.log("元の質問:", qaData[9].question); // 10番目のデータ「高額療養費制度は利用できますか？」
-                    console.log("解析結果:", qaData[9].normalizedQuestion);
-                    console.log("------------------------");
-                }
-
+                
                 // すべての準備が完了
                 searchInput.disabled = false;
                 searchInput.placeholder = "検索キーワードを入力";
                 showInitialMessage();
             },
-            error: (err) => {
+            error: (err) => { // 通信エラーなど
                 showInitialMessage('エラー: Q&Aデータの読み込みに失敗しました。');
-                console.error('CSV Parse Error:', err);
+                console.error('CSV Load Error:', err);
             }
         });
     }
@@ -136,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
         resultsContainer.appendChild(fragment);
     }
 
-    // 検索ボックスに入力があった時のイベント
+    // 検索ボックスに入力があった時のイベント (変更なし)
     searchInput.addEventListener('input', (e) => {
         const query = e.target.value.trim();
         
