@@ -34,8 +34,8 @@ document.addEventListener('DOMContentLoaded', () => {
             complete: (results) => {
                 // 'タスク'列をquestion, '回答例'列をanswerとする
                 // results.meta.fields には3行目のヘッダー名が格納されている
-                const taskHeader = results.meta.fields.find(h => h.includes('タスク'));
-                const answerHeader = results.meta.fields.find(h => h.includes('回答例'));
+                const taskHeader = results.meta.fields.find(h => h.includes('Question'));
+                const answerHeader = results.meta.fields.find(h => h.includes('Answer'));
 
                 if (!taskHeader || !answerHeader) {
                     resultsContainer.innerHTML = '<p class="qa-no-result">エラー: CSVの4行目に「タスク」および「回答例」の列が見つかりません。</p>';
