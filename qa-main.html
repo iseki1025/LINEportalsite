@@ -32,10 +32,10 @@
         </footer>
     </div>
 
-    <!-- CSV解析ライブラリ (Papa Parse) の読み込み -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
-    
-    <!-- Q&Aページの検索ロジックを読み込み -->
-    <script src="qa-script.js"></script>
+    <!-- 1. まず専門家（kuromoji.js）をインターネットから呼んできます -->
+    <script src="https://cdn.jsdelivr.net/npm/kuromoji@0.1.2/build/kuromoji.js"></script>
+
+    <!-- 2. 専門家が準備万端になった後で、自分のスクリプトを実行します -->
+    <script src="qa-script.js"></script> 
 </body>
 </html>
