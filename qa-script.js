@@ -2,36 +2,60 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('qa-search-input');
     const resultsContainer = document.getElementById('qa-results-container');
     let qaData = [];
+    let tokenizer; // kuromojiのtokenizerを保持する変数
+
+    // 初期メッセージを表示
+    showInitialMessage();
+    resultsContainer.innerHTML = '<p class="qa-initial-message">検索エンジンの準備をしています...</p>';
+
+    // --- kuromoji.jsの初期化 ---
+    kuromoji.builder({ dicPath: "https://cdn.jsdelivr.net/npm/kuromoji@0.1.2/dict/" }).build((err, builtTokenizer) => {
+        if (err) {
+            console.error("Kuromoji.jsの初期化に失敗しました:", err);
+            resultsContainer.innerHTML = '<p class="qa-no-result">エラー: 検索エンジンの準備に失敗しました。ページを再読み込みしてください。</p>';
+            return;
+        }
+        tokenizer = builtTokenizer;
+        // 初期化が完了したらCSVを読み込む
+        loadQAData();
+    });
 
     // 初期メッセージを表示する関数
     function showInitialMessage() {
         resultsContainer.innerHTML = '<p class="qa-initial-message">検索したい文字を上の枠に入力してください</p>';
     }
 
-    // ひらがなをカタカナに変換する関数
+    // ひらがなをカタカナに変換
     function hiraToKata(str) {
-        if (!str) return ''; // nullやundefined対策
-        return str.replace(/[\u3041-\u3096]/g, function(match) {
-            return String.fromCharCode(match.charCodeAt(0) + 0x60);
-        });
+        if (!str) return '';
+        return str.replace(/[\u3041-\u3096]/g, match => String.fromCharCode(match.charCodeAt(0) + 0x60));
     }
 
-    // カタカナをひらがなに変換する関数
+    // カタカナをひらがなに変換
     function kataToHira(str) {
-        if (!str) return ''; // nullやundefined対策
-        return str.replace(/[\u30a1-\u30f6]/g, function(match) {
-            return String.fromCharCode(match.charCodeAt(0) - 0x60);
-        });
+        if (!str) return '';
+        return str.replace(/[\u30a1-\u30f6]/g, match => String.fromCharCode(match.charCodeAt(0) - 0x60));
+    }
+    
+    // kuromojiを使ってテキストの読みがな（ひらがな）を生成する関数
+    function getReading(text) {
+        if (!text || !tokenizer) return '';
+        const tokens = tokenizer.tokenize(text);
+        return tokens.map(token => {
+            // readingはカタカナで返るのでひらがな化する。読みがない場合は単語そのものをひらがな化
+            return token.reading ? kataToHira(token.reading) : kataToHira(token.surface_form);
+        }).join('');
     }
 
-    // テキストを正規化する関数（ひらがな、カタカナ、オリジナル小文字）
+    // テキストを正規化する関数
     function normalizeText(text) {
-        if (!text) return { hira: '', kata: '', original: '' }; // nullやundefined対策
+        if (!text) return { hira: '', kata: '', original: '', reading: '' };
         const lowerText = text.toLowerCase();
         return {
             hira: kataToHira(lowerText),
             kata: hiraToKata(lowerText),
-            original: lowerText
+            original: lowerText,
+            reading: getReading(text) // 読みがなを生成して追加
         };
     }
 
@@ -41,69 +65,59 @@ document.addEventListener('DOMContentLoaded', () => {
 
         Papa.parse(csvFilePath, {
             download: true,
-            header: true, // ヘッダー行を自動で認識させる
+            header: true,
             skipEmptyLines: true,
-
-            transformHeader: (header) => {
-                return header.trim();
-            },
-
+            transformHeader: header => header.trim(),
             complete: (results) => {
                 const questionHeader = 'Question';
                 const answerHeader = 'Answer';
 
                 if (!results.meta.fields.includes(questionHeader) || !results.meta.fields.includes(answerHeader)) {
-                    resultsContainer.innerHTML = `<p class="qa-no-result">エラー: CSVのヘッダーに「${questionHeader}」または「${answerHeader}」の列が見つかりません。見つかったヘッダー: ${results.meta.fields.join(', ')}</p>`;
-                    console.error("必要なヘッダーが見つかりません:", results.meta.fields);
+                    resultsContainer.innerHTML = `<p class="qa-no-result">エラー: CSVのヘッダーに「${questionHeader}」または「${answerHeader}」の列が見つかりません。</p>`;
                     return;
                 }
 
                 qaData = results.data.map(row => {
-                    const questionText = row[questionHeader] ? String(row[questionHeader]).trim() : ''; // String()で確実に文字列に
-                    const answerText = row[answerHeader] ? String(row[answerHeader]).trim() : '';     // String()で確実に文字列に
+                    const questionText = String(row[questionHeader] || '').trim();
+                    const answerText = String(row[answerHeader] || '').trim();
                     return {
                         question: questionText,
                         answer: answerText,
+                        // 検索用に、あらかじめ読みがなを含めて正規化しておく
                         normalizedQuestion: normalizeText(questionText),
                         normalizedAnswer: normalizeText(answerText)
                     };
-                }).filter(item => item.question && item.answer); // 質問と回答が両方あるもののみをフィルタ
+                }).filter(item => item.question && item.answer);
 
-                showInitialMessage();
+                showInitialMessage(); // 準備が完了したので初期メッセージに戻す
             },
-            error: (err, file) => {
-                resultsContainer.innerHTML = '<p class="qa-no-result">エラー: Q&Aデータの読み込みに失敗しました。<br>filesフォルダ内にqa-data.csvが正しく設置されているか確認してください。</p>';
-                console.error('CSV Parse Error:', err, file);
+            error: (err) => {
+                resultsContainer.innerHTML = '<p class="qa-no-result">エラー: Q&Aデータの読み込みに失敗しました。</p>';
+                console.error('CSV Parse Error:', err);
             }
         });
     }
 
-    // 検索結果を表示する関数
+    // 検索結果を表示する関数 (変更なし)
     function displayResults(data) {
         resultsContainer.innerHTML = '';
-
         if (data.length === 0) {
             resultsContainer.innerHTML = '<p class="qa-no-result">該当する質問はありません。</p>';
             return;
         }
-
         const fragment = document.createDocumentFragment();
         data.forEach(item => {
             const qaItem = document.createElement('div');
             qaItem.className = 'qa-search-item';
-
             const questionDiv = document.createElement('div');
             questionDiv.className = 'qa-search-question';
             questionDiv.textContent = item.question;
-
             const answerDiv = document.createElement('div');
             answerDiv.className = 'qa-search-answer';
             answerDiv.innerHTML = item.answer.replace(/\n/g, '<br>');
-
             qaItem.appendChild(questionDiv);
             qaItem.appendChild(answerDiv);
             fragment.appendChild(qaItem);
-
             questionDiv.addEventListener('click', () => {
                 qaItem.classList.toggle('active');
             });
@@ -113,37 +127,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 検索ボックスに入力があった時のイベント
     searchInput.addEventListener('input', (e) => {
-        const query = e.target.value.toLowerCase().trim();
+        if (!tokenizer) return; // kuromojiが準備できていなければ何もしない
+
+        const query = e.target.value.trim();
         
         if (!query) {
             showInitialMessage();
             return;
         }
 
-        // 検索クエリをスペースで分割し、それぞれのキーワードを正規化
-        const searchKeywords = query.split(/\s+/) // 1つ以上のスペースで分割
-                                    .filter(keyword => keyword) // 空のキーワードを除外
-                                    .map(keyword => normalizeText(keyword)); // 各キーワードを正規化
+        // 検索キーワードをひらがな化して配列にする
+        const searchKeywords = query.split(/\s+/)
+                                    .filter(keyword => keyword)
+                                    .map(keyword => kataToHira(keyword.toLowerCase()));
 
         const filteredData = qaData.filter(item => {
-            // すべてのキーワードが質問または回答に含まれているかチェック
+            // すべてのキーワードがヒットするかどうかをチェック
             return searchKeywords.every(keyword => {
-                const questionMatch = (
-                    item.normalizedQuestion.hira.includes(keyword.hira) ||
-                    item.normalizedQuestion.kata.includes(keyword.kata) ||
-                    item.normalizedQuestion.original.includes(keyword.original)
-                );
-                const answerMatch = (
-                    item.normalizedAnswer.hira.includes(keyword.hira) ||
-                    item.normalizedAnswer.kata.includes(keyword.kata) ||
-                    item.normalizedAnswer.original.includes(keyword.original)
-                );
+                // 質問文に対して、[元のテキストのひらがな化] or [読みがな] のいずれかにヒットするか
+                const questionMatch = item.normalizedQuestion.hira.includes(keyword) || 
+                                      item.normalizedQuestion.reading.includes(keyword);
+                
+                // 回答文に対して、[元のテキストのひらがな化] or [読みがな] のいずれかにヒットするか
+                const answerMatch = item.normalizedAnswer.hira.includes(keyword) || 
+                                    item.normalizedAnswer.reading.includes(keyword);
+                
                 return questionMatch || answerMatch;
             });
         });
         displayResults(filteredData);
     });
-
-    // ページが読み込まれたら、CSVデータの読み込みを開始する
-    loadQAData();
 });
