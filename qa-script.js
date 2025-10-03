@@ -2,60 +2,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('qa-search-input');
     const resultsContainer = document.getElementById('qa-results-container');
     let qaData = [];
-    let tokenizer; // kuromojiのtokenizer
 
-    // --- 初期状態の設定 ---
-    searchInput.disabled = true;
-    searchInput.placeholder = "検索エンジンの準備中です...";
-    showInitialMessage('検索エンジンの準備をしています...');
-
-    // --- kuromoji.jsの初期化 ---
-    kuromoji.builder({ dicPath: "//cdn.jsdelivr.net/npm/kuromoji@0.1.2/dict/" }).build((err, builtTokenizer) => {
-        if (err) {
-            console.error("Kuromoji.jsの初期化に失敗しました:", err);
-            showInitialMessage('エラー: 検索エンジンの準備に失敗しました。');
-            searchInput.placeholder = "検索利用不可";
-            return;
-        }
-        console.log("✅ Kuromoji.jsの準備が完了しました。");
-        tokenizer = builtTokenizer;
-        // 初期化が完了したらCSVを読み込む
-        loadQAData();
-    });
+    // --- メインの処理を開始 ---
+    loadQAData();
 
     // メッセージを表示する関数
     function showInitialMessage(message = '検索したい文字を上の枠に入力してください') {
         resultsContainer.innerHTML = `<p class="qa-initial-message">${message}</p>`;
     }
 
-    // カタカナをひらがなに変換
+    // カタカナをひらがなに変換する関数
     function kataToHira(str) {
         if (!str) return '';
         return str.replace(/[\u30a1-\u30f6]/g, match => String.fromCharCode(match.charCodeAt(0) - 0x60));
     }
-    
-    // kuromojiを使ってテキストの読みがな（ひらがな）を生成する関数
-    function getReading(text) {
-        if (!text || !tokenizer) return '';
-        try {
-            const tokens = tokenizer.tokenize(text);
-            return tokens.map(token => {
-                return token.reading ? kataToHira(token.reading) : kataToHira(token.surface_form);
-            }).join('');
-        } catch (e) {
-            console.error("読みがなの生成に失敗しました:", text, e);
-            return '';
-        }
-    }
 
-    // テキストを正規化する関数（読みがなを含む）- 検索時に実行
+    // テキストを正規化する（小文字のひらがなにする）
     function normalizeText(text) {
-        if (!text) return { hira: '', reading: '' };
-        const lowerText = text.toLowerCase();
-        return {
-            hira: kataToHira(lowerText),
-            reading: getReading(text)
-        };
+        if (!text) return '';
+        return kataToHira(String(text).toLowerCase());
     }
 
     // CSVファイルを読み込んで解析する関数
@@ -71,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
             complete: (results) => {
                 if (results.errors.length > 0 && results.data.length === 0) {
                      console.error('CSV Parse Error:', results.errors);
-                     showInitialMessage('エラー: Q&Aデータの読み込みに失敗しました。ファイルパスやCSV形式を確認してください。');
+                     showInitialMessage('エラー: Q&Aデータの読み込みに失敗しました。');
                      return;
                 }
 
@@ -83,22 +48,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
 
-                // ⭐ 重要な変更：読みがな解析を事前に行わない
                 qaData = results.data.map(row => {
                     const questionText = String(row[questionHeader] || '').trim();
                     const answerText = String(row[answerHeader] || '').trim();
                     return {
-                        question: questionText,
-                        answer: answerText
-                        // normalizedQuestion と normalizedAnswer は削除
+                        question: questionText, // 表示用に元のテキストを保持
+                        answer: answerText,     // 表示用に元のテキストを保持
+                        // 検索用に、質問と回答を結合して正規化したテキストを用意
+                        normalizedText: normalizeText(questionText + ' ' + answerText)
                     };
                 }).filter(item => item.question && item.answer);
                 
-                console.log("✅ Q&Aデータの読み込みが完了しました。データ件数:", qaData.length);
-
-                searchInput.disabled = false;
-                searchInput.placeholder = "検索キーワードを入力";
-                showInitialMessage();
+                console.log("✅ Q&Aデータの読み込みが完了しました。");
+                showInitialMessage(); // 準備完了後、初期メッセージを表示
             },
             error: (err) => {
                 showInitialMessage('エラー: Q&Aデータの読み込みに失敗しました。');
@@ -107,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 検索結果を表示する関数
+    // 検索結果を表示する関数 (変更なし)
     function displayResults(data) {
         resultsContainer.innerHTML = '';
         if (data.length === 0) {
@@ -143,25 +105,16 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        // 検索キーワードも正規化する
         const searchKeywords = query.split(/\s+/)
                                     .filter(keyword => keyword)
-                                    .map(keyword => kataToHira(keyword.toLowerCase()));
+                                    .map(keyword => normalizeText(keyword));
 
-        // ⭐ 重要な変更：検索時にリアルタイムで読みがな解析を行う
         const filteredData = qaData.filter(item => {
-            const normalizedQuestion = normalizeText(item.question);
-            const normalizedAnswer = normalizeText(item.answer);
-            
-            return searchKeywords.every(keyword => {
-                const questionMatch = normalizedQuestion.hira.includes(keyword) || 
-                                      normalizedQuestion.reading.includes(keyword);
-                
-                const answerMatch = normalizedAnswer.hira.includes(keyword) || 
-                                    normalizedAnswer.reading.includes(keyword);
-                
-                return questionMatch || answerMatch;
-            });
+            // 全てのキーワードが、正規化されたテキストに含まれているかチェック
+            return searchKeywords.every(keyword => item.normalizedText.includes(keyword));
         });
+        
         displayResults(filteredData);
     });
 });
