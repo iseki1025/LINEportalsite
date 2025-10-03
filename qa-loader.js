@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const resultsContainer = section.querySelector('.qa-results-container');
         
         const csvPath = section.dataset.csvPath;
-        const categoryFilter = section.dataset.category; // HTMLのdata-category属性 (例: "栄養")
+        const categoryFilter = section.dataset.category;
         let qaData = [];
 
         if (!csvPath) {
@@ -44,12 +44,10 @@ document.addEventListener('DOMContentLoaded', () => {
                          return;
                     }
 
-                    // ▼▼▼【変更点】CSVの列名に合わせてヘッダー名を定義 ▼▼▼
-                    const questionHeader = 'Question'; // F列
-                    const answerHeader = 'Answer';     // H列
-                    const categoryHeader = 'Category';   // E列
+                    const questionHeader = 'Question';
+                    const answerHeader = 'Answer';
+                    const categoryHeader = 'Category';
 
-                    // 必須のヘッダーが存在するかチェック
                     if (!results.meta.fields.includes(questionHeader) || 
                         !results.meta.fields.includes(answerHeader) ||
                         !results.meta.fields.includes(categoryHeader)) {
@@ -57,7 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         return;
                     }
 
-                    // 全てのデータを読み込み、整形する
                     let allData = results.data.map(row => {
                         const questionText = String(row[questionHeader] || '').trim();
                         const answerText = String(row[answerHeader] || '').trim();
@@ -67,17 +64,14 @@ document.addEventListener('DOMContentLoaded', () => {
                             question: questionText,
                             answer: answerText,
                             category: categoryText,
-                            // 検索対象は F列(Question) と H列(Answer)
                             normalizedText: normalizeText(questionText + ' ' + answerText) 
                         };
-                    // 質問、回答、カテゴリのいずれかが空の行は除外
-                    }).filter(item => item.question && item.answer && item.category);
+                    // ▼▼▼【修正点】回答(answer)が空でも、質問とカテゴリがあれば読み込むように条件を緩和 ▼▼▼
+                    }).filter(item => item.question && item.category);
                     
-                    // HTMLで指定されたカテゴリでデータを絞り込む
                     if (categoryFilter) {
                         qaData = allData.filter(item => item.category === categoryFilter);
                     } else {
-                        // data-category属性がなければ全件を対象とする
                         qaData = allData;
                     }
                     
@@ -106,7 +100,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 questionDiv.textContent = item.question;
                 const answerDiv = document.createElement('div');
                 answerDiv.className = 'qa-search-answer';
-                answerDiv.innerHTML = item.answer.replace(/\n/g, '<br>');
+                // 回答が空の場合でもエラーにならないようにする
+                answerDiv.innerHTML = (item.answer || '').replace(/\n/g, '<br>');
                 qaItem.appendChild(questionDiv);
                 qaItem.appendChild(answerDiv);
                 fragment.appendChild(qaItem);

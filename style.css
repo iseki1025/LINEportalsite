@@ -1042,3 +1042,32 @@ header {
         gap: 16px;
     }
 }
+
+/* --- Q&A検索ボックスのスタイル調整 --- */
+
+/* 検索ボックスを囲むコンテナ */
+.qa-search-container {
+    text-align: center; /* 中のinput要素を中央寄せにする */
+    margin-bottom: 25px; /* 検索結果との間に余白を確保 */
+}
+
+/* 検索ボックス本体のクラス名を .qa-search-input に変更 */
+.qa-search-section .qa-search-input,
+#qa-search-input { /* qa-main.htmlのIDにも対応 */
+    width: 90%; /* 幅を親要素の90%に */
+    max-width: 600px; /* PCなど画面が広い場合でも、最大幅は600pxまでにする */
+    padding: 12px 15px; /* 内側の余白を上下に12px、左右に15px設ける */
+    font-size: 1.1em; /* 文字サイズを少し大きくする */
+    border: 1px solid #ccc; /* 境界線を分かりやすく */
+    border-radius: 8px; /* 角を少し丸める */
+    box-sizing: border-box; /* paddingとborderを幅(width)に含めて計算する */
+    line-height: 1.5;
+}
+
+/* 検索ボックスにフォーカスが当たった時のスタイル */
+.qa-search-section .qa-search-input:focus,
+#qa-search-input:focus {
+    outline: none; /* デフォルトの青い枠線を消す */
+    border-color: #007bff; /* フォーカス時に境界線の色を変更 */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* ほんのり影をつける */
+}
