@@ -48,7 +48,7 @@
             <a href="#" class="nav-button active" data-target="info">基本情報</a>
             <a href="#" class="nav-button" data-target="checklist">備蓄リスト</a>
             <a href="#" class="nav-button" data-target="shelter">避難場所マップ</a>
-            <a href="#" class="nav-button" data-target="faq">よくある質問</a>
+            <a href="#" class="nav-button" data-target="faq">災害Q&A</a>
         </nav>
         <!-- ▲▲▲ ここまでが固定部分 ▲▲▲ -->
 
@@ -114,33 +114,15 @@
                 </div>
             </section>
 
-            <!-- ④ よくある質問 の内容 -->
-            <section id="faq" class="content-section">
+            <!-- ④ 災害Q&A の内容 -->
+            <section id="faq" class="content-section qa-search-section" data-csv-path="files/qa-data.csv" data-category="災害">
                 <h2>災害対策についての よくあるご質問 (Q&A)</h2>
-                
-                <article class="qa-item">
-                    <div class="question"><span class="q-icon">Q.</span>「非常用持ち出し袋」と「家庭備蓄」の違いは何ですか？</div>
-                    <div class="answer">
-                        <span class="a-icon">A.</span>
-                        「非常用持ち出し袋」は、避難所へ逃げる際に最低限必要なものをまとめたリュックのことです。一方、「家庭備蓄」は、自宅で生活を続けるために必要な水や食料などを備えておくことを指します。まずは持ち出し袋の準備を優先しましょう。
-                    </div>
-                </article>
-
-                <article class="qa-item">
-                    <div class="question"><span class="q-icon">Q.</span>マンションに住んでいますが、家具の固定は必要ですか？</div>
-                    <div class="answer">
-                        <span class="a-icon">A.</span>
-                        はい、必ず必要です。特に高層階は、低い階に比べて揺れが大きくなる傾向があります。家具の転倒は怪我の原因になるだけでなく、避難経路を塞いでしまう危険もあります。突っ張り棒やL字金具などでしっかりと固定してください。
-                    </div>
-                </article>
-                
-                <article class="qa-item">
-                    <div class="question"><span class="q-icon">Q.</span>ペットがいる場合、避難はどうすれば良いですか？</div>
-                    <div class="answer">
-                        <span class="a-icon">A.</span>
-                        原則として、ペットと一緒に避難する「同行避難」が推奨されています。ただし、避難所のルールは自治体によって異なります。事前に、ペットの受け入れが可能か、ケージなどの準備は必要かなどを市区町村の防災担当窓口に確認しておきましょう。ペット用の水や食料、常備薬の備蓄も忘れないようにしてください。
-                    </div>
-                </article>
+                <div class="qa-search-container">
+                    <input type="search" class="qa-search-input" placeholder="キーワードを入力 (例: 備蓄, 避難所)" autocomplete="off">
+                </div>
+                <div class="qa-results-container">
+                    <!-- 検索結果はここに表示されます -->
+                </div>
             </section>
             <!-- ▲▲▲ ここまでが切り替わる部分 ▲▲▲ -->
         </main>
@@ -152,7 +134,9 @@
         </footer>
     </div>
 
-    <!-- 共通の切り替え用JavaScriptを読み込む -->
+    <!-- 共通の切り替え用JavaScriptとQ&A用スクリプトを読み込む -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <script src="tab-script.js"></script>
+    <script src="qa-loader.js"></script>
 </body>
 </html>

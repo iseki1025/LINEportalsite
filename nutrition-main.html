@@ -26,7 +26,7 @@
         <main id="content-area">
             <!-- ▼▼▼ ここから下が、ボタンに応じて表示が切り替わる部分 ▼▼▼ -->
 
-            <!-- ① 栄養の基本 の内容（元 nutrition-info.html） -->
+            <!-- ① 栄養の基本 の内容 -->
             <section id="info" class="content-section active">
                 <h2>透析と食事のたいせつな関係</h2>
                 <p>透析治療を受けている方にとって、日々の食事管理は治療そのものと同じくらい重要です。適切な食事を心がけることで、透析による体の負担を減らし、合併症を予防し、より良い体調を維持することができます。ここでは、食事療法の基本的なポイントをご紹介します。</p>
@@ -46,44 +46,23 @@
                 </ul>
             </section>
 
-            <!-- ② おすすめレシピ の内容（元 nutrition-recipe.html） -->
+            <!-- ② おすすめレシピ の内容 -->
             <section id="recipe" class="content-section">
                 <h2>おすすめレシピ</h2>
                 <p>スマートフォンなど一部の環境ではPDF上部のツールバーが表示されることがあります。見にくい場合は「全画面で見る」リンクをご利用ください。</p>
-
-                <!--
-                ==================================================================
-                【管理者向け】新しいPDFレシピの追加手順
-                ==================================================================
-                1. 新しいレシピのPDFファイルを「pdfs」フォルダの中に入れる。
-                2. 下の「レシピ追加テンプレート」の行をコピーして貼り付ける。
-                3. 貼り付けた行の "ファイル名.pdf" の部分を、2箇所とも
-                   新しいPDFのファイル名に書き換える。
-                ==================================================================
-                -->
-
                 <div class="recipe-grid">
-
-                    <!-- ▼▼▼ レシピ追加テンプレート ▼▼▼ -->
-                    <!-- <div class="recipe-item"><iframe src="pdfs/ファイル名.pdf#toolbar=0"></iframe><a href="pdfs/ファイル名.pdf" target="_blank">PDFを全画面で見る / ダウンロード</a></div> -->
-
-                    <!-- ===== 現在登録されているレシピ ===== -->
                     <div class="recipe-item">
                         <iframe src="pdfs/ドライカレーオムライスこいのぼり.pdf#toolbar=0"></iframe>
                         <a href="pdfs/ドライカレーオムライスこいのぼり.pdf" target="_blank" class="pdf-link">PDFを全画面で見る / ダウンロード</a>
                     </div>
-                    
                     <div class="recipe-item">
                         <iframe src="pdfs/2020年秋冬2.pdf#toolbar=0"></iframe>
                         <a href="pdfs/2020年秋冬2.pdf" target="_blank" class="pdf-link">PDFを全画面で見る / ダウンロード</a>
                     </div>
-
-                    <!-- 新しいレシピは、この下に追加していきます -->
-
                 </div>
             </section>
 
-            <!-- ③ 栄養クイズ の内容（元 nutrition-quiz-info.html） -->
+            <!-- ③ 栄養クイズ の内容 -->
             <section id="quiz" class="content-section">
                 <div class="quiz-section">
                     <h2>挑戦してみよう！透析栄養クイズ</h2>
@@ -93,41 +72,15 @@
                 </div>
             </section>
 
-            <!-- ④ 栄養Q&A の内容（元 nutrition-qa.html） -->
-            <section id="qa" class="content-section">
+            <!-- ④ 栄養Q&A の内容 -->
+            <section id="qa" class="content-section qa-search-section" data-csv-path="files/qa-data.csv" data-category="栄養">
                 <h2>栄養についての よくあるご質問 (Q&A)</h2>
-
-                <!-- Q&Aのテンプレートと本体 -->
-                <!-- ▼▼▼ ここからコピー【Q&A追加テンプレート】 ▼▼▼ -->
-                <article class="qa-item">
-                    <div class="question"><span class="q-icon">Q.</span>ここに質問文を書きます。</div>
-                    <div class="answer"><span class="a-icon">A.</span>ここに答えの文章を書きます。改行も自由に入れられます。</div>
-                </article>
-                <!-- ▲▲▲ ここまでコピー【Q&A追加テンプレート】 ▲▲▲ -->
-
-                <article class="qa-item">
-                    <div class="question"><span class="q-icon">Q.</span>外食やコンビニ食で気をつけることは何ですか？</div>
-                    <div class="answer">
-                        <span class="a-icon">A.</span>
-                        塩分とリンが多くなりがちなので注意が必要です。麺類の汁は飲まずに残す、ハムやソーセージなどの加工食品は避ける、といった工夫が有効です。可能であれば、おかずを自分で選べる定食形式のお店を選ぶとバランスが取りやすくなります。成分表示を確認する習慣も大切です。
-                    </div>
-                </article>
-
-                <article class="qa-item">
-                    <div class="question"><span class="q-icon">Q.</span>リンの値がなかなか下がりません。どうしたら良いですか？</div>
-                    <div class="answer">
-                        <span class="a-icon">A.</span>
-                        まず、処方されたリン吸着薬を食事の直前や直後に忘れず飲むことが基本です。食事では、特に加工食品（インスタント食品、練り物など）や乳製品、レバーなどに多く含まれる「無機リン」は体に吸収されやすいため注意が必要です。食品の成分表示にある「リン酸塩」という表記は添加物なので、なるべく避けるようにしましょう。
-                    </div>
-                </article>
-                
-                <article class="qa-item">
-                    <div class="question"><span class="q-icon">Q.</span>水分制限が辛いです。何か良い方法はありますか？</div>
-                    <div class="answer">
-                        <span class="a-icon">A.</span>
-                        お気持ちお察しします。水分制限は、喉の渇きを引き起こす「塩分」を控えることが最も効果的です。その上で、氷を口に含んでゆっくり溶かしたり、うがいをしたり、目盛りのついた小さなコップを使ったりするなどの工夫があります。また、薬を飲むときも、食事中の汁物などで一緒に飲むと、飲水量を節約できます。
-                    </div>
-                </article>
+                <div class="qa-search-container">
+                    <input type="search" class="qa-search-input" placeholder="キーワードを入力 (例: リン, 外食)" autocomplete="off">
+                </div>
+                <div class="qa-results-container">
+                    <!-- 検索結果はここに表示されます -->
+                </div>
             </section>
             <!-- ▲▲▲ ここまでが切り替わる部分 ▲▲▲ -->
         </main>
@@ -139,7 +92,9 @@
         </footer>
     </div>
 
-    <!-- 切り替え用のJavaScriptを読み込む -->
+    <!-- 共通の切り替え用JavaScriptとQ&A用スクリプトを読み込む -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <script src="tab-script.js"></script>
+    <script src="qa-loader.js"></script>
 </body>
 </html>

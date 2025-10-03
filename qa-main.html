@@ -16,13 +16,19 @@
             <h1>Q&A 検索</h1>
         </header>
         <main>
-            <div class="qa-search-container">
-                <input type="search" id="qa-search-input" placeholder="キーワードを入力して質問を検索 (例: 塩分, カリウム)" autocomplete="off">
-            </div>
-            
-            <div id="qa-results-container">
-                <!-- 初期メッセージはJavaScriptで制御 -->
-            </div>
+            <!--
+                qa-loader.js の仕様に合わせて構造を変更。
+                data-category 属性を指定しないことで、CSV内の全データが検索対象になります。
+            -->
+            <section class="qa-search-section" data-csv-path="files/qa-data.csv">
+                <div class="qa-search-container">
+                    <input type="search" class="qa-search-input" placeholder="キーワードを入力して質問を検索 (例: 塩分, 災害, シャント)" autocomplete="off">
+                </div>
+                
+                <div class="qa-results-container">
+                    <!-- 初期メッセージはJavaScriptで制御されます -->
+                </div>
+            </section>
         </main>
         
         <a href="index.html" class="back-to-portal-button">総合情報ポータルへ戻る</a>
@@ -37,8 +43,8 @@
     <!-- 1. CSV解析ライブラリ (Papa Parse) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     
-    <!-- 2. あなたの検索ロジック (kuromoji.jsは不要) -->
-    <script src="qa-script.js"></script>
+    <!-- 2. 汎用Q&A検索スクリプト (旧 qa-script.js から qa-loader.js に変更) -->
+    <script src="qa-loader.js"></script>
 
 </body>
 </html>
