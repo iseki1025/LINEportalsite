@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>反射神経ゲーム</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .container {
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 500px;
+            width: 90%;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        #gameArea {
+            width: 100%;
+            height: 300px;
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 20px 0;
+            user-select: none;
+        }
+
+        #gameArea.waiting {
+            background: #e74c3c;
+        }
+
+        #gameArea.ready {
+            background: #2ecc71;
+        }
+
+        #gameArea.idle {
+            background: #3498db;
+        }
+
+        .stats {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            margin: 10px 0;
+            font-size: 18px;
+            color: #555;
+        }
+
+        .stat-value {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 24px;
+        }
+
+        .instructions {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #ffc107;
+        }
+
+        .instructions p {
+            color: #856404;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .record {
+            color: #27ae60;
+            font-weight: bold;
+            font-size: 20px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⚡ 反射神経ゲーム</h1>
+        
+        <div class="instructions">
+            <p>赤い画面が<strong>緑色</strong>に変わったら、できるだけ早くクリック！<br>
+            緑になる前にクリックするとフライングです。</p>
+        </div>
+
+        <div id="gameArea" class="idle">
+            クリックしてスタート
+        </div>
+
+        <div class="stats">
+            <div class="stat-item">
+                今回の記録: <span class="stat-value" id="currentTime">-</span>
+            </div>
+            <div class="stat-item">
+                プレイ回数: <span class="stat-value" id="playCount">0</span>
+            </div>
+            <div class="stat-item">
+                平均反応時間: <span class="stat-value" id="avgTime">-</span>
+            </div>
+            <div class="stat-item">
+                最速記録: <span class="stat-value" id="bestTime">-</span>
+            </div>
+        </div>
+
+        <button onclick="resetStats()">記録をリセット</button>
+    </div>
+
+    <script>
+        let gameState = 'idle';
+        let startTime = 0;
+        let timeoutId = null;
+        let reactions = [];
+        let bestRecord = Infinity;
+
+        const gameArea = document.getElementById('gameArea');
+        const currentTimeEl = document.getElementById('currentTime');
+        const playCountEl = document.getElementById('playCount');
+        const avgTimeEl = document.getElementById('avgTime');
+        const bestTimeEl = document.getElementById('bestTime');
+
+        gameArea.addEventListener('click', handleClick);
+
+        function handleClick() {
+            if (gameState === 'idle') {
+                startGame();
+            } else if (gameState === 'waiting') {
+                // フライング
+                clearTimeout(timeoutId);
+                gameState = 'idle';
+                gameArea.className = 'idle';
+                gameArea.textContent = '早すぎます！もう一度クリック';
+            } else if (gameState === 'ready') {
+                // 反応時間を計測
+                const reactionTime = Date.now() - startTime;
+                recordReaction(reactionTime);
+                gameState = 'idle';
+                gameArea.className = 'idle';
+                gameArea.textContent = 'もう一度挑戦！クリックしてスタート';
+            }
+        }
+
+        function startGame() {
+            gameState = 'waiting';
+            gameArea.className = 'waiting';
+            gameArea.textContent = '待って...';
+            
+            // 2〜5秒のランダムな待機時間
+            const waitTime = 2000 + Math.random() * 3000;
+            
+            timeoutId = setTimeout(() => {
+                gameState = 'ready';
+                gameArea.className = 'ready';
+                gameArea.textContent = '今だ！クリック！';
+                startTime = Date.now();
+            }, waitTime);
+        }
+
+        function recordReaction(time) {
+            reactions.push(time);
+            currentTimeEl.textContent = time + ' ms';
+            playCountEl.textContent = reactions.length;
+
+            // 平均を計算
+            const avg = reactions.reduce((a, b) => a + b, 0) / reactions.length;
+            avgTimeEl.textContent = Math.round(avg) + ' ms';
+
+            // 最速記録を更新
+            if (time < bestRecord) {
+                bestRecord = time;
+                bestTimeEl.textContent = time + ' ms 🏆';
+            }
+        }
+
+        function resetStats() {
+            reactions = [];
+            bestRecord = Infinity;
+            currentTimeEl.textContent = '-';
+            playCountEl.textContent = '0';
+            avgTimeEl.textContent = '-';
+            bestTimeEl.textContent = '-';
+            gameState = 'idle';
+            gameArea.className = 'idle';
+            gameArea.textContent = 'クリックしてスタート';
+        }
+    </script>
+</body>
+</html>
