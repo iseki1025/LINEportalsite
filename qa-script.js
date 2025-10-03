@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // CSVファイルを読み込んで解析する関数
     function loadQAData() {
         showInitialMessage('Q&Aデータを読み込んでいます...');
-        const csvFilePath = `files/qa-data (2).csv?t=${new Date().getTime()}`;
+        const csvFilePath = `files/qa-data.csv?t=${new Date().getTime()}`;
 
         Papa.parse(csvFilePath, {
             download: true,
