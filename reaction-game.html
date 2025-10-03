@@ -18,6 +18,7 @@
             align-items: center;
             min-height: 100vh;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px 0; /* 上下に余白を追加してスクロールしやすくする */
         }
 
         .container {
@@ -119,12 +120,26 @@
             transform: translateY(0);
         }
 
-        .record {
-            color: #27ae60;
-            font-weight: bold;
-            font-size: 20px;
-            margin-top: 10px;
+        /* ▼▼▼【追加】戻るボタン用のスタイル ▼▼▼ */
+        .back-button {
+            display: inline-block;
+            margin-top: 20px;
+            background: #757575; /* 目立ちすぎないグレー */
+            color: white;
+            text-decoration: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
         }
+
+        .back-button:hover {
+            background: #616161;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        /* ▲▲▲ ここまで追加 ▲▲▲ */
+
     </style>
 </head>
 <body>
@@ -156,6 +171,10 @@
         </div>
 
         <button onclick="resetStats()">記録をリセット</button>
+
+        <!-- ▼▼▼【追加】戻るボタン ▼▼▼ -->
+        <a href="friend-benefit.html" class="back-button">お友達特典ページへ戻る</a>
+        <!-- ▲▲▲ ここまで追加 ▲▲▲ -->
     </div>
 
     <script>
