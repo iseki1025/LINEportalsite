@@ -811,16 +811,15 @@ a:hover {
 }
 
 #qa-search-input {
-    width: 95%;
-    max-width: 100%;
-    padding: 4rem 6rem;
-    font-size: 4rem;
+    width: 90%;
+    max-width: 720px; /* 変更: 最大幅を広げました */
+    padding: var(--spacing-5) var(--spacing-8); /* 変更: 余白を大きくしました */
+    font-size: 1.25rem; /* 変更: フォントサイズを大きくしました */
     font-family: var(--font-primary);
-    border: 4px solid var(--gray-300);
-    border-radius: var(--radius-2xl);
-    box-shadow: var(--shadow-lg);
+    border: 2px solid var(--gray-300);
+    border-radius: var(--radius-2xl); /* 変更: 角の丸みを大きくしました */
+    box-shadow: var(--shadow-sm);
     transition: all 0.2s ease;
-    line-height: 1.2;
 }
 
 #qa-search-input:focus {
