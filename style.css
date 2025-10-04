@@ -811,15 +811,16 @@ a:hover {
 }
 
 #qa-search-input {
-    width: 90%;
-    max-width: 600px;
-    padding: var(--spacing-4) var(--spacing-6);
-    font-size: 1.125rem;
+    width: 95%;
+    max-width: 100%;
+    padding: 4rem 6rem;
+    font-size: 4rem;
     font-family: var(--font-primary);
-    border: 2px solid var(--gray-300);
-    border-radius: var(--radius-xl);
-    box-shadow: var(--shadow-sm);
+    border: 4px solid var(--gray-300);
+    border-radius: var(--radius-2xl);
+    box-shadow: var(--shadow-lg);
     transition: all 0.2s ease;
+    line-height: 1.2;
 }
 
 #qa-search-input:focus {
