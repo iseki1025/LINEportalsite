@@ -812,23 +812,23 @@ a:hover {
 
 #qa-search-input {
     width: 90%;
-    max-width: 800px !important;      /* さらに大きくし、!importantを追加 */
-    padding: 2rem 2.5rem !important; /* 具体的な値で大きくし、!importantを追加 */
-    font-size: 1.5rem !important;     /* 具体的な値で大きくし、!importantを追加 */
+    max-width: 960px !important;              /* 横幅の上限をさらに広げました */
+    padding: 3rem 4rem !important;            /*【大幅変更】上下左右の余白を大きくし、高さを出しました */
+    font-size: 2.5rem !important;             /*【大幅変更】文字のサイズを巨大にしました */
     font-family: var(--font-primary);
-    border: 3px solid var(--gray-300) !important; /* 枠線も太く */
+    border: 4px solid var(--gray-300) !important; /* 枠線も太くしてバランスを取りました */
     border-radius: var(--radius-2xl) !important;
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--shadow-md); /* 影を少し濃くしました */
     transition: all 0.2s ease;
-    -webkit-appearance: none; /* iOSでの見た目をリセット */
-    -moz-appearance: none;    /* Firefoxでの見た目をリセット */
-    appearance: none;         /* 標準の見た目をリセット */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
 }
 
 #qa-search-input:focus {
     outline: none;
     border-color: var(--orange-500);
-    box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.1), var(--shadow-md);
+    box-shadow: 0 0 0 6px rgba(249, 115, 22, 0.15), var(--shadow-lg); /* フォーカス時の影も大きくしました */
 }
 
 #qa-search-input::placeholder {
