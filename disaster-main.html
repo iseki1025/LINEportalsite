@@ -10,9 +10,14 @@
 <!-- bodyタグには災害テーマのクラスを指定 -->
 <body class="theme-disaster">
 
-    <!-- ▼▼▼ ここに透析状況のお知らせを移動 ▼▼▼ -->
-    <section id="dialysis-status">
-        <div class="container">
+    <div class="container">
+        <!-- ▼▼▼ 1. ページタイトルを一番上に表示 ▼▼▼ -->
+        <header>
+            <h1>災害情報ポータル</h1>
+        </header>
+
+        <!-- ▼▼▼ 2. 透析状況のお知らせをヘッダーの直下に移動 ▼▼▼ -->
+        <section id="dialysis-status">
             <h2>現在の透析状況</h2>
             <!-- ▼▼▼ 透析状況 更新エリア ここから ▼▼▼ -->
             <div class="status-container">
@@ -34,15 +39,10 @@
             </div>
             <!-- ▲▲▲ 透析状況 更新エリア ここまで ▲▲▲ -->
             <p class="status-note">※この情報は災害時などに随時更新されます。</p>
-        </div>
-    </section>
-    <!-- ▲▲▲ ここまで ▲▲▲ -->
+        </section>
+        <!-- ▲▲▲ ここまで移動 ▲▲▲ -->
 
-    <div class="container">
-        <!-- ▼▼▼ ここは常に固定で表示される部分 ▼▼▼ -->
-        <header>
-            <h1>災害情報ポータル</h1>
-        </header>
+        <!-- ▼▼▼ 3. 各コンテンツへのナビゲーション ▼▼▼ -->
         <nav class="page-nav">
             <!-- data-target属性で、どの内容を表示するかを指定 -->
             <a href="#" class="nav-button active" data-target="info">基本情報</a>
@@ -50,8 +50,7 @@
             <a href="#" class="nav-button" data-target="shelter">避難場所マップ</a>
             <a href="#" class="nav-button" data-target="faq">災害Q&A</a>
         </nav>
-        <!-- ▲▲▲ ここまでが固定部分 ▲▲▲ -->
-
+        
         <main id="content-area">
             <!-- ▼▼▼ ここから下が、ボタンに応じて表示が切り替わる部分 ▼▼▼ -->
 
