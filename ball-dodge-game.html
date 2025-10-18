@@ -18,9 +18,9 @@
             min-height: 100vh;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             font-family: 'Arial', sans-serif;
-            overflow: hidden;
+            overflow-x: hidden;
             margin: 0;
-            padding: 0;
+            padding: 10px 0;
         }
 
         #gameContainer {
@@ -43,12 +43,12 @@
         #ui {
             margin-top: 20px;
             color: white;
-            font-size: 24px;
+            font-size: 20px;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
 
         #score {
-            font-size: 36px;
+            font-size: 32px;
             font-weight: bold;
             color: #ffd700;
             margin: 10px 0;
@@ -74,13 +74,13 @@
         }
 
         #gameOver h2 {
-            font-size: 48px;
+            font-size: 40px;
             color: #ff6b6b;
             margin-bottom: 20px;
         }
 
         #finalScore {
-            font-size: 36px;
+            font-size: 30px;
             color: #ffd700;
             margin: 20px 0;
         }
@@ -89,8 +89,8 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            padding: 15px 40px;
-            font-size: 24px;
+            padding: 12px 35px;
+            font-size: 20px;
             border-radius: 50px;
             cursor: pointer;
             margin-top: 20px;
@@ -106,24 +106,45 @@
             font-size: 16px;
             color: #ccc;
         }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .back-button:active {
+            transform: translateY(0);
+        }
     </style>
 </head>
 <body>
     <div id="gameContainer">
-        <canvas id="gameCanvas" width="600" height="800"></canvas>
+        <canvas id="gameCanvas" width="600" height="600"></canvas>
         <div id="ui">
             <div id="score">時間: 0.0秒</div>
             <div id="difficulty">レベル: 1</div>
             <div id="instructions">マウスまたは指で左右に動いてボールを避けよう！</div>
         </div>
+        <a href="friend-benefit.html" class="back-button">お友達特典ページへ戻る</a>
         <div id="gameOver">
             <h2>ゲームオーバー！</h2>
             <div id="finalScore"></div>
             <button id="restartBtn">もう一度プレイ</button>
         </div>
-            <!-- ▼▼▼【追加】戻るボタン ▼▼▼ -->
-        <a href="friend-benefit.html" class="back-button">お友達特典ページへ戻る</a>
-        <!-- ▲▲▲ ここまで追加 ▲▲▲ -->
     </div>
 
     <script>
@@ -138,7 +159,7 @@
         // スマホ対応：画面サイズに応じてキャンバスサイズを調整
         function resizeCanvas() {
             const maxWidth = Math.min(600, window.innerWidth - 40);
-            const aspectRatio = 800 / 600;
+            const aspectRatio = 1.0; // 縦横比を1:1に変更（元は800/600=1.33）
             canvas.width = maxWidth;
             canvas.height = maxWidth * aspectRatio;
         }
@@ -155,7 +176,7 @@
         // プレイヤー
         const player = {
             x: canvas.width / 2,
-            y: canvas.height - 50,
+            y: canvas.height - canvas.height / 8, // 下からの位置を調整
             radius: canvas.width / 30, // キャンバスサイズに比例
             color: '#00ff00'
         };
@@ -212,7 +233,7 @@
             currentSpeed = baseSpeed;
             balls = [];
             player.x = canvas.width / 2;
-            player.y = canvas.height - 50;
+            player.y = canvas.height - canvas.height / 8;
             player.radius = canvas.width / 30;
             baseBallRadius = canvas.width / 40;
             ballRadius = baseBallRadius;
@@ -356,7 +377,7 @@
         // 初期描画
         draw();
         ctx.fillStyle = '#fff';
-        ctx.font = '30px Arial';
+        ctx.font = `${canvas.width / 20}px Arial`;
         ctx.textAlign = 'center';
         ctx.fillText('タップしてスタート！', canvas.width / 2, canvas.height / 2);
     </script>
