@@ -97,12 +97,13 @@
 
         .controls {
             display: flex;
-            flex-direction: column;
-            gap: 10px;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
         }
 
         .btn {
-            padding: 15px 25px;
+            padding: 15px 30px;
             font-size: 1.1em;
             font-weight: bold;
             border: none;
@@ -110,6 +111,8 @@
             cursor: pointer;
             transition: all 0.3s;
             color: white;
+            flex: 1;
+            max-width: 150px;
         }
 
         .btn-start {
@@ -228,6 +231,14 @@
                 font-size: 1em;
                 padding: 12px 24px;
             }
+
+            .controls {
+                flex-direction: column;
+            }
+
+            .btn {
+                max-width: none;
+            }
         }
     </style>
 </head>
@@ -263,12 +274,12 @@
                     <h3>次のシェイプ</h3>
                     <canvas id="nextCanvas" class="next-preview" width="120" height="120"></canvas>
                 </div>
-                
-                <div class="controls">
-                    <button class="btn btn-start" id="startBtn">スタート</button>
-                    <button class="btn btn-reset" id="resetBtn">リセット</button>
-                </div>
             </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn btn-start" id="startBtn">スタート</button>
+            <button class="btn btn-reset" id="resetBtn">リセット</button>
         </div>
         
         <div class="mobile-controls">
@@ -301,7 +312,7 @@
             INITIAL_SPEED: 800,
             SPEED_DECREASE: 50,
             LEVEL_UP_LINES: 10,
-            TIME_SPEED_DECREASE: 30  // 30秒ごとに30ms速くなる
+            TIME_SPEED_DECREASE: 30
         };
 
         // 完全オリジナルで簡単な形状（テトリミノと明確に異なる）
@@ -323,10 +334,10 @@
                 color: '#4ECDC4'
             },
             {
-                // 小さなL（3マス）
+                // 3マスの斜め
                 pattern: [
-                    [1, 0],
-                    [1, 1]
+                    [1, 1],
+                    [0, 1]
                 ],
                 color: '#FFE66D'
             },
@@ -340,7 +351,7 @@
                 color: '#A8E6CF'
             },
             {
-                // 5マスの長いL
+                // 5マスの長いL（テトリスは4マス、これは5マス）
                 pattern: [
                     [1, 0],
                     [1, 0],
@@ -366,10 +377,10 @@
                 color: '#FFD3B6'
             },
             {
-                // 3マスのコーナー
+                // 5マスのコの字
                 pattern: [
-                    [1, 1],
-                    [1, 0]
+                    [1, 0, 1],
+                    [1, 1, 1]
                 ],
                 color: '#98DDCA'
             },
@@ -414,7 +425,6 @@
                 this.dropCounter = 0;
                 this.dropInterval = CONFIG.INITIAL_SPEED;
                 
-                // 時間関連
                 this.playTimeSeconds = 0;
                 this.playTimeInterval = null;
                 this.speedUpInterval = null;
@@ -474,18 +484,15 @@
                 }
             }
 
-            // プレイ時間の更新
             startPlayTimer() {
                 this.playTimeInterval = setInterval(() => {
                     this.playTimeSeconds++;
                     this.updatePlayTime();
                 }, 1000);
                 
-                // 30秒ごとに速度アップ
                 this.speedUpInterval = setInterval(() => {
                     this.dropInterval = Math.max(100, this.dropInterval - CONFIG.TIME_SPEED_DECREASE);
-                    console.log(`速度アップ！現在の落下速度: ${this.dropInterval}ms`);
-                }, 30000); // 30000ms = 30秒
+                }, 30000);
             }
 
             stopPlayTimer() {
