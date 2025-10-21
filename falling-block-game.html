@@ -301,82 +301,26 @@
             INITIAL_SPEED: 800,
             SPEED_DECREASE: 50,
             LEVEL_UP_LINES: 10,
-            TIME_SPEED_DECREASE: 30  // 1分ごとに30ms速くなる
+            TIME_SPEED_DECREASE: 30  // 30秒ごとに30ms速くなる
         };
 
-        // よりシンプルな形状に変更
+        // 完全オリジナルで簡単な形状（テトリミノと明確に異なる）
         const SHAPES = [
             {
-                // 短い棒（3マス）
+                // 3マスの直線（縦）
                 pattern: [
-                    [1, 1, 1]
+                    [1],
+                    [1],
+                    [1]
                 ],
                 color: '#FF6B9D'
             },
             {
-                // L字（4マス）
+                // 3マスの直線（横）
                 pattern: [
-                    [1, 0],
-                    [1, 0],
-                    [1, 1]
+                    [1, 1, 1]
                 ],
                 color: '#4ECDC4'
-            },
-            {
-                // 逆L字（4マス）
-                pattern: [
-                    [0, 1],
-                    [0, 1],
-                    [1, 1]
-                ],
-                color: '#FFE66D'
-            },
-            {
-                // 正方形（4マス）
-                pattern: [
-                    [1, 1],
-                    [1, 1]
-                ],
-                color: '#A8E6CF'
-            },
-            {
-                // T字（4マス）
-                pattern: [
-                    [1, 1, 1],
-                    [0, 1, 0]
-                ],
-                color: '#FF8B94'
-            },
-            {
-                // Z字（4マス）
-                pattern: [
-                    [1, 1, 0],
-                    [0, 1, 1]
-                ],
-                color: '#FFD3B6'
-            },
-            {
-                // S字（4マス）
-                pattern: [
-                    [0, 1, 1],
-                    [1, 1, 0]
-                ],
-                color: '#98DDCA'
-            },
-            {
-                // 直線2マス
-                pattern: [
-                    [1],
-                    [1]
-                ],
-                color: '#D4A5A5'
-            },
-            {
-                // 長い棒（4マス）
-                pattern: [
-                    [1, 1, 1, 1]
-                ],
-                color: '#9FA8DA'
             },
             {
                 // 小さなL（3マス）
@@ -384,7 +328,67 @@
                     [1, 0],
                     [1, 1]
                 ],
-                color: '#80CBC4'
+                color: '#FFE66D'
+            },
+            {
+                // 5マスの十字
+                pattern: [
+                    [0, 1, 0],
+                    [1, 1, 1],
+                    [0, 1, 0]
+                ],
+                color: '#A8E6CF'
+            },
+            {
+                // 5マスの長いL
+                pattern: [
+                    [1, 0],
+                    [1, 0],
+                    [1, 1]
+                ],
+                color: '#FF8B94'
+            },
+            {
+                // 5マスの階段
+                pattern: [
+                    [1, 1, 0],
+                    [0, 1, 1],
+                    [0, 0, 1]
+                ],
+                color: '#B4A7D6'
+            },
+            {
+                // 2マスだけ
+                pattern: [
+                    [1],
+                    [1]
+                ],
+                color: '#FFD3B6'
+            },
+            {
+                // 3マスのコーナー
+                pattern: [
+                    [1, 1],
+                    [1, 0]
+                ],
+                color: '#98DDCA'
+            },
+            {
+                // 5マスのY字
+                pattern: [
+                    [1, 0, 1],
+                    [0, 1, 0],
+                    [0, 1, 0]
+                ],
+                color: '#D4A5A5'
+            },
+            {
+                // 6マスのブロック（3×2）
+                pattern: [
+                    [1, 1, 1],
+                    [1, 1, 1]
+                ],
+                color: '#9FA8DA'
             }
         ];
 
@@ -477,11 +481,11 @@
                     this.updatePlayTime();
                 }, 1000);
                 
-                // 1分ごとに速度アップ
+                // 30秒ごとに速度アップ
                 this.speedUpInterval = setInterval(() => {
                     this.dropInterval = Math.max(100, this.dropInterval - CONFIG.TIME_SPEED_DECREASE);
                     console.log(`速度アップ！現在の落下速度: ${this.dropInterval}ms`);
-                }, 60000); // 60000ms = 1分
+                }, 30000); // 30000ms = 30秒
             }
 
             stopPlayTimer() {
