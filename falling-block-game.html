@@ -81,6 +81,12 @@
             margin: 10px 0;
         }
 
+        .info-text {
+            font-size: 1.2em;
+            text-align: center;
+            margin: 5px 0;
+        }
+
         .next-preview {
             background: #1a1a2e;
             border: 3px solid #667eea;
@@ -244,6 +250,11 @@
                 </div>
                 
                 <div class="info-box">
+                    <h3>プレイ時間</h3>
+                    <div class="info-text" id="playTime">0:00</div>
+                </div>
+                
+                <div class="info-box">
                     <h3>消去ライン数</h3>
                     <div class="info-value" id="lines">0</div>
                 </div>
@@ -277,6 +288,7 @@
             <h2>ゲームオーバー</h2>
             <p>最終スコア: <span id="finalScore">0</span></p>
             <p>レベル: <span id="finalLevel">1</span></p>
+            <p>プレイ時間: <span id="finalTime">0:00</span></p>
             <button class="btn btn-start" onclick="location.reload()">もう一度プレイ</button>
         </div>
     </div>
@@ -288,35 +300,39 @@
             BLOCK_SIZE: 25,
             INITIAL_SPEED: 800,
             SPEED_DECREASE: 50,
-            LEVEL_UP_LINES: 10
+            LEVEL_UP_LINES: 10,
+            TIME_SPEED_DECREASE: 30  // 1分ごとに30ms速くなる
         };
 
+        // よりシンプルな形状に変更
         const SHAPES = [
             {
+                // 短い棒（3マス）
                 pattern: [
-                    [0, 1, 0],
-                    [1, 1, 1],
-                    [0, 1, 0]
+                    [1, 1, 1]
                 ],
                 color: '#FF6B9D'
             },
             {
+                // L字（4マス）
                 pattern: [
-                    [1, 0, 0],
-                    [1, 0, 0],
-                    [1, 1, 1]
+                    [1, 0],
+                    [1, 0],
+                    [1, 1]
                 ],
                 color: '#4ECDC4'
             },
             {
+                // 逆L字（4マス）
                 pattern: [
-                    [1, 1, 0],
-                    [0, 1, 1],
-                    [0, 0, 1]
+                    [0, 1],
+                    [0, 1],
+                    [1, 1]
                 ],
                 color: '#FFE66D'
             },
             {
+                // 正方形（4マス）
                 pattern: [
                     [1, 1],
                     [1, 1]
@@ -324,22 +340,15 @@
                 color: '#A8E6CF'
             },
             {
+                // T字（4マス）
                 pattern: [
                     [1, 1, 1],
-                    [0, 1, 0],
                     [0, 1, 0]
                 ],
                 color: '#FF8B94'
             },
             {
-                pattern: [
-                    [1, 0, 1],
-                    [1, 0, 1],
-                    [1, 1, 1]
-                ],
-                color: '#B4A7D6'
-            },
-            {
+                // Z字（4マス）
                 pattern: [
                     [1, 1, 0],
                     [0, 1, 1]
@@ -347,32 +356,33 @@
                 color: '#FFD3B6'
             },
             {
+                // S字（4マス）
                 pattern: [
-                    [1],
-                    [1],
-                    [1]
+                    [0, 1, 1],
+                    [1, 1, 0]
                 ],
                 color: '#98DDCA'
             },
             {
+                // 直線2マス
                 pattern: [
-                    [1, 1, 0],
-                    [1, 0, 0],
-                    [1, 1, 0]
+                    [1],
+                    [1]
                 ],
                 color: '#D4A5A5'
             },
             {
+                // 長い棒（4マス）
                 pattern: [
-                    [1, 0, 1],
-                    [1, 1, 1],
-                    [0, 1, 0]
+                    [1, 1, 1, 1]
                 ],
                 color: '#9FA8DA'
             },
             {
+                // 小さなL（3マス）
                 pattern: [
-                    [1, 1, 1, 1, 1]
+                    [1, 0],
+                    [1, 1]
                 ],
                 color: '#80CBC4'
             }
@@ -399,6 +409,11 @@
                 this.lastTime = 0;
                 this.dropCounter = 0;
                 this.dropInterval = CONFIG.INITIAL_SPEED;
+                
+                // 時間関連
+                this.playTimeSeconds = 0;
+                this.playTimeInterval = null;
+                this.speedUpInterval = null;
                 
                 this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 
@@ -453,6 +468,38 @@
                         this.hardDrop();
                         break;
                 }
+            }
+
+            // プレイ時間の更新
+            startPlayTimer() {
+                this.playTimeInterval = setInterval(() => {
+                    this.playTimeSeconds++;
+                    this.updatePlayTime();
+                }, 1000);
+                
+                // 1分ごとに速度アップ
+                this.speedUpInterval = setInterval(() => {
+                    this.dropInterval = Math.max(100, this.dropInterval - CONFIG.TIME_SPEED_DECREASE);
+                    console.log(`速度アップ！現在の落下速度: ${this.dropInterval}ms`);
+                }, 60000); // 60000ms = 1分
+            }
+
+            stopPlayTimer() {
+                if (this.playTimeInterval) {
+                    clearInterval(this.playTimeInterval);
+                    this.playTimeInterval = null;
+                }
+                if (this.speedUpInterval) {
+                    clearInterval(this.speedUpInterval);
+                    this.speedUpInterval = null;
+                }
+            }
+
+            updatePlayTime() {
+                const minutes = Math.floor(this.playTimeSeconds / 60);
+                const seconds = this.playTimeSeconds % 60;
+                document.getElementById('playTime').textContent = 
+                    `${minutes}:${seconds.toString().padStart(2, '0')}`;
             }
 
             generateNextPiece() {
@@ -616,8 +663,11 @@
                     const scoreMap = [0, 100, 250, 450, 700];
                     this.score += scoreMap[Math.min(linesCleared, 4)] * this.level;
                     
-                    this.level = Math.floor(this.lines / CONFIG.LEVEL_UP_LINES) + 1;
-                    this.dropInterval = Math.max(100, CONFIG.INITIAL_SPEED - (this.level - 1) * CONFIG.SPEED_DECREASE);
+                    const newLevel = Math.floor(this.lines / CONFIG.LEVEL_UP_LINES) + 1;
+                    if (newLevel > this.level) {
+                        this.level = newLevel;
+                        this.dropInterval = Math.max(100, CONFIG.INITIAL_SPEED - (this.level - 1) * CONFIG.SPEED_DECREASE);
+                    }
                     
                     this.updateScore();
                 }
@@ -747,12 +797,15 @@
                     this.generateNextPiece();
                 }
                 
+                this.startPlayTimer();
                 this.lastTime = performance.now();
                 this.update(this.lastTime);
                 this.playSound(440, 0.1, 'sine');
             }
 
             reset() {
+                this.stopPlayTimer();
+                
                 this.board = this.createBoard();
                 this.score = 0;
                 this.level = 1;
@@ -763,8 +816,10 @@
                 this.nextPiece = null;
                 this.dropCounter = 0;
                 this.dropInterval = CONFIG.INITIAL_SPEED;
+                this.playTimeSeconds = 0;
                 
                 this.updateScore();
+                this.updatePlayTime();
                 this.generateNextPiece();
                 this.generateNextPiece();
                 this.draw();
@@ -777,8 +832,16 @@
             endGame() {
                 this.gameOver = true;
                 this.isPaused = true;
+                this.stopPlayTimer();
+                
                 document.getElementById('finalScore').textContent = this.score;
                 document.getElementById('finalLevel').textContent = this.level;
+                
+                const minutes = Math.floor(this.playTimeSeconds / 60);
+                const seconds = this.playTimeSeconds % 60;
+                document.getElementById('finalTime').textContent = 
+                    `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                
                 document.getElementById('gameOverOverlay').style.display = 'flex';
                 this.playSound(220, 0.3, 'sawtooth');
             }

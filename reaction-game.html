@@ -18,7 +18,7 @@
             align-items: center;
             min-height: 100vh;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px 0; /* 上下に余白を追加してスクロールしやすくする */
+            padding: 20px 0;
         }
 
         .container {
@@ -84,6 +84,21 @@
             font-size: 24px;
         }
 
+        /* 推定年齢を目立たせるスタイル */
+        .age-highlight {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 32px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
         .instructions {
             background: #fff3cd;
             padding: 15px;
@@ -120,11 +135,10 @@
             transform: translateY(0);
         }
 
-        /* ▼▼▼【追加】戻るボタン用のスタイル ▼▼▼ */
         .back-button {
             display: inline-block;
             margin-top: 20px;
-            background: #757575; /* 目立ちすぎないグレー */
+            background: #757575;
             color: white;
             text-decoration: none;
             padding: 12px 30px;
@@ -138,7 +152,31 @@
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
-        /* ▲▲▲ ここまで追加 ▲▲▲ */
+
+        .age-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin-left: 10px;
+            color: white;
+        }
+
+        .age-excellent {
+            background: #2ecc71;
+        }
+
+        .age-good {
+            background: #3498db;
+        }
+
+        .age-average {
+            background: #f39c12;
+        }
+
+        .age-needs-improvement {
+            background: #e74c3c;
+        }
 
     </style>
 </head>
@@ -148,7 +186,8 @@
         
         <div class="instructions">
             <p>赤い画面が<strong>緑色</strong>に変わったら、できるだけ早くクリック！<br>
-            緑になる前にクリックするとフライングです。</p>
+            緑になる前にクリックするとフライングです。<br>
+            反応速度から反射神経年齢を推定します！</p>
         </div>
 
         <div id="gameArea" class="idle">
@@ -158,6 +197,10 @@
         <div class="stats">
             <div class="stat-item">
                 今回の記録: <span class="stat-value" id="currentTime">-</span>
+            </div>
+            <div class="stat-item">
+                推定反射神経年齢: <span class="stat-value age-highlight" id="estimatedAge">-</span>
+                <span id="ageBadge" class="age-badge" style="display:none;"></span>
             </div>
             <div class="stat-item">
                 プレイ回数: <span class="stat-value" id="playCount">0</span>
@@ -172,9 +215,7 @@
 
         <button onclick="resetStats()">記録をリセット</button>
 
-        <!-- ▼▼▼【追加】戻るボタン ▼▼▼ -->
         <a href="friend-benefit.html" class="back-button">お友達特典ページへ戻る</a>
-        <!-- ▲▲▲ ここまで追加 ▲▲▲ -->
     </div>
 
     <script>
@@ -189,6 +230,8 @@
         const playCountEl = document.getElementById('playCount');
         const avgTimeEl = document.getElementById('avgTime');
         const bestTimeEl = document.getElementById('bestTime');
+        const estimatedAgeEl = document.getElementById('estimatedAge');
+        const ageBadgeEl = document.getElementById('ageBadge');
 
         gameArea.addEventListener('click', handleClick);
 
@@ -227,10 +270,65 @@
             }, waitTime);
         }
 
+        function estimateAge(reactionTime) {
+            // 反応時間から年齢を推定
+            // 一般的な反応時間と年齢の相関に基づく
+            let age;
+            let badge = '';
+            let badgeClass = '';
+
+            if (reactionTime < 180) {
+                age = '10代前半';
+                badge = '超人級！';
+                badgeClass = 'age-excellent';
+            } else if (reactionTime < 200) {
+                age = '10代後半';
+                badge = '素晴らしい！';
+                badgeClass = 'age-excellent';
+            } else if (reactionTime < 230) {
+                age = '20代前半';
+                badge = '優秀！';
+                badgeClass = 'age-excellent';
+            } else if (reactionTime < 250) {
+                age = '20代後半';
+                badge = 'とても良い！';
+                badgeClass = 'age-good';
+            } else if (reactionTime < 280) {
+                age = '30代';
+                badge = '良好！';
+                badgeClass = 'age-good';
+            } else if (reactionTime < 320) {
+                age = '40代';
+                badge = '平均的';
+                badgeClass = 'age-average';
+            } else if (reactionTime < 370) {
+                age = '50代';
+                badge = 'まずまず';
+                badgeClass = 'age-average';
+            } else if (reactionTime < 450) {
+                age = '60代';
+                badge = '要改善';
+                badgeClass = 'age-needs-improvement';
+            } else {
+                age = '70代以上';
+                badge = '練習が必要';
+                badgeClass = 'age-needs-improvement';
+            }
+
+            return { age, badge, badgeClass };
+        }
+
         function recordReaction(time) {
             reactions.push(time);
             currentTimeEl.textContent = time + ' ms';
             playCountEl.textContent = reactions.length;
+
+            // 推定年齢を表示
+            const ageData = estimateAge(time);
+            estimatedAgeEl.textContent = ageData.age + ' 相当';
+            ageBadgeEl.textContent = ageData.badge;
+            ageBadgeEl.className = 'age-badge ' + ageData.badgeClass;
+            ageBadgeEl.style.display = 'inline-block';
 
             // 平均を計算
             const avg = reactions.reduce((a, b) => a + b, 0) / reactions.length;
@@ -250,6 +348,8 @@
             playCountEl.textContent = '0';
             avgTimeEl.textContent = '-';
             bestTimeEl.textContent = '-';
+            estimatedAgeEl.textContent = '-';
+            ageBadgeEl.style.display = 'none';
             gameState = 'idle';
             gameArea.className = 'idle';
             gameArea.textContent = 'クリックしてスタート';

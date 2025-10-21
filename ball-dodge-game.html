@@ -54,6 +54,13 @@
             margin: 10px 0;
         }
 
+        #estimatedAge {
+            font-size: 26px;
+            font-weight: bold;
+            color: #4facfe;
+            margin: 10px 0;
+        }
+
         #difficulty {
             font-size: 18px;
             color: #ff6b6b;
@@ -80,9 +87,10 @@
         }
 
         #finalScore {
-            font-size: 30px;
+            font-size: 28px;
             color: #ffd700;
             margin: 20px 0;
+            line-height: 1.6;
         }
 
         #restartBtn {
@@ -136,6 +144,7 @@
         <canvas id="gameCanvas" width="600" height="600"></canvas>
         <div id="ui">
             <div id="score">時間: 0.0秒</div>
+            <div id="estimatedAge">反応速度年齢: --</div>
             <div id="difficulty">レベル: 1</div>
             <div id="instructions">マウスまたは指で左右に動いてボールを避けよう！</div>
         </div>
@@ -151,6 +160,7 @@
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         const scoreDisplay = document.getElementById('score');
+        const estimatedAgeDisplay = document.getElementById('estimatedAge');
         const difficultyDisplay = document.getElementById('difficulty');
         const gameOverDiv = document.getElementById('gameOver');
         const finalScoreDisplay = document.getElementById('finalScore');
@@ -190,6 +200,50 @@
 
         // マウス位置
         let mouseX = canvas.width / 2;
+
+        // 実際の反応時間に基づく年齢推定（緩和版）
+        function getEstimatedAgeFromReactionTime(reactionTimeMs) {
+            // より達成しやすい年齢設定に調整
+            if (reactionTimeMs >= 800) return '80歳以上';
+            if (reactionTimeMs >= 600) return '70-80歳';
+            if (reactionTimeMs >= 450) return '60-70歳';
+            if (reactionTimeMs >= 350) return '50-60歳';
+            if (reactionTimeMs >= 280) return '40-50歳';
+            if (reactionTimeMs >= 230) return '30-40歳';
+            if (reactionTimeMs >= 190) return '20-30歳';
+            if (reactionTimeMs >= 160) return '10代';
+            if (reactionTimeMs >= 130) return 'アスリート級';
+            if (reactionTimeMs >= 100) return 'プロゲーマー級';
+            return 'F1レーサー級';
+        }
+
+        // ゲーム内の必要反応時間を計算
+        function calculateRequiredReactionTime() {
+            // ボールの落下速度（ピクセル/フレーム）
+            const ballSpeed = currentSpeed;
+            // フレームレート（60FPS想定）
+            const fps = 60;
+            // ボールの落下速度（ピクセル/秒）
+            const ballSpeedPerSecond = ballSpeed * fps;
+            
+            // プレイヤーの位置からボールが到達するまでの距離
+            const verticalDistance = player.y - ballRadius;
+            // ボールが到達するまでの時間（秒）
+            const timeToReach = verticalDistance / ballSpeedPerSecond;
+            
+            // プレイヤーが最大限移動する必要がある距離（画面端から端）
+            const maxHorizontalDistance = canvas.width / 2;
+            // プレイヤーの移動速度（スムーズ係数0.2を考慮）
+            const playerMoveSpeed = maxHorizontalDistance * 0.2 * fps;
+            // 横移動に必要な時間
+            const timeToMove = maxHorizontalDistance / playerMoveSpeed;
+            
+            // 必要な反応時間 = 到達時間 - 移動時間
+            const reactionTime = Math.max(0, timeToReach - timeToMove);
+            
+            // ミリ秒に変換
+            return reactionTime * 1000;
+        }
 
         // イベントリスナー
         canvas.addEventListener('mousemove', (e) => {
@@ -238,6 +292,7 @@
             baseBallRadius = canvas.width / 40;
             ballRadius = baseBallRadius;
             ballSpawnRate = 1000;
+            estimatedAgeDisplay.textContent = '反応速度年齢: --';
             gameLoop();
         }
 
@@ -311,6 +366,11 @@
             // 時間更新
             currentTime = (Date.now() - startTime) / 1000;
             scoreDisplay.textContent = `時間: ${currentTime.toFixed(1)}秒`;
+            
+            // 実際の必要反応時間を計算して年齢を推定
+            const requiredReactionTime = calculateRequiredReactionTime();
+            const estimatedAge = getEstimatedAgeFromReactionTime(requiredReactionTime);
+            estimatedAgeDisplay.textContent = `反応速度年齢: ${estimatedAge}`;
 
             // レベルアップ(5秒ごと)
             const newLevel = Math.floor(currentTime / 5) + 1;
@@ -356,7 +416,9 @@
         // ゲームオーバー
         function gameOver() {
             gameRunning = false;
-            finalScoreDisplay.textContent = `生存時間: ${currentTime.toFixed(1)}秒`;
+            const finalReactionTime = calculateRequiredReactionTime();
+            const finalAge = getEstimatedAgeFromReactionTime(finalReactionTime);
+            finalScoreDisplay.innerHTML = `生存時間: ${currentTime.toFixed(1)}秒<br>到達レベル: ${finalAge}`;
             gameOverDiv.style.display = 'block';
         }
 
