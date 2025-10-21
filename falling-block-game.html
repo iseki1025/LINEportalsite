@@ -254,7 +254,6 @@
     </div>
 
     <script>
-        // ゲーム設定
         const CONFIG = {
             COLS: 12,
             ROWS: 22,
@@ -264,10 +263,8 @@
             LEVEL_UP_LINES: 10
         };
 
-        // オリジナルシェイプ定義（9種類以上）
         const SHAPES = [
             {
-                // 十字形（5マス）
                 pattern: [
                     [0, 1, 0],
                     [1, 1, 1],
@@ -276,7 +273,6 @@
                 color: '#FF6B9D'
             },
             {
-                // 長いL字（5マス）
                 pattern: [
                     [1, 0, 0],
                     [1, 0, 0],
@@ -285,7 +281,6 @@
                 color: '#4ECDC4'
             },
             {
-                // 階段状（6マス）
                 pattern: [
                     [1, 1, 0],
                     [0, 1, 1],
@@ -294,7 +289,6 @@
                 color: '#FFE66D'
             },
             {
-                // 正方形（4マス）
                 pattern: [
                     [1, 1],
                     [1, 1]
@@ -302,7 +296,6 @@
                 color: '#A8E6CF'
             },
             {
-                // 太いT字（5マス）
                 pattern: [
                     [1, 1, 1],
                     [0, 1, 0],
@@ -311,7 +304,6 @@
                 color: '#FF8B94'
             },
             {
-                // コの字（6マス）
                 pattern: [
                     [1, 0, 1],
                     [1, 0, 1],
@@ -320,7 +312,6 @@
                 color: '#B4A7D6'
             },
             {
-                // 小さなZ字（4マス）
                 pattern: [
                     [1, 1, 0],
                     [0, 1, 1]
@@ -328,7 +319,6 @@
                 color: '#FFD3B6'
             },
             {
-                // 直線3マス
                 pattern: [
                     [1],
                     [1],
@@ -337,7 +327,6 @@
                 color: '#98DDCA'
             },
             {
-                // 不規則形（5マス）
                 pattern: [
                     [1, 1, 0],
                     [1, 0, 0],
@@ -346,7 +335,6 @@
                 color: '#D4A5A5'
             },
             {
-                // Y字形（5マス）
                 pattern: [
                     [1, 0, 1],
                     [1, 1, 1],
@@ -355,7 +343,6 @@
                 color: '#9FA8DA'
             },
             {
-                // 長い直線（5マス）
                 pattern: [
                     [1, 1, 1, 1, 1]
                 ],
@@ -363,7 +350,6 @@
             }
         ];
 
-        // ゲーム状態
         class Game {
             constructor() {
                 this.canvas = document.getElementById('gameCanvas');
@@ -405,7 +391,6 @@
                 document.getElementById('startBtn').addEventListener('click', () => this.start());
                 document.getElementById('resetBtn').addEventListener('click', () => this.reset());
                 
-                // モバイルコントロール
                 document.getElementById('leftBtn').addEventListener('click', () => this.move(-1));
                 document.getElementById('rightBtn').addEventListener('click', () => this.move(1));
                 document.getElementById('rotateBtn').addEventListener('click', () => this.rotate());
@@ -545,7 +530,6 @@
                 this.currentPiece.pattern = rotated;
 
                 if (this.checkCollision(this.currentPiece)) {
-                    // 壁蹴り処理
                     let kicked = false;
                     for (let offset of [-1, 1, -2, 2]) {
                         if (!this.checkCollision(this.currentPiece, offset, 0)) {
@@ -620,11 +604,9 @@
             }
 
             draw() {
-                // 背景
                 this.ctx.fillStyle = '#1a1a2e';
                 this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-                // グリッド
                 this.ctx.strokeStyle = 'rgba(102, 126, 234, 0.1)';
                 for (let y = 0; y < CONFIG.ROWS; y++) {
                     for (let x = 0; x < CONFIG.COLS; x++) {
@@ -637,7 +619,6 @@
                     }
                 }
 
-                // ボード上の固定ブロック
                 this.board.forEach((row, y) => {
                     row.forEach((color, x) => {
                         if (color) {
@@ -659,7 +640,6 @@
                     });
                 });
 
-                // 現在のピース
                 if (this.currentPiece) {
                     this.currentPiece.pattern.forEach((row, y) => {
                         row.forEach((value, x) => {
@@ -686,7 +666,6 @@
                         });
                     });
 
-                    // ゴーストピース（落下予測位置）
                     let ghostY = this.currentPiece.y;
                     while (!this.checkCollision({ ...this.currentPiece, y: ghostY }, 0, 1)) {
                         ghostY++;
@@ -792,58 +771,12 @@
                     
                     oscillator.start(this.audioContext.currentTime);
                     oscillator.stop(this.audioContext.currentTime + duration);
-                } catch (e) {
-                    // 音声再生エラーは無視
-                }
+                } catch (e) {}
             }
         }
 
-        // ゲーム初期化
         const game = new Game();
         game.draw();
-
-        /*
-        ═══════════════════════════════════════════════════════════
-        【ShapeDrop - 使用方法】
-        ═══════════════════════════════════════════════════════════
-        
-        ◆ 操作方法（キーボード）：
-          - ← / → : 左右移動
-          - ↓ : 加速落下
-          - ↑ または Z : 回転
-          - スペース : 即座に落下
-        
-        ◆ 操作方法（タッチ/モバイル）：
-          - 画面下部のボタンで操作
-          - ◀ / ▶ : 左右移動
-          - 🔄 : 回転
-          - ▼ : 加速落下
-          - ⬇⬇ : 即座に落下
-        
-        ◆ ルール：
-          - オリジナルの9種類以上のシェイプが落下します
-          - 横一列が埋まると消去されます
-          - 複数列同時消去で高得点
-          - レベルが上がると落下速度が速くなります
-        
-        ◆ スコア：
-          - 1行消去: 100点 × レベル
-          - 2行消去: 250点 × レベル
-          - 3行消去: 450点 × レベル
-          - 4行消去: 700点 × レベル
-          - 下移動: 1点
-          - 即座落下: 2点/マス
-        
-        ◆ その他：
-          - スタートボタンでゲーム開始
-          - リセットボタンでゲームリセット
-          - 画面上部にフィールドが埋まるとゲームオーバー
-        
-        ═══════════════════════════════════════════════════════════
-        このゲームは完全オリジナルの落ちものパズルゲームです。
-        既存の著作権・商標・特許に抵触しないよう設計されています。
-        ═══════════════════════════════════════════════════════════
-        */
     </script>
 </body>
 </html>
