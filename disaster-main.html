@@ -6,15 +6,76 @@
     <title>災害情報ポータル</title>
     <!-- 共通のCSSファイルを読み込み -->
     <link rel="stylesheet" href="style.css">
-    <!-- ▼▼▼【追加】PDF表示のためのスタイル ▼▼▼ -->
+    <!-- ▼▼▼【追加】PDF表示と折りたたみ機能のためのスタイル ▼▼▼ -->
     <style>
         /* PDF埋め込み要素のスタイル調整 */
         .pdf-embed-container {
             width: 100%;
-            /* 高さを画面の表示領域の80%程度に設定（調整可能） */
             height: 80vh; 
-            border: none; /* 枠線を非表示 */
+            border: none;
         }
+
+        /* --- ここから折りたたみセクションのスタイル --- */
+        
+        /* セクション全体の間隔を狭く調整 */
+        #dialysis-status {
+            padding: 0.8em 1em; /* 上下の余白を少し狭くする */
+            margin-bottom: 1em;
+        }
+
+        /* クリックする見出しのスタイル */
+        .collapsible-trigger {
+            cursor: pointer;
+            position: relative;
+            padding-right: 25px; /* アイコン分の余白 */
+        }
+
+        /* 開閉アイコン（▼）のスタイル */
+        .collapsible-trigger::after {
+            content: '▼';
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%) rotate(0deg);
+            font-size: 0.8em;
+            transition: transform 0.3s ease;
+        }
+        
+        /* 開いている状態の時のアイコンを上向き（▲）にする */
+        .is-open .collapsible-trigger::after {
+            transform: translateY(-50%) rotate(180deg);
+        }
+
+        /* 折りたたまれるコンテンツのスタイル */
+        .collapsible-content {
+            /* スムーズな開閉アニメーションのための設定 */
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out, padding 0.5s ease-out;
+            padding: 0 1em; /* 閉じた状態では上下のpaddingを0に */
+        }
+
+        /* is-openクラスが付いた時にコンテンツを表示 */
+        .is-open .collapsible-content {
+            max-height: 500px; /* 表示されるコンテンツの最大高さを十分に設定 */
+            padding: 0.8em 0; /* 開いた時に上下のpaddingを適用 */
+        }
+
+        /* 透析状況のコンテナの幅と高さをコンパクトに */
+        #dialysis-status .status-container {
+            gap: 10px; /* 各項目の間隔を狭く */
+        }
+        #dialysis-status .status-item {
+            padding: 0.5em; /* 内側の余白を狭く */
+        }
+        #dialysis-status .status-item h3 {
+            margin-bottom: 0.3em;
+            font-size: 1em;
+        }
+        #dialysis-status .status-note {
+            margin-top: 0.5em;
+        }
+        /* --- ここまで折りたたみセクションのスタイル --- */
     </style>
 </head>
 <!-- bodyタグには災害テーマのクラスを指定 -->
@@ -26,36 +87,40 @@
             <h1>災害情報ポータル</h1>
         </header>
 
-        <!-- ▼▼▼ 2. 透析状況のお知らせをヘッダーの直下に移動 ▼▼▼ -->
-        <section id="dialysis-status">
-            <h2>現在の透析状況</h2>
-            <!-- ▼▼▼ 透析状況 更新エリア ここから ▼▼▼ -->
-            <div class="status-container">
-                <!-- 本院 -->
-                <div class="status-item">
-                    <h3>本院</h3>
-                    <p class="status-text status-ok">透析可</p>
+        <!-- ▼▼▼ 2. 透析状況のお知らせ（折りたたみ機能付き） ▼▼▼ -->
+        <!-- 【変更】classに "collapsible-section is-open" を追加 -->
+        <!-- ※初期状態で閉じたい場合は "is-open" を削除してください -->
+        <section id="dialysis-status" class="collapsible-section is-open">
+            <!-- 【変更】h2に "collapsible-trigger" クラスを追加 -->
+            <h2 class="collapsible-trigger">現在の透析状況</h2>
+            
+            <!-- 【変更】折りたたむ内容をdivで囲む -->
+            <div class="collapsible-content">
+                <div class="status-container">
+                    <!-- 本院 -->
+                    <div class="status-item">
+                        <h3>本院</h3>
+                        <p class="status-text status-ok">透析可</p>
+                    </div>
+                    <!-- なかもず分院 -->
+                    <div class="status-item">
+                        <h3>なかもず分院</h3>
+                        <p class="status-text status-ng">透析不可 <span class="reason">（断水のため）</span></p>
+                    </div>
+                    <!-- 三国ケ丘分院 -->
+                    <div class="status-item">
+                        <h3>三国ケ丘分院</h3>
+                        <p class="status-text status-ok">透析可</p>
+                    </div>
                 </div>
-                <!-- なかもず分院 -->
-                <div class="status-item">
-                    <h3>なかもず分院</h3>
-                    <p class="status-text status-ng">透析不可 <span class="reason">（断水のため）</span></p>
-                </div>
-                <!-- 三国ケ丘分院 -->
-                <div class="status-item">
-                    <h3>三国ケ丘分院</h3>
-                    <p class="status-text status-ok">透析可</p>
-                </div>
+                <p class="status-note">※この情報は災害時などに随時更新されます。</p>
             </div>
-            <!-- ▲▲▲ 透析状況 更新エリア ここまで ▲▲▲ -->
-            <p class="status-note">※この情報は災害時などに随時更新されます。</p>
         </section>
-        <!-- ▲▲▲ ここまで移動 ▲▲▲ -->
+        <!-- ▲▲▲ ここまで ▲▲▲ -->
 
         <!-- ▼▼▼ 3. 各コンテンツへのナビゲーション ▼▼▼ -->
         <nav class="page-nav">
             <!-- data-target属性で、どの内容を表示するかを指定 -->
-            <!-- ▼▼▼【追加】防災ガイドブックのタブ ▼▼▼ -->
             <a href="#" class="nav-button" data-target="guidebook">防災ガイドブック</a>
             <a href="#" class="nav-button active" data-target="info">基本情報</a>
             <a href="#" class="nav-button" data-target="checklist">備蓄リスト</a>
@@ -66,10 +131,10 @@
         <main id="content-area">
             <!-- ▼▼▼ ここから下が、ボタンに応じて表示が切り替わる部分 ▼▼▼ -->
 
-            <!-- ▼▼▼【追加】防災ガイドブック の内容 ▼▼▼ -->
+            <!-- 防災ガイドブック の内容 -->
             <section id="guidebook" class="content-section">
                 <!-- embedタグでPDFを埋め込み表示 -->
-                <embed src="梶本クリニック防災ハンドブック.pdf" type="application/pdf" class="pdf-embed-container">
+                <embed src="disaster-guide-book.pdf" type="application/pdf" class="pdf-embed-container">
             </section>
 
             <!-- ① 基本情報 の内容 -->
@@ -155,5 +220,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <script src="tab-script.js"></script>
     <script src="qa-loader.js"></script>
+
+    <!-- ▼▼▼【追加】折りたたみ機能を動かすためのJavaScript ▼▼▼ -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const triggers = document.querySelectorAll('.collapsible-trigger');
+            triggers.forEach(trigger => {
+                trigger.addEventListener('click', function() {
+                    // クリックされた要素の親である.collapsible-sectionのクラスを切り替える
+                    this.parentElement.classList.toggle('is-open');
+                });
+            });
+        });
+    </script>
 </body>
 </html>
