@@ -1,49 +1,54 @@
 /* Google Fonts - Inter & Noto Sans JP */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
 
-/* === CSS変数 (梶本クリニック防災ハンドブック デザインシステム) === */
+/* === CSS変数 (PDFデザインの雰囲気を反映) === */
 :root {
     --font-primary: 'Inter', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
     
-    /* カラーパレット */
-    --color-primary: #00586A;       /* メインの濃い青 */
-    --color-accent: #00A0C1;        /* ロゴなどの明るい青 */
-    --color-text-body: #333333;      /* 本文の濃いグレー */
-    --color-text-header: #00586A;    /* 見出しの青 */
-    --color-text-light: #666666;    /* 注釈などの薄いグレー */
-    --color-warning: #D90000;        /* 危険を知らせる赤 */
-    --color-background: #FFFFFF;    /* コンテンツ背景の白 */
-    --color-background-pale: #F0F8FA; /* 全体背景の非常に薄い青 */
-    --color-border: #DDDDDD;        /* 境界線や枠線のグレー */
-    --color-box-bg-blue: #E6F4F7;   /* 水色の背景ボックス */
-    --color-box-bg-pink: #FFF0F0;   /* ピンク色の背景ボックス */
+    /* カラーパレット (元のグレー系は維持) */
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --gray-400: #9ca3af;
+    --gray-500: #6b7280;
+    --gray-600: #4b5563;
+    --gray-700: #374151;
+    --gray-800: #1f2937;
+    --gray-900: #111827;
     
-    /* スペーシング */
-    --spacing-1: 0.25rem;
-    --spacing-2: 0.5rem;
-    --spacing-3: 0.75rem;
-    --spacing-4: 1rem;
-    --spacing-5: 1.25rem;
-    --spacing-6: 1.5rem;
-    --spacing-8: 2rem;
-    --spacing-10: 2.5rem;
-    --spacing-12: 3rem;
-    --spacing-16: 4rem;
+    /* === ▼▼▼ テーマカラーをPDFデザインに準拠 ▼▼▼ === */
+    --theme-color-primary: #00586A;   /* PDFのメインの濃い青 */
+    --theme-color-primary-light: #00A0C1; /* PDFのアクセントの明るい青 */
+    --theme-color-disaster: #D90000;  /* PDFの警告の赤 */
+    --theme-color-green: #059669;      /* ( shunt, friend などで使用 ) */
+    --theme-color-purple: #7c3aed;
+    --theme-color-orange: #ea580c;
+    /* === ▲▲▲ ここまで ▲▲▲ === */
+
+    /* スペーシング (変更なし) */
+    --spacing-1: 0.25rem; --spacing-2: 0.5rem; --spacing-3: 0.75rem; --spacing-4: 1rem; --spacing-5: 1.25rem; --spacing-6: 1.5rem; --spacing-8: 2rem; --spacing-10: 2.5rem; --spacing-12: 3rem; --spacing-16: 4rem;
+    
+    /* シャドウ (変更なし) */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05); --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1); --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    
+    /* ボーダーラジアス (変更なし) */
+    --radius-sm: 0.375rem; --radius: 0.5rem; --radius-md: 0.75rem; --radius-lg: 1rem; --radius-xl: 1.5rem; --radius-2xl: 2rem;
 }
 
-/* === リセット === */
-*, *::before, *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+/* === リセット (変更なし) === */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* === 基本スタイル === */
+/* === body (背景画像を復元) === */
 body {
     font-family: var(--font-primary);
-    line-height: 1.7;
-    color: var(--color-text-body);
-    background-color: var(--color-background-pale);
+    line-height: 1.6;
+    color: var(--gray-900);
+    background-image: url('files/background-main.png');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     min-height: 100vh;
     font-size: 16px;
     -webkit-font-smoothing: antialiased;
@@ -52,51 +57,56 @@ body {
 .container {
     max-width: 1200px;
     margin: var(--spacing-8) auto;
-    background: var(--color-background);
-    border: 1px solid var(--color-border);
-    /* PDFのシャープなデザインを反映 */
-    border-radius: 0;
+    background: white;
+    border-radius: var(--radius-2xl);
     overflow: hidden;
-    box-shadow: none;
+    box-shadow: var(--shadow-xl);
 }
 
-/* === ヘッダー === */
-header, .portal-header {
-    text-align: left;
-    padding: var(--spacing-8) var(--spacing-6);
-    background: none;
-    color: var(--color-text-header);
-    border-bottom: 1px solid var(--color-border);
+/* === ヘッダー (背景画像と中央揃えを復元) === */
+.portal-header, header {
+    text-align: center;
+    padding: var(--spacing-12) var(--spacing-6);
+    background-image: url('files/background-header.png');
+    background-size: cover;
+    background-position: center center;
+    color: var(--gray-800);
+    position: relative;
+    overflow: hidden;
 }
 
-header h1, .portal-header h1 {
-    font-size: clamp(1.8rem, 4vw, 2.5rem);
-    font-weight: 900;
-    color: var(--color-text-header);
-    text-shadow: none;
-    padding-bottom: var(--spacing-4);
-    border-bottom: 4px solid var(--color-primary);
-    display: inline-block;
+header {
+    padding-bottom: var(--spacing-8); /* 下層ページは少し余白を調整 */
 }
 
-.portal-header p {
-    text-shadow: none;
-    color: var(--color-text-body);
+/* 文字の可読性のため、影は維持 */
+.portal-header h1, .portal-header p, header h1 {
+    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.4);
 }
 
-/* === 透析ステータス === */
+header h1 {
+    font-weight: 900; /* 文字を力強く */
+}
+
+.theme-nutrition header h1 { color: var(--theme-color-primary); }
+.theme-disaster header h1 { color: var(--theme-color-disaster); }
+.theme-shunt header h1 { color: var(--theme-color-green); }
+.theme-friend header h1 { color: var(--theme-color-purple); }
+.theme-qa header h1 { color: var(--theme-color-orange); }
+
+
+/* === 透析ステータス (デザイン微調整) === */
 #dialysis-status {
-    padding: var(--spacing-8) var(--spacing-6);
-    border-bottom: 1px solid var(--color-border);
-    background-color: var(--color-background);
+    padding: var(--spacing-10) var(--spacing-6);
+    border-bottom: 2px solid var(--gray-200);
 }
 
 #dialysis-status h2 {
-    font-size: clamp(1.5rem, 3vw, 1.8rem);
-    font-weight: 700;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 900; /* 文字を力強く */
     text-align: center;
-    margin: 0 0 var(--spacing-6) 0;
-    color: var(--color-text-header);
+    margin-bottom: var(--spacing-8);
+    color: var(--gray-800);
 }
 
 .status-container {
@@ -108,202 +118,201 @@ header h1, .portal-header h1 {
 }
 
 .status-item {
-    background: var(--color-background);
-    border-radius: 0;
-    padding: var(--spacing-6);
-    border: 1px solid var(--color-border);
-    box-shadow: none;
-    transition: none;
+    background: white;
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-8);
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 2px solid transparent;
 }
-
 .status-item:hover {
-    transform: none;
-    box-shadow: none;
-    border-color: var(--color-primary);
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
 }
-
-.status-item h3 {
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--color-text-light);
-    margin-bottom: var(--spacing-3);
-    text-transform: none;
-    letter-spacing: normal;
-}
-
 .status-text {
-    font-size: 1.8rem;
-    font-weight: 700;
+    font-size: 2rem;
+    font-weight: 900;
 }
+.status-ok { color: var(--theme-color-primary); } /* 色をPDFに合わせる */
+.status-ng { color: var(--theme-color-disaster); } /* 色をPDFに合わせる */
 
-.status-ok { color: var(--color-primary); }
-.status-ng { color: var(--color-warning); }
 
-.status-text .reason {
-    font-size: 0.875rem;
-    font-weight: 400;
-    color: var(--color-text-light);
-}
-
-.status-note {
-    text-align: center;
-    color: var(--color-text-light);
-    font-size: 0.875rem;
-    margin-top: var(--spacing-6);
-}
-
-/* === カードタイル型ポータルナビゲーション (PDFデザインに合わせシンプル化) === */
+/* === カードタイル型ポータルナビゲーション (元の形状を維持) === */
 .portal-nav {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: var(--spacing-6);
-    padding: var(--spacing-8) var(--spacing-6);
-    background: var(--color-background-pale);
+    padding: var(--spacing-10) var(--spacing-6);
+    background: white;
 }
 
 .portal-button {
+    position: relative;
     display: flex;
     flex-direction: column;
-    padding: var(--spacing-6);
-    background: var(--color-background);
-    border: 1px solid var(--color-border);
-    border-left: 5px solid; /* テーマカラーを左のボーダーで表現 */
-    border-radius: 0;
+    padding: var(--spacing-8);
+    background: white;
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius-xl);
     text-decoration: none;
-    color: var(--color-text-body);
-    transition: background-color 0.2s ease;
-    box-shadow: none;
+    color: var(--gray-900);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--shadow);
+    overflow: hidden;
 }
 
-.portal-button.theme-nutrition { border-left-color: var(--color-accent); }
-.portal-button.theme-disaster { border-left-color: var(--color-warning); }
-.portal-button.theme-shunt { border-left-color: #10b981; }
-.portal-button.theme-friend { border-left-color: #8b5cf6; }
-.portal-button.theme-qa { border-left-color: #f97316; }
+.portal-button::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 6px;
+    transition: all 0.3s ease;
+}
+
+/* ボタン上部のバーの色をPDFテーマに */
+.portal-button.theme-nutrition::before { background: var(--theme-color-primary); }
+.portal-button.theme-disaster::before { background: var(--theme-color-disaster); }
+.portal-button.theme-shunt::before { background: var(--theme-color-green); }
+.portal-button.theme-friend::before { background: var(--theme-color-purple); }
+.portal-button.theme-qa::before { background: var(--theme-color-orange); }
 
 .portal-button:hover {
-    transform: none;
-    box-shadow: none;
-    background: var(--color-background-pale);
-    border-color: var(--color-border);
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
+    border-color: transparent;
 }
 
+/* ホバー時の背景色をテーマに合わせる */
+.portal-button.theme-nutrition:hover { border-color: var(--theme-color-primary); background: linear-gradient(to bottom, white, #eaf4f6); }
+.portal-button.theme-disaster:hover { border-color: var(--theme-color-disaster); background: linear-gradient(to bottom, white, #fdecec); }
+.portal-button.theme-shunt:hover { border-color: var(--theme-color-green); background: linear-gradient(to bottom, white, #ecfdf5); }
+.portal-button.theme-friend:hover { border-color: var(--theme-color-purple); background: linear-gradient(to bottom, white, #f5f3ff); }
+.portal-button.theme-qa:hover { border-color: var(--theme-color-orange); background: linear-gradient(to bottom, white, #fff7ed); }
+
+
 .portal-button .button-title {
-    font-size: 1.3rem;
-    font-weight: 700;
-    margin-bottom: var(--spacing-2);
+    font-size: 1.5rem;
+    font-weight: 900; /* 文字を力強く */
+    margin-bottom: var(--spacing-3);
+    letter-spacing: -0.02em;
 }
+
+/* ボタンタイトルの文字色をPDFテーマに */
+.portal-button.theme-nutrition .button-title { color: var(--theme-color-primary); }
+.portal-button.theme-disaster .button-title { color: var(--theme-color-disaster); }
+.portal-button.theme-shunt .button-title { color: var(--theme-color-green); }
+.portal-button.theme-friend .button-title { color: var(--theme-color-purple); }
+.portal-button.theme-qa .button-title { color: var(--theme-color-orange); }
+
 
 .portal-button .button-desc {
     font-size: 0.9375rem;
-    color: var(--color-text-light);
+    color: var(--gray-600);
 }
 
-.portal-button::before, .portal-button::after {
-    display: none; /* 装飾を削除 */
+.portal-button::after {
+    content: '→';
+    position: absolute;
+    right: var(--spacing-6);
+    bottom: var(--spacing-6);
+    font-size: 1.75rem;
+    font-weight: 900;
+    opacity: 0.15;
+    transition: all 0.3s ease;
 }
 
-/* === タブナビゲーション === */
+.portal-button:hover::after {
+    opacity: 0.4;
+    transform: translateX(4px);
+}
+
+
+/* === タブナビゲーション (元の形状を維持) === */
 .page-nav {
     display: flex;
-    gap: var(--spacing-1);
-    padding: 0 var(--spacing-6);
-    background: var(--color-background);
-    border-bottom: 1px solid var(--color-border);
+    gap: var(--spacing-2);
+    padding: 0 var(--spacing-6) var(--spacing-6);
+    background: white;
+    border-bottom: 2px solid var(--gray-200);
     overflow-x: auto;
 }
 
 .nav-button {
-    padding: var(--spacing-4) var(--spacing-5);
-    color: var(--color-text-light);
+    position: relative;
+    padding: var(--spacing-4) var(--spacing-6);
+    background: transparent;
+    color: var(--gray-600);
+    text-decoration: none;
     border: none;
-    border-bottom: 3px solid transparent;
-    border-radius: 0;
-    font-weight: 700;
-    font-size: 1rem;
+    border-radius: var(--radius) var(--radius) 0 0;
+    font-weight: 700; /* 文字を少し強く */
+    font-size: 0.9375rem;
     transition: all 0.2s ease;
     white-space: nowrap;
     cursor: pointer;
-    background: transparent;
 }
 
 .nav-button:hover {
-    color: var(--color-text-body);
+    color: var(--gray-900);
+    background: var(--gray-50);
 }
 
 .nav-button.active {
-    color: var(--color-primary);
-    background: transparent;
-    border-bottom-color: var(--color-primary);
+    color: var(--gray-900);
+    background: var(--gray-50);
 }
 
 .nav-button.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 0; right: 0;
+    height: 3px;
+    border-radius: 3px 3px 0 0;
+}
+
+/* アクティブタブの下線の色をPDFテーマに */
+.theme-nutrition .nav-button.active::after { background: var(--theme-color-primary); }
+.theme-disaster .nav-button.active::after { background: var(--theme-color-disaster); }
+.theme-qa .nav-button.active::after { background: var(--theme-color-orange); }
+
+
+/* === コンテンツエリア (タブ機能を復元) === */
+#content-area {
+    padding: var(--spacing-10) var(--spacing-6);
+    background: var(--gray-50);
+}
+
+/* この2つのルールでタブ機能が復活します */
+.content-section {
     display: none;
 }
-
-/* === 戻るボタン === */
-.back-to-portal-button {
-    display: inline-flex;
-    background: var(--color-text-light);
-    color: white;
-    padding: var(--spacing-3) var(--spacing-6);
-    margin: var(--spacing-8) var(--spacing-6) 0;
-    text-decoration: none;
-    border-radius: 0;
-    font-size: 0.9375rem;
-    font-weight: 700;
-    transition: background-color 0.2s ease;
-    box-shadow: none;
-    border: none;
-}
-
-.back-to-portal-button:hover {
-    transform: none;
-    box-shadow: none;
-    background: var(--color-text-body);
-}
-
-/* === コンテンツエリア === */
-#content-area {
-    padding: var(--spacing-8) var(--spacing-6);
-    background: var(--color-background);
-}
-
 .content-section.active {
-    animation: none; /* フェードインを無効化 */
+    display: block;
+    animation: fadeIn 0.4s ease;
 }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 
 /* === タイポグラフィ === */
 h2 {
-    font-size: clamp(1.5rem, 3vw, 1.8rem);
-    font-weight: 900;
-    margin: var(--spacing-8) 0 var(--spacing-4);
-    color: var(--color-text-header);
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 900; /* 文字を力強く */
+    margin: var(--spacing-10) 0 var(--spacing-6);
+    color: var(--gray-800);
 }
 
 h3 {
-    font-size: clamp(1.2rem, 2.5vw, 1.4rem);
-    font-weight: 700;
-    margin: var(--spacing-6) 0 var(--spacing-3);
-    color: var(--color-text-body);
+    font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+    font-weight: 700; /* 文字を力強く */
+    margin: var(--spacing-8) 0 var(--spacing-4);
+    color: var(--gray-800);
 }
 
-p {
-    margin: var(--spacing-4) 0;
-    color: var(--color-text-body);
-}
-
-a {
-    color: var(--color-accent);
-    text-decoration: underline;
-    font-weight: 700;
-}
-
-a:hover {
-    color: var(--color-primary);
-}
-
-/* === リスト (PDFのデザインを忠実に再現) === */
+/* === リスト (元のアイコンを維持しつつ、色をテーマに合わせる) === */
 ul, ol {
     list-style: none;
     margin: var(--spacing-4) 0;
@@ -311,32 +320,31 @@ ul, ol {
 
 ul li, ol li {
     position: relative;
-    padding: var(--spacing-3) 0 var(--spacing-3) var(--spacing-10);
-    margin: var(--spacing-2) 0;
-    background: none;
-    border: none;
-    border-radius: 0;
-    box-shadow: none;
+    padding: var(--spacing-4) var(--spacing-4) var(--spacing-4) var(--spacing-12);
+    margin: var(--spacing-3) 0;
+    background: white;
+    border-radius: var(--radius-md);
+    border-left: 4px solid var(--theme-color-primary); /* デフォルトは青 */
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease;
 }
 
 ul li:hover, ol li:hover {
-    box-shadow: none;
-    transform: none;
+    box-shadow: var(--shadow-md);
+    transform: translateX(4px);
 }
 
-/* 通常のリスト（・） */
 ul li::before {
-    content: "・";
+    content: "✓";
     position: absolute;
-    left: var(--spacing-4);
+    left: var(--spacing-5);
     top: 50%;
     transform: translateY(-50%);
-    color: var(--color-primary);
+    color: var(--theme-color-primary);
     font-weight: 900;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
 }
 
-/* 番号付きリスト（円形） */
 ol {
     counter-reset: item;
 }
@@ -345,121 +353,57 @@ ol li::before {
     content: counter(item);
     counter-increment: item;
     position: absolute;
-    left: var(--spacing-4);
+    left: var(--spacing-5);
     top: 50%;
     transform: translateY(-50%);
-    background: var(--color-primary);
+    background: var(--theme-color-primary);
     color: white;
-    width: 28px;
-    height: 28px;
+    width: 28px; height: 28px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1rem;
-    font-weight: 700;
-}
-
-/* テーマカラーごとのリストスタイル */
-.theme-disaster ul li, .theme-disaster ol li {
-    padding-left: var(--spacing-12);
-    border: none;
-    background: var(--color-box-bg-pink);
-}
-
-.theme-disaster ul li::before, .theme-disaster ol li::before {
-    background: var(--color-warning);
-    left: var(--spacing-5);
-}
-.theme-disaster ul li::before {
-    content: "✕";
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    width: 28px;
-    height: 28px;
-    border-radius: 0;
-}
-
-/* === Q&A & 汎用リンクボタン === */
-.qa-item, .quiz-section, .content-link-button {
-    background: var(--color-background);
-    border-radius: 0;
-    margin-bottom: var(--spacing-4);
-    box-shadow: none;
-    border: 1px solid var(--color-border);
-    transition: none;
-}
-
-.qa-item:hover, .quiz-section:hover, .content-link-button:hover {
-    box-shadow: none;
-    transform: none;
-    background: var(--color-background-pale);
-}
-
-.quiz-button {
-    display: inline-block;
-    padding: var(--spacing-4) var(--spacing-8);
-    background: var(--color-primary);
-    color: white;
-    border: none;
-    border-radius: 0;
-    font-size: 1.1rem;
-    font-weight: 700;
-    text-decoration: none;
-}
-.quiz-button:hover {
-    background: var(--color-accent);
-    text-decoration: none;
-    color: white;
-}
-.quiz-button::after { content: none; }
-
-
-/* === フッター === */
-footer {
-    text-align: center;
-    padding: var(--spacing-6);
-    background: var(--color-background-pale);
-    color: var(--color-text-light);
     font-size: 0.875rem;
-    border-top: 1px solid var(--color-border);
+    font-weight: 700;
 }
 
-/* === PDF表示関連 === */
-.pdf-embed-container {
-    width: 100%;
-    height: 100vh;
-    border: none;
-}
+/* 災害テーマのリストスタイル */
+.theme-disaster ul li, .theme-disaster ol li { border-left-color: var(--theme-color-disaster); }
+.theme-disaster ul li::before { color: var(--theme-color-disaster); }
+.theme-disaster ol li::before { background-color: var(--theme-color-disaster); }
 
-/* === 折りたたみセクション === */
-.collapsible-trigger { cursor: pointer; }
-.collapsible-trigger::after {
-    content: '▼';
-    float: right;
-    transition: transform 0.3s ease;
-}
-.is-open .collapsible-trigger::after { transform: rotate(180deg); }
-.collapsible-content {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.5s ease-out;
-}
-.is-open .collapsible-content {
-    max-height: 500px;
-}
+/* === その他の要素 (変更なし or 色の変数置換のみ) === */
+.back-to-portal-button { display: inline-flex; align-items: center; background: linear-gradient(135deg, #6c757d 0%, #495057 100%); color: white; padding: var(--spacing-3) var(--spacing-6); margin: var(--spacing-8) var(--spacing-6) 0; text-decoration: none; border-radius: var(--radius); font-size: 0.9375rem; font-weight: 600; transition: all 0.2s ease; box-shadow: var(--shadow); border: none; }
+.back-to-portal-button::before { content: "←"; margin-right: var(--spacing-2); font-weight: 900; }
+.back-to-portal-button:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+.quiz-section { text-align: center; padding: var(--spacing-10); background: white; border-radius: var(--radius-xl); margin-top: var(--spacing-8); box-shadow: var(--shadow-md); border: 2px solid var(--gray-200); }
+.quiz-button { display: inline-flex; align-items: center; gap: var(--spacing-3); padding: var(--spacing-4) var(--spacing-8); color: white; border: none; border-radius: var(--radius-lg); font-size: 1.125rem; font-weight: 700; text-decoration: none; cursor: pointer; transition: all 0.3s ease; box-shadow: var(--shadow-md); }
+.quiz-button:hover { transform: translateY(-4px); box-shadow: var(--shadow-xl); }
+.theme-nutrition .quiz-button { background: linear-gradient(135deg, var(--theme-color-primary-light), var(--theme-color-primary)); }
+.theme-disaster .quiz-button { background: linear-gradient(135deg, #ef4444, var(--theme-color-disaster)); }
 
-/* === レスポンシブ対応 === */
+/* PDF表示用のスタイル */
+.pdf-embed-container { width: 100%; height: 80vh; border: none; }
+
+/* 折りたたみ機能用のスタイル */
+.collapsible-trigger { cursor: pointer; position: relative; padding-right: 25px; }
+.collapsible-trigger::after { content: '▼'; position: absolute; right: 5px; top: 50%; transform: translateY(-50%); transition: transform 0.3s ease; }
+.is-open .collapsible-trigger::after { transform: translateY(-50%) rotate(180deg); }
+.collapsible-content { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out; }
+.is-open .collapsible-content { max-height: 500px; }
+
+
+/* === フッター (変更なし) === */
+footer { text-align: center; padding: var(--spacing-8); background: var(--gray-100); color: var(--gray-600); font-size: 0.875rem; }
+
+/* === レスポンシブ (変更なし) === */
 @media (max-width: 768px) {
-    .container {
-        margin: 0;
-        border: none;
-    }
-    
-    header, .portal-header, #content-area, #dialysis-status, .portal-nav, .page-nav {
-        padding-left: var(--spacing-4);
-        padding-right: var(--spacing-4);
-    }
+    .container { margin: var(--spacing-4); border-radius: var(--radius-xl); }
+    .portal-header { padding: var(--spacing-8) var(--spacing-4); }
+    #content-area, #dialysis-status { padding: var(--spacing-6) var(--spacing-4); }
+    .portal-nav { grid-template-columns: 1fr; padding: var(--spacing-6) var(--spacing-4); }
+    .status-container { grid-template-columns: 1fr; }
+    .page-nav { padding: 0 var(--spacing-4) var(--spacing-4); }
+    .back-to-portal-button { margin: var(--spacing-6) var(--spacing-4) 0; }
+    header { padding: var(--spacing-8) var(--spacing-4) var(--spacing-6); }
 }
