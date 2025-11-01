@@ -1,40 +1,22 @@
 /* Google Fonts - Inter & Noto Sans JP */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
 
-/* === CSS変数 === */
+/* === CSS変数 (梶本クリニック防災ハンドブック デザインシステム) === */
 :root {
     --font-primary: 'Inter', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
     
     /* カラーパレット */
-    --gray-50: #f9fafb;
-    --gray-100: #f3f4f6;
-    --gray-200: #e5e7eb;
-    --gray-300: #d1d5db;
-    --gray-400: #9ca3af;
-    --gray-500: #6b7280;
-    --gray-600: #4b5563;
-    --gray-700: #374151;
-    --gray-800: #1f2937;
-    --gray-900: #111827;
-    
-    /* テーマカラー */
-    --blue-500: #3b82f6;
-    --blue-600: #2563eb;
-    --blue-700: #1d4ed8;
-    
-    --red-500: #ef4444;
-    --red-600: #dc2626;
-    
-    --green-500: #10b981;
-    --green-600: #059669;
-    
-    --purple-500: #8b5cf6;
-    --purple-600: #7c3aed;
-    
-    --orange-500: #f97316;
-    --orange-600: #ea580c;
-    
-    --amber-500: #f59e0b;
+    --color-primary: #00586A;       /* メインの濃い青 */
+    --color-accent: #00A0C1;        /* ロゴなどの明るい青 */
+    --color-text-body: #333333;      /* 本文の濃いグレー */
+    --color-text-header: #00586A;    /* 見出しの青 */
+    --color-text-light: #666666;    /* 注釈などの薄いグレー */
+    --color-warning: #D90000;        /* 危険を知らせる赤 */
+    --color-background: #FFFFFF;    /* コンテンツ背景の白 */
+    --color-background-pale: #F0F8FA; /* 全体背景の非常に薄い青 */
+    --color-border: #DDDDDD;        /* 境界線や枠線のグレー */
+    --color-box-bg-blue: #E6F4F7;   /* 水色の背景ボックス */
+    --color-box-bg-pink: #FFF0F0;   /* ピンク色の背景ボックス */
     
     /* スペーシング */
     --spacing-1: 0.25rem;
@@ -47,21 +29,6 @@
     --spacing-10: 2.5rem;
     --spacing-12: 3rem;
     --spacing-16: 4rem;
-    
-    /* シャドウ */
-    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-    
-    /* ボーダーラジアス */
-    --radius-sm: 0.375rem;
-    --radius: 0.5rem;
-    --radius-md: 0.75rem;
-    --radius-lg: 1rem;
-    --radius-xl: 1.5rem;
-    --radius-2xl: 2rem;
 }
 
 /* === リセット === */
@@ -71,18 +38,12 @@
     padding: 0;
 }
 
-/* === 修正後の body スタイル === */
+/* === 基本スタイル === */
 body {
     font-family: var(--font-primary);
-    line-height: 1.6;
-    color: var(--gray-900);
-    /* ↓ここから変更↓ */
-    background-image: url('files/background-main.png'); /* 1枚目の画像をPNG形式で指定 */
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    /* ↑ここまで変更↑ */
+    line-height: 1.7;
+    color: var(--color-text-body);
+    background-color: var(--color-background-pale);
     min-height: 100vh;
     font-size: 16px;
     -webkit-font-smoothing: antialiased;
@@ -91,49 +52,52 @@ body {
 .container {
     max-width: 1200px;
     margin: var(--spacing-8) auto;
-    background: white;
-    border-radius: var(--radius-2xl);
+    background: var(--color-background);
+    border: 1px solid var(--color-border);
+    /* PDFのシャープなデザインを反映 */
+    border-radius: 0;
     overflow: hidden;
-    box-shadow: var(--shadow-xl);
+    box-shadow: none;
 }
 
-/* === 修正後の .portal-header スタイル === */
-.portal-header {
-    text-align: center;
-    padding: var(--spacing-12) var(--spacing-6);
-    /* ↓ここから変更↓ */
-    background-image: url('files/background-header.png'); /* 2枚目の画像をPNG形式で指定 */
-    background-size: cover;
-    background-position: center center;
-    color: var(--gray-800); /* 文字色を白から濃いグレーに変更（推奨） */
-    /* ↑ここまで変更↑ */
-    position: relative;
-    overflow: hidden;
+/* === ヘッダー === */
+header, .portal-header {
+    text-align: left;
+    padding: var(--spacing-8) var(--spacing-6);
+    background: none;
+    color: var(--color-text-header);
+    border-bottom: 1px solid var(--color-border);
 }
 
-/* 文字に影をつけて、さらに読みやすくする（推奨）*/
-.portal-header h1,
+header h1, .portal-header h1 {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 900;
+    color: var(--color-text-header);
+    text-shadow: none;
+    padding-bottom: var(--spacing-4);
+    border-bottom: 4px solid var(--color-primary);
+    display: inline-block;
+}
+
 .portal-header p {
-    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.4);
+    text-shadow: none;
+    color: var(--color-text-body);
 }
 
-/* === ▼▼▼ ここからCSSを修正 ▼▼▼ === */
 /* === 透析ステータス === */
 #dialysis-status {
-    /* background: var(--gray-50); <-- 背景色を削除 */
-    padding: var(--spacing-10) var(--spacing-6); /* 余白を調整 */
-    border-bottom: 2px solid var(--gray-200); /* ナビゲーションとの境界線を追加 */
+    padding: var(--spacing-8) var(--spacing-6);
+    border-bottom: 1px solid var(--color-border);
+    background-color: var(--color-background);
 }
 
 #dialysis-status h2 {
-    font-size: clamp(1.5rem, 3vw, 2rem);
-    font-weight: 800;
+    font-size: clamp(1.5rem, 3vw, 1.8rem);
+    font-weight: 700;
     text-align: center;
-    margin-top: 0; /* 上部の余白を削除 */
-    margin-bottom: var(--spacing-8);
-    color: var(--gray-800);
+    margin: 0 0 var(--spacing-6) 0;
+    color: var(--color-text-header);
 }
-/* === ▲▲▲ ここまでCSSを修正 ▲▲▲ === */
 
 .status-container {
     display: grid;
@@ -144,293 +108,202 @@ body {
 }
 
 .status-item {
-    background: white;
-    border-radius: var(--radius-xl);
-    padding: var(--spacing-8);
-    box-shadow: var(--shadow-md);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 2px solid transparent;
+    background: var(--color-background);
+    border-radius: 0;
+    padding: var(--spacing-6);
+    border: 1px solid var(--color-border);
+    box-shadow: none;
+    transition: none;
 }
 
 .status-item:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-xl);
-    border-color: var(--amber-500);
+    transform: none;
+    box-shadow: none;
+    border-color: var(--color-primary);
 }
 
 .status-item h3 {
     font-size: 1rem;
     font-weight: 700;
-    color: var(--gray-600);
-    margin-bottom: var(--spacing-4);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    color: var(--color-text-light);
+    margin-bottom: var(--spacing-3);
+    text-transform: none;
+    letter-spacing: normal;
 }
 
 .status-text {
-    font-size: 2rem;
-    font-weight: 900;
-    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 700;
 }
 
-.status-ok { color: var(--green-500); }
-.status-ng { color: var(--red-500); }
+.status-ok { color: var(--color-primary); }
+.status-ng { color: var(--color-warning); }
 
 .status-text .reason {
-    display: block;
     font-size: 0.875rem;
     font-weight: 400;
-    color: var(--gray-500);
-    margin-top: var(--spacing-2);
+    color: var(--color-text-light);
 }
 
 .status-note {
     text-align: center;
-    color: var(--gray-500);
+    color: var(--color-text-light);
     font-size: 0.875rem;
-    margin-top: var(--spacing-8);
+    margin-top: var(--spacing-6);
 }
 
-/* === カードタイル型ポータルナビゲーション === */
+/* === カードタイル型ポータルナビゲーション (PDFデザインに合わせシンプル化) === */
 .portal-nav {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: var(--spacing-6);
-    padding: var(--spacing-10) var(--spacing-6);
-    background: white;
+    padding: var(--spacing-8) var(--spacing-6);
+    background: var(--color-background-pale);
 }
 
 .portal-button {
-    position: relative;
     display: flex;
     flex-direction: column;
-    padding: var(--spacing-8);
-    background: white;
-    border: 2px solid var(--gray-200);
-    border-radius: var(--radius-xl);
+    padding: var(--spacing-6);
+    background: var(--color-background);
+    border: 1px solid var(--color-border);
+    border-left: 5px solid; /* テーマカラーを左のボーダーで表現 */
+    border-radius: 0;
     text-decoration: none;
-    color: var(--gray-900);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: var(--shadow);
-    overflow: hidden;
+    color: var(--color-text-body);
+    transition: background-color 0.2s ease;
+    box-shadow: none;
 }
 
-.portal-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 6px;
-    transition: all 0.3s ease;
-}
-
-.portal-button.theme-nutrition::before { background: var(--blue-500); }
-.portal-button.theme-disaster::before { background: var(--red-500); }
-.portal-button.theme-shunt::before { background: var(--green-500); }
-.portal-button.theme-friend::before { background: var(--purple-500); }
-.portal-button.theme-qa::before { background: var(--orange-500); }
+.portal-button.theme-nutrition { border-left-color: var(--color-accent); }
+.portal-button.theme-disaster { border-left-color: var(--color-warning); }
+.portal-button.theme-shunt { border-left-color: #10b981; }
+.portal-button.theme-friend { border-left-color: #8b5cf6; }
+.portal-button.theme-qa { border-left-color: #f97316; }
 
 .portal-button:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-xl);
-    border-color: transparent;
+    transform: none;
+    box-shadow: none;
+    background: var(--color-background-pale);
+    border-color: var(--color-border);
 }
-
-.portal-button.theme-nutrition:hover { border-color: var(--blue-500); background: linear-gradient(to bottom, white, #eff6ff); }
-.portal-button.theme-disaster:hover { border-color: var(--red-500); background: linear-gradient(to bottom, white, #fef2f2); }
-.portal-button.theme-shunt:hover { border-color: var(--green-500); background: linear-gradient(to bottom, white, #ecfdf5); }
-.portal-button.theme-friend:hover { border-color: var(--purple-500); background: linear-gradient(to bottom, white, #f5f3ff); }
-.portal-button.theme-qa:hover { border-color: var(--orange-500); background: linear-gradient(to bottom, white, #fff7ed); }
 
 .portal-button .button-title {
-    font-size: 1.5rem;
-    font-weight: 800;
-    margin-bottom: var(--spacing-3);
-    letter-spacing: -0.02em;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: var(--spacing-2);
 }
-
-.portal-button.theme-nutrition .button-title { color: var(--blue-600); }
-.portal-button.theme-disaster .button-title { color: var(--red-600); }
-.portal-button.theme-shunt .button-title { color: var(--green-600); }
-.portal-button.theme-friend .button-title { color: var(--purple-600); }
-.portal-button.theme-qa .button-title { color: var(--orange-600); }
 
 .portal-button .button-desc {
     font-size: 0.9375rem;
-    color: var(--gray-600);
-    line-height: 1.6;
+    color: var(--color-text-light);
 }
 
-.portal-button::after {
-    content: '→';
-    position: absolute;
-    right: var(--spacing-6);
-    bottom: var(--spacing-6);
-    font-size: 1.75rem;
-    font-weight: 900;
-    opacity: 0.15;
-    transition: all 0.3s ease;
+.portal-button::before, .portal-button::after {
+    display: none; /* 装飾を削除 */
 }
-
-.portal-button:hover::after {
-    opacity: 0.4;
-    transform: translateX(4px);
-}
-
-/* === 下層ページヘッダー === */
-header {
-    text-align: center;
-    padding: var(--spacing-12) var(--spacing-6) var(--spacing-8);
-    /* ↓ここから変更↓ */
-    background-image: url('files/background-header.png'); /* 2枚目の画像をPNG形式で指定 */
-    background-size: cover;
-    background-position: center center;
-    /* ↑ここまで変更↑ */
-}
-
-header h1 {
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
-}
-
-.theme-nutrition header h1 { color: var(--blue-600); }
-.theme-disaster header h1 { color: var(--red-600); }
-.theme-shunt header h1 { color: var(--green-600); }
-.theme-friend header h1 { color: var(--purple-600); }
-.theme-qa header h1 { color: var(--orange-600); }
 
 /* === タブナビゲーション === */
 .page-nav {
     display: flex;
-    gap: var(--spacing-2);
-    padding: 0 var(--spacing-6) var(--spacing-6);
-    background: white;
-    border-bottom: 2px solid var(--gray-200);
+    gap: var(--spacing-1);
+    padding: 0 var(--spacing-6);
+    background: var(--color-background);
+    border-bottom: 1px solid var(--color-border);
     overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-}
-
-.page-nav::-webkit-scrollbar {
-    height: 4px;
-}
-
-.page-nav::-webkit-scrollbar-track {
-    background: var(--gray-100);
-}
-
-.page-nav::-webkit-scrollbar-thumb {
-    background: var(--gray-300);
-    border-radius: 2px;
 }
 
 .nav-button {
-    position: relative;
-    padding: var(--spacing-4) var(--spacing-6);
-    background: transparent;
-    color: var(--gray-600);
-    text-decoration: none;
+    padding: var(--spacing-4) var(--spacing-5);
+    color: var(--color-text-light);
     border: none;
-    border-radius: var(--radius) var(--radius) 0 0;
-    font-weight: 600;
-    font-size: 0.9375rem;
+    border-bottom: 3px solid transparent;
+    border-radius: 0;
+    font-weight: 700;
+    font-size: 1rem;
     transition: all 0.2s ease;
     white-space: nowrap;
     cursor: pointer;
+    background: transparent;
 }
 
 .nav-button:hover {
-    color: var(--gray-900);
-    background: var(--gray-50);
+    color: var(--color-text-body);
 }
 
 .nav-button.active {
-    color: var(--gray-900);
-    background: var(--gray-50);
+    color: var(--color-primary);
+    background: transparent;
+    border-bottom-color: var(--color-primary);
 }
 
 .nav-button.active::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    right: 0;
-    height: 3px;
-    border-radius: 3px 3px 0 0;
+    display: none;
 }
 
-.theme-nutrition .nav-button.active::after { background: var(--blue-500); }
-.theme-disaster .nav-button.active::after { background: var(--red-500); }
-.theme-qa .nav-button.active::after { background: var(--orange-500); }
-
-/* === 戻るボタン（現状維持） === */
+/* === 戻るボタン === */
 .back-to-portal-button {
     display: inline-flex;
-    align-items: center;
-    background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+    background: var(--color-text-light);
     color: white;
     padding: var(--spacing-3) var(--spacing-6);
     margin: var(--spacing-8) var(--spacing-6) 0;
     text-decoration: none;
-    border-radius: var(--radius);
+    border-radius: 0;
     font-size: 0.9375rem;
-    font-weight: 600;
-    transition: all 0.2s ease;
-    box-shadow: var(--shadow);
+    font-weight: 700;
+    transition: background-color 0.2s ease;
+    box-shadow: none;
     border: none;
 }
 
-.back-to-portal-button::before {
-    content: "←";
-    margin-right: var(--spacing-2);
-    font-weight: 900;
-}
-
 .back-to-portal-button:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
+    transform: none;
+    box-shadow: none;
+    background: var(--color-text-body);
 }
 
 /* === コンテンツエリア === */
 #content-area {
-    padding: var(--spacing-10) var(--spacing-6);
-    background: var(--gray-50);
-}
-
-.content-section {
-    display: none;
+    padding: var(--spacing-8) var(--spacing-6);
+    background: var(--color-background);
 }
 
 .content-section.active {
-    display: block;
-    animation: fadeIn 0.4s ease;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    animation: none; /* フェードインを無効化 */
 }
 
 /* === タイポグラフィ === */
 h2 {
-    font-size: clamp(1.5rem, 3vw, 2rem);
-    font-weight: 800;
-    margin: var(--spacing-10) 0 var(--spacing-6);
-    color: var(--gray-800);
+    font-size: clamp(1.5rem, 3vw, 1.8rem);
+    font-weight: 900;
+    margin: var(--spacing-8) 0 var(--spacing-4);
+    color: var(--color-text-header);
 }
 
 h3 {
-    font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+    font-size: clamp(1.2rem, 2.5vw, 1.4rem);
     font-weight: 700;
-    margin: var(--spacing-8) 0 var(--spacing-4);
-    color: var(--gray-800);
+    margin: var(--spacing-6) 0 var(--spacing-3);
+    color: var(--color-text-body);
 }
 
 p {
     margin: var(--spacing-4) 0;
-    color: var(--gray-700);
+    color: var(--color-text-body);
 }
 
-/* === リスト === */
+a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    font-weight: 700;
+}
+
+a:hover {
+    color: var(--color-primary);
+}
+
+/* === リスト (PDFのデザインを忠実に再現) === */
 ul, ol {
     list-style: none;
     margin: var(--spacing-4) 0;
@@ -438,31 +311,32 @@ ul, ol {
 
 ul li, ol li {
     position: relative;
-    padding: var(--spacing-4) var(--spacing-4) var(--spacing-4) var(--spacing-12);
-    margin: var(--spacing-3) 0;
-    background: white;
-    border-radius: var(--radius-md);
-    border-left: 4px solid var(--blue-500);
-    box-shadow: var(--shadow-sm);
-    transition: all 0.2s ease;
+    padding: var(--spacing-3) 0 var(--spacing-3) var(--spacing-10);
+    margin: var(--spacing-2) 0;
+    background: none;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
 }
 
 ul li:hover, ol li:hover {
-    box-shadow: var(--shadow-md);
-    transform: translateX(4px);
+    box-shadow: none;
+    transform: none;
 }
 
+/* 通常のリスト（・） */
 ul li::before {
-    content: "✓";
+    content: "・";
     position: absolute;
-    left: var(--spacing-5);
+    left: var(--spacing-4);
     top: 50%;
     transform: translateY(-50%);
-    color: var(--blue-500);
+    color: var(--color-primary);
     font-weight: 900;
-    font-size: 1.25rem;
+    font-size: 1.5rem;
 }
 
+/* 番号付きリスト（円形） */
 ol {
     counter-reset: item;
 }
@@ -471,10 +345,10 @@ ol li::before {
     content: counter(item);
     counter-increment: item;
     position: absolute;
-    left: var(--spacing-5);
+    left: var(--spacing-4);
     top: 50%;
     transform: translateY(-50%);
-    background: var(--blue-500);
+    background: var(--color-primary);
     color: white;
     width: 28px;
     height: 28px;
@@ -482,476 +356,110 @@ ol li::before {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.875rem;
+    font-size: 1rem;
     font-weight: 700;
 }
 
-.theme-nutrition ul li::before,
-.theme-nutrition ol li::before { background-color: var(--blue-500); }
-.theme-nutrition ul li, .theme-nutrition ol li { border-left-color: var(--blue-500); }
-
-.theme-disaster ul li::before,
-.theme-disaster ol li::before { background-color: var(--red-500); }
-.theme-disaster ul li, .theme-disaster ol li { border-left-color: var(--red-500); }
-
-a {
-    color: var(--blue-600);
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.2s ease;
+/* テーマカラーごとのリストスタイル */
+.theme-disaster ul li, .theme-disaster ol li {
+    padding-left: var(--spacing-12);
+    border: none;
+    background: var(--color-box-bg-pink);
 }
 
-a:hover {
-    color: var(--blue-700);
-    text-decoration: underline;
+.theme-disaster ul li::before, .theme-disaster ol li::before {
+    background: var(--color-warning);
+    left: var(--spacing-5);
 }
-
-/* === Q&Aカード === */
-.qa-item {
-    background: white;
-    border-radius: var(--radius-lg);
-    margin-bottom: var(--spacing-6);
-    box-shadow: var(--shadow);
-    overflow: hidden;
-    border: 1px solid var(--gray-200);
-    transition: all 0.3s ease;
-}
-
-.qa-item:hover {
-    box-shadow: var(--shadow-lg);
-    transform: translateY(-4px);
-}
-
-.qa-item .question {
-    padding: var(--spacing-6);
-    display: flex;
-    align-items: flex-start;
-    gap: var(--spacing-4);
-    background: var(--gray-50);
-    font-weight: 700;
-}
-
-.qa-item .answer {
-    padding: var(--spacing-6);
-    display: flex;
-    align-items: flex-start;
-    gap: var(--spacing-4);
-    color: var(--gray-700);
-    line-height: 1.8;
-}
-
-.qa-item .q-icon,
-.qa-item .a-icon {
-    flex-shrink: 0;
-    width: 36px;
-    height: 36px;
+.theme-disaster ul li::before {
+    content: "✕";
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: var(--radius);
-    font-weight: 900;
-    font-size: 1.125rem;
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 0;
 }
 
-.qa-item .q-icon {
-    background: var(--blue-100);
-    color: var(--blue-600);
+/* === Q&A & 汎用リンクボタン === */
+.qa-item, .quiz-section, .content-link-button {
+    background: var(--color-background);
+    border-radius: 0;
+    margin-bottom: var(--spacing-4);
+    box-shadow: none;
+    border: 1px solid var(--color-border);
+    transition: none;
 }
 
-.qa-item .a-icon {
-    background: var(--green-100);
-    color: var(--green-600);
-}
-
-.theme-nutrition .qa-item .q-icon { background: #eff6ff; color: var(--blue-600); }
-.theme-disaster .qa-item .q-icon { background: #fef2f2; color: var(--red-600); }
-.theme-qa .qa-item .q-icon { background: #fff7ed; color: var(--orange-600); }
-
-/* === クイズセクション === */
-.quiz-section {
-    text-align: center;
-    padding: var(--spacing-10);
-    background: white;
-    border-radius: var(--radius-xl);
-    margin-top: var(--spacing-8);
-    box-shadow: var(--shadow-md);
-    border: 2px solid var(--gray-200);
+.qa-item:hover, .quiz-section:hover, .content-link-button:hover {
+    box-shadow: none;
+    transform: none;
+    background: var(--color-background-pale);
 }
 
 .quiz-button {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--spacing-3);
+    display: inline-block;
     padding: var(--spacing-4) var(--spacing-8);
-    background: linear-gradient(135deg, var(--blue-500), var(--blue-600));
+    background: var(--color-primary);
     color: white;
     border: none;
-    border-radius: var(--radius-lg);
-    font-size: 1.125rem;
+    border-radius: 0;
+    font-size: 1.1rem;
     font-weight: 700;
     text-decoration: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: var(--shadow-md);
 }
-
-.quiz-button::after {
-    content: '→';
-    font-weight: 900;
-    transition: transform 0.3s ease;
-}
-
 .quiz-button:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-xl);
-}
-
-.quiz-button:hover::after {
-    transform: translateX(4px);
-}
-
-.theme-nutrition .quiz-button { background: linear-gradient(135deg, var(--green-500), var(--green-600)); }
-.theme-disaster .quiz-button { background: linear-gradient(135deg, var(--red-500), var(--red-600)); }
-
-/* === 健康コラムカード === */
-.content-link-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: var(--spacing-6);
-    margin-top: var(--spacing-8);
-}
-
-.content-link-button {
-    display: flex;
-    flex-direction: column;
-    padding: var(--spacing-8);
-    background: white;
-    border: 2px solid var(--gray-200);
-    border-radius: var(--radius-xl);
+    background: var(--color-accent);
     text-decoration: none;
-    color: var(--gray-900);
-    transition: all 0.3s ease;
-    box-shadow: var(--shadow);
-    position: relative;
-    overflow: hidden;
-}
-
-.content-link-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 6px;
-    background: var(--purple-500);
-}
-
-.content-link-button:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-xl);
-    border-color: var(--purple-500);
-    background: linear-gradient(to bottom, white, #f5f3ff);
-}
-
-.content-link-button .button-title {
-    font-size: 1.375rem;
-    font-weight: 800;
-    color: var(--purple-600);
-    margin-bottom: var(--spacing-3);
-}
-
-.content-link-button .button-desc {
-    font-size: 0.9375rem;
-    color: var(--gray-600);
-    line-height: 1.6;
-}
-
-.content-link-button::after {
-    content: '→';
-    position: absolute;
-    right: var(--spacing-6);
-    bottom: var(--spacing-6);
-    font-size: 1.75rem;
-    font-weight: 900;
-    color: var(--purple-500);
-    opacity: 0.15;
-    transition: all 0.3s ease;
-}
-
-.content-link-button:hover::after {
-    opacity: 0.4;
-    transform: translateX(4px);
-}
-
-/* === PDF関連 === */
-.pdf-selector-container {
-    background: white;
-    padding: var(--spacing-6);
-    border-radius: var(--radius-lg);
-    margin: var(--spacing-6) 0;
-    box-shadow: var(--shadow-sm);
-    border: 1px solid var(--gray-200);
-}
-
-.pdf-selector-container label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: var(--spacing-3);
-    color: var(--gray-700);
-}
-
-.pdf-selector-container select {
-    width: 100%;
-    padding: var(--spacing-3) var(--spacing-4);
-    border: 2px solid var(--gray-300);
-    border-radius: var(--radius);
-    font-family: var(--font-primary);
-    font-size: 1rem;
-    background: white;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.pdf-selector-container select:focus {
-    outline: none;
-    border-color: var(--blue-500);
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-.pdf-viewer-container {
-    margin-top: var(--spacing-6);
-}
-
-.pdf-viewer-container iframe {
-    width: 100%;
-    aspect-ratio: 1 / 1.414;
-    border: 1px solid var(--gray-200);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-md);
-}
-
-.pdf-viewer-container .pdf-link {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--spacing-2);
-    margin-top: var(--spacing-4);
-    padding: var(--spacing-3) var(--spacing-6);
-    background: var(--blue-500);
-    color: white;
-    border-radius: var(--radius);
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.2s ease;
-}
-
-.pdf-viewer-container .pdf-link:hover {
-    background: var(--blue-600);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-}
-
-/* === レシピグリッド === */
-.recipe-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: var(--spacing-6);
-    margin-top: var(--spacing-6);
-}
-
-.recipe-item {
-    background: white;
-    border: 2px solid var(--gray-200);
-    border-radius: var(--radius-lg);
-    padding: var(--spacing-6);
-    box-shadow: var(--shadow);
-    transition: all 0.3s ease;
-}
-
-.recipe-item:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
-    border-color: var(--blue-500);
-}
-
-.recipe-item iframe {
-    width: 100%;
-    height: 300px;
-    border: 1px solid var(--gray-200);
-    border-radius: var(--radius);
-    margin-bottom: var(--spacing-4);
-}
-
-.recipe-item .pdf-link {
-    display: block;
-    text-align: center;
-    padding: var(--spacing-3);
-    border: 2px solid var(--blue-500);
-    border-radius: var(--radius);
-    color: var(--blue-600);
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.2s ease;
-}
-
-.recipe-item .pdf-link:hover {
-    background: var(--blue-500);
     color: white;
 }
+.quiz-button::after { content: none; }
 
-/* === Q&A検索 === */
-.qa-search-container {
-    padding: var(--spacing-10) var(--spacing-6);
-    background: white;
-    text-align: center;
-}
 
-/* 修正点：セレクタを # から . に変更しました */
-.qa-search-input {
-    width: 90%;
-    max-width: 800px;
-    padding: var(--spacing-5) var(--spacing-6); /* 縦20px, 横24pxの余白 */
-    font-size: 1.5rem; /* 24px相当の文字サイズ */
-    font-family: var(--font-primary);
-    border: 3px solid var(--gray-300);
-    border-radius: var(--radius-2xl); /* 角を丸くする */
-    box-shadow: var(--shadow-sm);
-    transition: all 0.2s ease;
-    -webkit-appearance: none; /* OS標準のスタイルをリセット */
-    -moz-appearance: none;
-    appearance: none;
-}
-
-.qa-search-input:focus {
-    outline: none;
-    border-color: var(--orange-500);
-    box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.1), var(--shadow-md);
-}
-
-.qa-search-input::placeholder {
-    color: var(--gray-400);
-}
-
-#qa-results-container {
-    padding: var(--spacing-6);
-    background: var(--gray-50);
-}
-
-.qa-search-item {
-    background: white;
-    border-radius: var(--radius-lg);
-    margin-bottom: var(--spacing-4);
-    box-shadow: var(--shadow);
-    overflow: hidden;
-    border: 1px solid var(--gray-200);
-    transition: all 0.3s ease;
-}
-
-.qa-search-item:hover {
-    box-shadow: var(--shadow-lg);
-    transform: translateY(-2px);
-}
-
-.qa-search-question {
-    padding: var(--spacing-6);
-    font-weight: 700;
-    font-size: 1.0625rem;
-    cursor: pointer;
-    background: var(--gray-50);
-    position: relative;
-    transition: all 0.2s ease;
-}
-
-.qa-search-question:hover {
-    background: #fff7ed;
-}
-
-.qa-search-question::after {
-    content: '▼';
-    position: absolute;
-    right: var(--spacing-6);
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--orange-500);
-    font-weight: 900;
-    transition: transform 0.3s ease;
-}
-
-.qa-search-item.active .qa-search-question::after {
-    transform: translateY(-50%) rotate(180deg);
-}
-
-.qa-search-answer {
-    display: none;
-    padding: var(--spacing-6);
-    color: var(--gray-700);
-    line-height: 1.8;
-}
-
-.qa-search-item.active .qa-search-answer {
-    display: block;
-    animation: fadeIn 0.3s ease;
-}
-
-.qa-no-result,
-.qa-loading,
-.qa-initial-message {
-    padding: var(--spacing-12);
-    text-align: center;
-    color: var(--gray-500);
-    background: white;
-    border-radius: var(--radius-lg);
-    border: 2px dashed var(--gray-300);
-    margin: var(--spacing-6) 0;
-}
-
-/* === Footer === */
+/* === フッター === */
 footer {
     text-align: center;
-    padding: var(--spacing-8);
-    background: var(--gray-100);
-    color: var(--gray-600);
+    padding: var(--spacing-6);
+    background: var(--color-background-pale);
+    color: var(--color-text-light);
     font-size: 0.875rem;
+    border-top: 1px solid var(--color-border);
 }
 
-/* === レスポンシブ === */
+/* === PDF表示関連 === */
+.pdf-embed-container {
+    width: 100%;
+    height: 100vh;
+    border: none;
+}
+
+/* === 折りたたみセクション === */
+.collapsible-trigger { cursor: pointer; }
+.collapsible-trigger::after {
+    content: '▼';
+    float: right;
+    transition: transform 0.3s ease;
+}
+.is-open .collapsible-trigger::after { transform: rotate(180deg); }
+.collapsible-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-out;
+}
+.is-open .collapsible-content {
+    max-height: 500px;
+}
+
+/* === レスポンシブ対応 === */
 @media (max-width: 768px) {
     .container {
-        margin: var(--spacing-4);
-        border-radius: var(--radius-xl);
+        margin: 0;
+        border: none;
     }
     
-    .portal-header {
-        padding: var(--spacing-8) var(--spacing-4);
-    }
-    
-    #content-area,
-    #dialysis-status {
-        padding: var(--spacing-6) var(--spacing-4);
-    }
-    
-    .portal-nav {
-        grid-template-columns: 1fr;
-        padding: var(--spacing-6) var(--spacing-4);
-    }
-    
-    .status-container {
-        grid-template-columns: 1fr;
-    }
-    
-    .page-nav {
-        padding: 0 var(--spacing-4) var(--spacing-4);
-    }
-    
-    .back-to-portal-button {
-        margin: var(--spacing-6) var(--spacing-4) 0;
-    }
-    
-    header {
-        padding: var(--spacing-8) var(--spacing-4) var(--spacing-6);
-    }
-    
-    .content-link-container,
-    .recipe-grid {
-        grid-template-columns: 1fr;
+    header, .portal-header, #content-area, #dialysis-status, .portal-nav, .page-nav {
+        padding-left: var(--spacing-4);
+        padding-right: var(--spacing-4);
     }
 }
