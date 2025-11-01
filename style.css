@@ -281,9 +281,14 @@ header h1 {
 h2 {
     font-size: clamp(1.5rem, 3vw, 2rem);
     font-weight: 900;
-    margin: var(--spacing-10) 0 var(--spacing-6);
+    margin-top: 0; /* 最初のh2の上マージンをリセット */
+    margin-bottom: var(--spacing-6);
     color: var(--gray-800);
 }
+#content-area > .content-section.active > h2:first-of-type {
+    margin-top: 0;
+}
+
 
 h3 {
     font-size: clamp(1.25rem, 2.5vw, 1.5rem);
@@ -351,7 +356,7 @@ ol li::before {
 .theme-disaster ol li::before { background-color: var(--theme-color-disaster); }
 
 
-/* === ▼▼▼ Q&Aセクション (元の形式に戻し、テーマカラーを適用) ▼▼▼ === */
+/* === Q&Aセクション === */
 .qa-search-container {
     padding: var(--spacing-10) var(--spacing-6);
     background: white;
@@ -373,96 +378,24 @@ ol li::before {
     -webkit-appearance: none;
     appearance: none;
 }
-
-/* 災害テーマのフォーカス色を適用 */
 .theme-disaster .qa-search-input:focus {
     outline: none;
     border-color: var(--theme-color-disaster);
     box-shadow: 0 0 0 4px rgba(217, 0, 0, 0.1), var(--shadow-md);
 }
+.qa-search-input::placeholder { color: var(--gray-400); }
 
-.qa-search-input::placeholder {
-    color: var(--gray-400);
-}
-
-.qa-results-container {
-    padding-top: var(--spacing-6);
-}
-
-.qa-search-item {
-    background: white;
-    border-radius: var(--radius-lg);
-    margin-bottom: var(--spacing-4);
-    box-shadow: var(--shadow);
-    overflow: hidden;
-    border: 1px solid var(--gray-200);
-    transition: all 0.3s ease;
-}
-
-.qa-search-item:hover {
-    box-shadow: var(--shadow-lg);
-    transform: translateY(-2px);
-}
-
-.qa-search-question {
-    padding: var(--spacing-6);
-    font-weight: 700;
-    font-size: 1.0625rem;
-    cursor: pointer;
-    background: var(--gray-50);
-    position: relative;
-    transition: background-color 0.2s ease;
-}
-
-/* 災害テーマのホバー色を適用 */
-.theme-disaster .qa-search-question:hover {
-    background: #fdecec; /* 薄い赤色 */
-}
-
-.qa-search-question::after {
-    content: '▼';
-    position: absolute;
-    right: var(--spacing-6);
-    top: 50%;
-    transform: translateY(-50%);
-    font-weight: 900;
-    transition: transform 0.3s ease;
-}
-
-/* 災害テーマのアイコン色を適用 */
-.theme-disaster .qa-search-question::after {
-    color: var(--theme-color-disaster);
-}
-
-.qa-search-item.active .qa-search-question::after {
-    transform: translateY(-50%) rotate(180deg);
-}
-
-.qa-search-answer {
-    display: none;
-    padding: var(--spacing-6);
-    color: var(--gray-700);
-    line-height: 1.8;
-    border-top: 1px solid var(--gray-200);
-}
-
-.qa-search-item.active .qa-search-answer {
-    display: block;
-    animation: fadeIn 0.3s ease;
-}
-
-.qa-no-result,
-.qa-loading,
-.qa-initial-message {
-    padding: var(--spacing-12);
-    text-align: center;
-    color: var(--gray-500);
-    background: white;
-    border-radius: var(--radius-lg);
-    border: 2px dashed var(--gray-300);
-    margin: var(--spacing-6) 0;
-}
-/* === ▲▲▲ Q&Aセクション ここまで ▲▲▲ === */
+.qa-results-container { padding-top: var(--spacing-6); }
+.qa-search-item { background: white; border-radius: var(--radius-lg); margin-bottom: var(--spacing-4); box-shadow: var(--shadow); overflow: hidden; border: 1px solid var(--gray-200); transition: all 0.3s ease; }
+.qa-search-item:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+.qa-search-question { padding: var(--spacing-6); font-weight: 700; font-size: 1.0625rem; cursor: pointer; background: var(--gray-50); position: relative; transition: background-color 0.2s ease; }
+.theme-disaster .qa-search-question:hover { background: #fdecec; }
+.qa-search-question::after { content: '▼'; position: absolute; right: var(--spacing-6); top: 50%; transform: translateY(-50%); font-weight: 900; transition: transform 0.3s ease; }
+.theme-disaster .qa-search-question::after { color: var(--theme-color-disaster); }
+.qa-search-item.active .qa-search-question::after { transform: translateY(-50%) rotate(180deg); }
+.qa-search-answer { display: none; padding: var(--spacing-6); color: var(--gray-700); line-height: 1.8; border-top: 1px solid var(--gray-200); }
+.qa-search-item.active .qa-search-answer { display: block; animation: fadeIn 0.3s ease; }
+.qa-no-result, .qa-loading, .qa-initial-message { padding: var(--spacing-12); text-align: center; color: var(--gray-500); background: white; border-radius: var(--radius-lg); border: 2px dashed var(--gray-300); margin: var(--spacing-6) 0; }
 
 
 /* === その他の要素 === */
@@ -476,8 +409,37 @@ ol li::before {
 .theme-disaster .quiz-button { background: linear-gradient(135deg, #ef4444, var(--theme-color-disaster)); }
 
 
-/* === PDF・折りたたみ機能 === */
-.pdf-embed-container { width: 100%; height: 80vh; border: none; }
+/* === ▼▼▼ PDF表示 & 折りたたみ機能 ▼▼▼ === */
+/* PC向け埋め込みPDF */
+.pdf-embed-desktop {
+    width: 100%;
+    height: 85vh; /* 表示領域を十分に確保 */
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    display: none; /* 初期状態（スマホ）では非表示 */
+}
+/* スマホ向けPDFリンクボタン */
+.pdf-link-mobile-wrapper {
+    margin-top: var(--spacing-8);
+    text-align: center;
+}
+.pdf-link-mobile {
+    display: inline-block;
+    padding: var(--spacing-4) var(--spacing-8);
+    background: var(--theme-color-disaster);
+    color: white;
+    border-radius: var(--radius-lg);
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    box-shadow: var(--shadow-md);
+}
+.pdf-link-mobile:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* 折りたたみ */
 .collapsible-trigger { cursor: pointer; position: relative; padding-right: 25px; }
 .collapsible-trigger::after { content: '▼'; position: absolute; right: 5px; top: 50%; transform: translateY(-50%); transition: transform 0.3s ease; }
 .is-open .collapsible-trigger::after { transform: translateY(-50%) rotate(180deg); }
@@ -489,6 +451,16 @@ ol li::before {
 footer { text-align: center; padding: var(--spacing-8); background: var(--gray-100); color: var(--gray-600); font-size: 0.875rem; }
 
 /* === レスポンシブ === */
+@media (min-width: 769px) {
+    /* PC・タブレット横向き以上 */
+    .pdf-embed-desktop {
+        display: block; /* PCでは埋め込みを表示 */
+    }
+    .pdf-link-mobile-wrapper {
+        display: none; /* PCではリンクボタンを非表示 */
+    }
+}
+
 @media (max-width: 768px) {
     .container { margin: var(--spacing-4); border-radius: var(--radius-xl); }
     .portal-header { padding: var(--spacing-8) var(--spacing-4); }
