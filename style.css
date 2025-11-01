@@ -6,40 +6,30 @@
     --font-primary: 'Inter', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
     
     /* カラーパレット (元のグレー系は維持) */
-    --gray-50: #f9fafb;
-    --gray-100: #f3f4f6;
-    --gray-200: #e5e7eb;
-    --gray-300: #d1d5db;
-    --gray-400: #9ca3af;
-    --gray-500: #6b7280;
-    --gray-600: #4b5563;
-    --gray-700: #374151;
-    --gray-800: #1f2937;
-    --gray-900: #111827;
+    --gray-50: #f9fafb; --gray-100: #f3f4f6; --gray-200: #e5e7eb; --gray-300: #d1d5db; --gray-400: #9ca3af; --gray-500: #6b7280; --gray-600: #4b5563; --gray-700: #374151; --gray-800: #1f2937; --gray-900: #111827;
     
-    /* === ▼▼▼ テーマカラーをPDFデザインに準拠 ▼▼▼ === */
-    --theme-color-primary: #00586A;   /* PDFのメインの濃い青 */
-    --theme-color-primary-light: #00A0C1; /* PDFのアクセントの明るい青 */
-    --theme-color-disaster: #D90000;  /* PDFの警告の赤 */
-    --theme-color-green: #059669;      /* ( shunt, friend などで使用 ) */
+    /* テーマカラー */
+    --theme-color-primary: #00586A;
+    --theme-color-primary-light: #00A0C1;
+    --theme-color-disaster: #D90000;
+    --theme-color-green: #059669;
     --theme-color-purple: #7c3aed;
     --theme-color-orange: #ea580c;
-    /* === ▲▲▲ ここまで ▲▲▲ === */
 
-    /* スペーシング (変更なし) */
+    /* スペーシング */
     --spacing-1: 0.25rem; --spacing-2: 0.5rem; --spacing-3: 0.75rem; --spacing-4: 1rem; --spacing-5: 1.25rem; --spacing-6: 1.5rem; --spacing-8: 2rem; --spacing-10: 2.5rem; --spacing-12: 3rem; --spacing-16: 4rem;
     
-    /* シャドウ (変更なし) */
+    /* シャドウ */
     --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05); --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1); --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
     
-    /* ボーダーラジアス (変更なし) */
+    /* ボーダーラジアス */
     --radius-sm: 0.375rem; --radius: 0.5rem; --radius-md: 0.75rem; --radius-lg: 1rem; --radius-xl: 1.5rem; --radius-2xl: 2rem;
 }
 
-/* === リセット (変更なし) === */
+/* === リセット === */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* === body (背景画像を復元) === */
+/* === body === */
 body {
     font-family: var(--font-primary);
     line-height: 1.6;
@@ -63,7 +53,7 @@ body {
     box-shadow: var(--shadow-xl);
 }
 
-/* === ヘッダー (背景画像と中央揃えを復元) === */
+/* === ヘッダー === */
 .portal-header, header {
     text-align: center;
     padding: var(--spacing-12) var(--spacing-6);
@@ -76,16 +66,15 @@ body {
 }
 
 header {
-    padding-bottom: var(--spacing-8); /* 下層ページは少し余白を調整 */
+    padding-bottom: var(--spacing-8);
 }
 
-/* 文字の可読性のため、影は維持 */
 .portal-header h1, .portal-header p, header h1 {
     text-shadow: 0 1px 3px rgba(255, 255, 255, 0.4);
 }
 
 header h1 {
-    font-weight: 900; /* 文字を力強く */
+    font-weight: 900;
 }
 
 .theme-nutrition header h1 { color: var(--theme-color-primary); }
@@ -95,7 +84,7 @@ header h1 {
 .theme-qa header h1 { color: var(--theme-color-orange); }
 
 
-/* === 透析ステータス (デザイン微調整) === */
+/* === 透析ステータス === */
 #dialysis-status {
     padding: var(--spacing-10) var(--spacing-6);
     border-bottom: 2px solid var(--gray-200);
@@ -103,7 +92,7 @@ header h1 {
 
 #dialysis-status h2 {
     font-size: clamp(1.5rem, 3vw, 2rem);
-    font-weight: 900; /* 文字を力強く */
+    font-weight: 900;
     text-align: center;
     margin-bottom: var(--spacing-8);
     color: var(--gray-800);
@@ -133,11 +122,11 @@ header h1 {
     font-size: 2rem;
     font-weight: 900;
 }
-.status-ok { color: var(--theme-color-primary); } /* 色をPDFに合わせる */
-.status-ng { color: var(--theme-color-disaster); } /* 色をPDFに合わせる */
+.status-ok { color: var(--theme-color-primary); }
+.status-ng { color: var(--theme-color-disaster); }
 
 
-/* === カードタイル型ポータルナビゲーション (元の形状を維持) === */
+/* === カードタイル型ポータルナビゲーション === */
 .portal-nav {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -168,8 +157,6 @@ header h1 {
     height: 6px;
     transition: all 0.3s ease;
 }
-
-/* ボタン上部のバーの色をPDFテーマに */
 .portal-button.theme-nutrition::before { background: var(--theme-color-primary); }
 .portal-button.theme-disaster::before { background: var(--theme-color-disaster); }
 .portal-button.theme-shunt::before { background: var(--theme-color-green); }
@@ -181,8 +168,6 @@ header h1 {
     box-shadow: var(--shadow-xl);
     border-color: transparent;
 }
-
-/* ホバー時の背景色をテーマに合わせる */
 .portal-button.theme-nutrition:hover { border-color: var(--theme-color-primary); background: linear-gradient(to bottom, white, #eaf4f6); }
 .portal-button.theme-disaster:hover { border-color: var(--theme-color-disaster); background: linear-gradient(to bottom, white, #fdecec); }
 .portal-button.theme-shunt:hover { border-color: var(--theme-color-green); background: linear-gradient(to bottom, white, #ecfdf5); }
@@ -192,12 +177,10 @@ header h1 {
 
 .portal-button .button-title {
     font-size: 1.5rem;
-    font-weight: 900; /* 文字を力強く */
+    font-weight: 900;
     margin-bottom: var(--spacing-3);
     letter-spacing: -0.02em;
 }
-
-/* ボタンタイトルの文字色をPDFテーマに */
 .portal-button.theme-nutrition .button-title { color: var(--theme-color-primary); }
 .portal-button.theme-disaster .button-title { color: var(--theme-color-disaster); }
 .portal-button.theme-shunt .button-title { color: var(--theme-color-green); }
@@ -227,7 +210,7 @@ header h1 {
 }
 
 
-/* === タブナビゲーション (元の形状を維持) === */
+/* === タブナビゲーション === */
 .page-nav {
     display: flex;
     gap: var(--spacing-2);
@@ -245,7 +228,7 @@ header h1 {
     text-decoration: none;
     border: none;
     border-radius: var(--radius) var(--radius) 0 0;
-    font-weight: 700; /* 文字を少し強く */
+    font-weight: 700;
     font-size: 0.9375rem;
     transition: all 0.2s ease;
     white-space: nowrap;
@@ -269,20 +252,17 @@ header h1 {
     height: 3px;
     border-radius: 3px 3px 0 0;
 }
-
-/* アクティブタブの下線の色をPDFテーマに */
 .theme-nutrition .nav-button.active::after { background: var(--theme-color-primary); }
 .theme-disaster .nav-button.active::after { background: var(--theme-color-disaster); }
 .theme-qa .nav-button.active::after { background: var(--theme-color-orange); }
 
 
-/* === コンテンツエリア (タブ機能を復元) === */
+/* === コンテンツエリア === */
 #content-area {
     padding: var(--spacing-10) var(--spacing-6);
     background: var(--gray-50);
 }
 
-/* この2つのルールでタブ機能が復活します */
 .content-section {
     display: none;
 }
@@ -300,19 +280,19 @@ header h1 {
 /* === タイポグラフィ === */
 h2 {
     font-size: clamp(1.5rem, 3vw, 2rem);
-    font-weight: 900; /* 文字を力強く */
+    font-weight: 900;
     margin: var(--spacing-10) 0 var(--spacing-6);
     color: var(--gray-800);
 }
 
 h3 {
     font-size: clamp(1.25rem, 2.5vw, 1.5rem);
-    font-weight: 700; /* 文字を力強く */
+    font-weight: 700;
     margin: var(--spacing-8) 0 var(--spacing-4);
     color: var(--gray-800);
 }
 
-/* === リスト (元のアイコンを維持しつつ、色をテーマに合わせる) === */
+/* === リスト === */
 ul, ol {
     list-style: none;
     margin: var(--spacing-4) 0;
@@ -324,7 +304,7 @@ ul li, ol li {
     margin: var(--spacing-3) 0;
     background: white;
     border-radius: var(--radius-md);
-    border-left: 4px solid var(--theme-color-primary); /* デフォルトは青 */
+    border-left: 4px solid var(--theme-color-primary);
     box-shadow: var(--shadow-sm);
     transition: all 0.2s ease;
 }
@@ -366,13 +346,126 @@ ol li::before {
     font-size: 0.875rem;
     font-weight: 700;
 }
-
-/* 災害テーマのリストスタイル */
 .theme-disaster ul li, .theme-disaster ol li { border-left-color: var(--theme-color-disaster); }
 .theme-disaster ul li::before { color: var(--theme-color-disaster); }
 .theme-disaster ol li::before { background-color: var(--theme-color-disaster); }
 
-/* === その他の要素 (変更なし or 色の変数置換のみ) === */
+
+/* === ▼▼▼ Q&Aセクション (元の形式に戻し、テーマカラーを適用) ▼▼▼ === */
+.qa-search-container {
+    padding: var(--spacing-10) var(--spacing-6);
+    background: white;
+    text-align: center;
+    border-radius: var(--radius-xl);
+    margin-bottom: var(--spacing-8);
+}
+
+.qa-search-input {
+    width: 90%;
+    max-width: 800px;
+    padding: var(--spacing-5) var(--spacing-6);
+    font-size: 1.5rem;
+    font-family: var(--font-primary);
+    border: 3px solid var(--gray-300);
+    border-radius: var(--radius-2xl);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+/* 災害テーマのフォーカス色を適用 */
+.theme-disaster .qa-search-input:focus {
+    outline: none;
+    border-color: var(--theme-color-disaster);
+    box-shadow: 0 0 0 4px rgba(217, 0, 0, 0.1), var(--shadow-md);
+}
+
+.qa-search-input::placeholder {
+    color: var(--gray-400);
+}
+
+.qa-results-container {
+    padding-top: var(--spacing-6);
+}
+
+.qa-search-item {
+    background: white;
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--spacing-4);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    border: 1px solid var(--gray-200);
+    transition: all 0.3s ease;
+}
+
+.qa-search-item:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+}
+
+.qa-search-question {
+    padding: var(--spacing-6);
+    font-weight: 700;
+    font-size: 1.0625rem;
+    cursor: pointer;
+    background: var(--gray-50);
+    position: relative;
+    transition: background-color 0.2s ease;
+}
+
+/* 災害テーマのホバー色を適用 */
+.theme-disaster .qa-search-question:hover {
+    background: #fdecec; /* 薄い赤色 */
+}
+
+.qa-search-question::after {
+    content: '▼';
+    position: absolute;
+    right: var(--spacing-6);
+    top: 50%;
+    transform: translateY(-50%);
+    font-weight: 900;
+    transition: transform 0.3s ease;
+}
+
+/* 災害テーマのアイコン色を適用 */
+.theme-disaster .qa-search-question::after {
+    color: var(--theme-color-disaster);
+}
+
+.qa-search-item.active .qa-search-question::after {
+    transform: translateY(-50%) rotate(180deg);
+}
+
+.qa-search-answer {
+    display: none;
+    padding: var(--spacing-6);
+    color: var(--gray-700);
+    line-height: 1.8;
+    border-top: 1px solid var(--gray-200);
+}
+
+.qa-search-item.active .qa-search-answer {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+.qa-no-result,
+.qa-loading,
+.qa-initial-message {
+    padding: var(--spacing-12);
+    text-align: center;
+    color: var(--gray-500);
+    background: white;
+    border-radius: var(--radius-lg);
+    border: 2px dashed var(--gray-300);
+    margin: var(--spacing-6) 0;
+}
+/* === ▲▲▲ Q&Aセクション ここまで ▲▲▲ === */
+
+
+/* === その他の要素 === */
 .back-to-portal-button { display: inline-flex; align-items: center; background: linear-gradient(135deg, #6c757d 0%, #495057 100%); color: white; padding: var(--spacing-3) var(--spacing-6); margin: var(--spacing-8) var(--spacing-6) 0; text-decoration: none; border-radius: var(--radius); font-size: 0.9375rem; font-weight: 600; transition: all 0.2s ease; box-shadow: var(--shadow); border: none; }
 .back-to-portal-button::before { content: "←"; margin-right: var(--spacing-2); font-weight: 900; }
 .back-to-portal-button:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
@@ -382,10 +475,9 @@ ol li::before {
 .theme-nutrition .quiz-button { background: linear-gradient(135deg, var(--theme-color-primary-light), var(--theme-color-primary)); }
 .theme-disaster .quiz-button { background: linear-gradient(135deg, #ef4444, var(--theme-color-disaster)); }
 
-/* PDF表示用のスタイル */
-.pdf-embed-container { width: 100%; height: 80vh; border: none; }
 
-/* 折りたたみ機能用のスタイル */
+/* === PDF・折りたたみ機能 === */
+.pdf-embed-container { width: 100%; height: 80vh; border: none; }
 .collapsible-trigger { cursor: pointer; position: relative; padding-right: 25px; }
 .collapsible-trigger::after { content: '▼'; position: absolute; right: 5px; top: 50%; transform: translateY(-50%); transition: transform 0.3s ease; }
 .is-open .collapsible-trigger::after { transform: translateY(-50%) rotate(180deg); }
@@ -393,10 +485,10 @@ ol li::before {
 .is-open .collapsible-content { max-height: 500px; }
 
 
-/* === フッター (変更なし) === */
+/* === フッター === */
 footer { text-align: center; padding: var(--spacing-8); background: var(--gray-100); color: var(--gray-600); font-size: 0.875rem; }
 
-/* === レスポンシブ (変更なし) === */
+/* === レスポンシブ === */
 @media (max-width: 768px) {
     .container { margin: var(--spacing-4); border-radius: var(--radius-xl); }
     .portal-header { padding: var(--spacing-8) var(--spacing-4); }
@@ -406,4 +498,6 @@ footer { text-align: center; padding: var(--spacing-8); background: var(--gray-1
     .page-nav { padding: 0 var(--spacing-4) var(--spacing-4); }
     .back-to-portal-button { margin: var(--spacing-6) var(--spacing-4) 0; }
     header { padding: var(--spacing-8) var(--spacing-4) var(--spacing-6); }
+    .qa-search-container { padding: var(--spacing-6) var(--spacing-4); }
+    .qa-search-input { font-size: 1.2rem; }
 }
