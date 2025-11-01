@@ -6,6 +6,16 @@
     <title>災害情報ポータル</title>
     <!-- 共通のCSSファイルを読み込み -->
     <link rel="stylesheet" href="style.css">
+    <!-- ▼▼▼【追加】PDF表示のためのスタイル ▼▼▼ -->
+    <style>
+        /* PDF埋め込み要素のスタイル調整 */
+        .pdf-embed-container {
+            width: 100%;
+            /* 高さを画面の表示領域の80%程度に設定（調整可能） */
+            height: 80vh; 
+            border: none; /* 枠線を非表示 */
+        }
+    </style>
 </head>
 <!-- bodyタグには災害テーマのクラスを指定 -->
 <body class="theme-disaster">
@@ -45,6 +55,8 @@
         <!-- ▼▼▼ 3. 各コンテンツへのナビゲーション ▼▼▼ -->
         <nav class="page-nav">
             <!-- data-target属性で、どの内容を表示するかを指定 -->
+            <!-- ▼▼▼【追加】防災ガイドブックのタブ ▼▼▼ -->
+            <a href="#" class="nav-button" data-target="guidebook">防災ガイドブック</a>
             <a href="#" class="nav-button active" data-target="info">基本情報</a>
             <a href="#" class="nav-button" data-target="checklist">備蓄リスト</a>
             <a href="#" class="nav-button" data-target="shelter">避難場所マップ</a>
@@ -53,6 +65,12 @@
         
         <main id="content-area">
             <!-- ▼▼▼ ここから下が、ボタンに応じて表示が切り替わる部分 ▼▼▼ -->
+
+            <!-- ▼▼▼【追加】防災ガイドブック の内容 ▼▼▼ -->
+            <section id="guidebook" class="content-section">
+                <!-- embedタグでPDFを埋め込み表示 -->
+                <embed src="梶本クリニック防災ハンドブック.pdf" type="application/pdf" class="pdf-embed-container">
+            </section>
 
             <!-- ① 基本情報 の内容 -->
             <section id="info" class="content-section active">
