@@ -8,20 +8,25 @@
     <link rel="stylesheet" href="style.css">
     <style>
         /* 折りたたみヒントのスタイル */
-        .collapsible-trigger {
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .collapsible-header-wrapper {
             position: relative;
+            text-align: center;
             cursor: pointer;
         }
 
+        .collapsible-trigger {
+            margin: 0;
+        }
+
         .collapse-hint {
-            position: absolute;
-            right: 0;
-            font-size: 0.65em;
+            display: block;
+            font-size: 0.7em;
             color: #999;
             font-weight: normal;
+            text-align: right;
+            margin-top: -5px;
+            margin-bottom: 10px;
+            padding-right: 10px;
         }
 
         /* 透析状況セクション全体を中央寄せ */
@@ -341,7 +346,7 @@
                 color: #004085;
             }
             .collapse-hint {
-                font-size: 0.6em;
+                font-size: 0.65em;
             }
         }
 
@@ -370,10 +375,10 @@
 
         <!-- 現在の透析状況 (折りたたみ) -->
         <section id="dialysis-status" class="collapsible-section is-open">
-            <h2 class="collapsible-trigger">
-                現在の透析状況
+            <div class="collapsible-header-wrapper">
                 <span class="collapse-hint">▼ タップで折りたたみ</span>
-            </h2>
+                <h2 class="collapsible-trigger">現在の透析状況</h2>
+            </div>
             <div class="collapsible-content">
                 <div class="status-container">
                     <!-- 本院 -->
@@ -608,13 +613,22 @@
     <script src="qa-loader.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // 透析状況の折りたたみ機能
-            const triggers = document.querySelectorAll('.collapsible-trigger');
-            triggers.forEach(trigger => {
-                trigger.addEventListener('click', function() {
-                    this.parentElement.classList.toggle('is-open');
+            // 透析状況の折りたたみ機能（wrapper全体をクリック可能に）
+            const collapsibleWrapper = document.querySelector('.collapsible-header-wrapper');
+            const collapsibleSection = document.getElementById('dialysis-status');
+            const collapseHint = document.querySelector('.collapse-hint');
+            
+            if (collapsibleWrapper && collapsibleSection && collapseHint) {
+                collapsibleWrapper.addEventListener('click', function() {
+                    collapsibleSection.classList.toggle('is-open');
+                    // アイコンを切り替え
+                    if (collapsibleSection.classList.contains('is-open')) {
+                        collapseHint.textContent = '▼ タップで折りたたみ';
+                    } else {
+                        collapseHint.textContent = '▶ タップで開く';
+                    }
                 });
-            });
+            }
 
             // 避難手段項目の折りたたみ機能
             const evacuationItems = document.querySelectorAll('.evacuation-item-header');
