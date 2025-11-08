@@ -8,11 +8,19 @@
     <link rel="stylesheet" href="style.css">
     <style>
         /* 折りたたみヒントのスタイル */
+        .collapsible-trigger {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            cursor: pointer;
+        }
+
         .collapse-hint {
-            display: inline-block;
-            font-size: 0.7em;
-            color: #666;
-            margin-right: 8px;
+            position: absolute;
+            right: 0;
+            font-size: 0.65em;
+            color: #999;
             font-weight: normal;
         }
 
@@ -21,6 +29,10 @@
             max-width: 600px;
             margin-left: auto;
             margin-right: auto;
+        }
+
+        #dialysis-status h2 {
+            text-align: center;
         }
 
         /* 折りたたみ時も小さく表示 */
@@ -313,8 +325,23 @@
                 display: none;
             }
             .pdf-loading-container {
-                min-height: auto;
-                padding: 20px;
+                display: none !important;
+            }
+            .pdf-link-mobile-wrapper {
+                order: -1; /* スマホでは一番上に表示 */
+            }
+            .pdf-mobile-notice {
+                display: block;
+                background-color: #e7f3ff;
+                padding: 12px;
+                border-radius: 6px;
+                margin-bottom: 15px;
+                border-left: 4px solid #007bff;
+                font-size: 0.9em;
+                color: #004085;
+            }
+            .collapse-hint {
+                font-size: 0.6em;
             }
         }
 
@@ -322,6 +349,13 @@
             .pdf-link-mobile-wrapper {
                 display: none;
             }
+            .pdf-mobile-notice {
+                display: none;
+            }
+        }
+
+        .pdf-mobile-notice {
+            display: none; /* デフォルトは非表示 */
         }
     </style>
 </head>
@@ -337,8 +371,8 @@
         <!-- 現在の透析状況 (折りたたみ) -->
         <section id="dialysis-status" class="collapsible-section is-open">
             <h2 class="collapsible-trigger">
-                <span class="collapse-hint">▼ タップで折りたたみ</span>
                 現在の透析状況
+                <span class="collapse-hint">▼ タップで折りたたみ</span>
             </h2>
             <div class="collapsible-content">
                 <div class="status-container">
@@ -400,6 +434,15 @@
                         <div class="pdf-collapsible-body">
                             <p>災害時にすべきこと、起こる前の備えについて詳しくまとめています。</p>
                             
+                            <!-- スマホ向けのメッセージとボタン（上部に配置） -->
+                            <div class="pdf-mobile-notice">
+                                <strong>📱 スマートフォンでご覧の方へ</strong><br>
+                                下のボタンから別ページでPDFを開くことをおすすめします。
+                            </div>
+                            <div class="pdf-link-mobile-wrapper">
+                                <a href="files/disaster-guide-book.pdf" target="_blank" class="pdf-link-mobile">防災ハンドブックを開く (PDF)</a>
+                            </div>
+                            
                             <!-- PC向けの埋め込み表示 -->
                             <div class="pdf-loading-container" id="pdfLoadingContainer">
                                 <div class="pdf-loading-message">
@@ -408,11 +451,6 @@
                                 </div>
                             </div>
                             <embed id="pdfEmbed" src="" type="application/pdf" class="pdf-embed-desktop" style="display: none;">
-                            
-                            <!-- スマホ向けのボタン表示 -->
-                            <div class="pdf-link-mobile-wrapper">
-                                <a href="files/disaster-guide-book.pdf" target="_blank" class="pdf-link-mobile">防災ハンドブックを開く (PDF)</a>
-                            </div>
                         </div>
                     </div>
                 </div>
