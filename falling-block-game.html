@@ -5,6 +5,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ShapeDrop - オリジナル落ちものパズル</title>
     <style>
+        /* Google Fonts - Inter & Noto Sans JP */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
+
+        /* CSS変数 */
+        :root {
+            --font-primary: 'Inter', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+            
+            /* カラーパレット */
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            
+            /* テーマカラー */
+            --theme-color-primary: #00586A;
+            --theme-color-primary-light: #00A0C1;
+            --theme-color-game: #ec4899;
+            
+            /* スペーシング */
+            --spacing-1: 0.25rem;
+            --spacing-2: 0.5rem;
+            --spacing-3: 0.75rem;
+            --spacing-4: 1rem;
+            --spacing-5: 1.25rem;
+            --spacing-6: 1.5rem;
+            
+            /* シャドウ */
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            
+            /* ボーダーラジアス */
+            --radius: 0.5rem;
+            --radius-md: 0.75rem;
+            --radius-lg: 1rem;
+            --radius-xl: 1.5rem;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,120 +58,146 @@
         }
 
         body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: var(--font-primary);
+            background: linear-gradient(135deg, var(--theme-color-primary) 0%, var(--theme-color-primary-light) 100%);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 20px;
+            padding: var(--spacing-4);
+            -webkit-font-smoothing: antialiased;
         }
 
         .game-container {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            max-width: 800px;
+            background: white;
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-4);
+            box-shadow: var(--shadow-xl);
+            max-width: 600px;
+            width: 100%;
         }
 
         .game-title {
             text-align: center;
-            font-size: 2.5em;
-            color: #667eea;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-size: 1.75rem;
+            font-weight: 900;
+            color: var(--theme-color-game);
+            margin-bottom: var(--spacing-4);
+            letter-spacing: -0.02em;
         }
 
-        .game-layout {
-            display: flex;
-            gap: 30px;
-            align-items: flex-start;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .game-board {
-            border: 4px solid #667eea;
-            background: #1a1a2e;
-            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
-            position: relative;
-        }
-
-        .side-panel {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            min-width: 200px;
+        /* 情報パネルをコンパクトに横並び */
+        .info-panel {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-2);
+            margin-bottom: var(--spacing-4);
         }
 
         .info-box {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(135deg, var(--gray-50), white);
+            padding: var(--spacing-3);
+            border-radius: var(--radius-md);
+            border: 2px solid var(--gray-200);
+            text-align: center;
         }
 
-        .info-box h3 {
-            font-size: 1.2em;
-            margin-bottom: 10px;
-            text-align: center;
+        .info-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--gray-600);
+            margin-bottom: var(--spacing-1);
         }
 
         .info-value {
-            font-size: 2em;
-            font-weight: bold;
-            text-align: center;
-            margin: 10px 0;
+            font-size: 1.25rem;
+            font-weight: 900;
+            color: var(--theme-color-primary);
         }
 
-        .info-text {
-            font-size: 1.2em;
+        .info-small {
+            font-size: 1rem;
+        }
+
+        /* ゲームレイアウト */
+        .game-layout {
+            display: flex;
+            gap: var(--spacing-4);
+            align-items: flex-start;
+            margin-bottom: var(--spacing-4);
+        }
+
+        .game-board {
+            border: 3px solid var(--theme-color-primary);
+            background: var(--gray-900);
+            box-shadow: var(--shadow-lg);
+            border-radius: var(--radius);
+            flex-shrink: 0;
+        }
+
+        .side-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-3);
+            min-width: 100px;
+        }
+
+        .next-box {
+            background: linear-gradient(135deg, var(--gray-50), white);
+            padding: var(--spacing-3);
+            border-radius: var(--radius-md);
+            border: 2px solid var(--gray-200);
             text-align: center;
-            margin: 5px 0;
+        }
+
+        .next-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--gray-600);
+            margin-bottom: var(--spacing-2);
         }
 
         .next-preview {
-            background: #1a1a2e;
-            border: 3px solid #667eea;
-            border-radius: 10px;
-            padding: 10px;
-            margin-top: 10px;
+            background: var(--gray-900);
+            border: 2px solid var(--theme-color-primary);
+            border-radius: var(--radius);
+            margin: 0 auto;
         }
 
+        /* コントロールボタン */
         .controls {
             display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin-top: 20px;
+            gap: var(--spacing-3);
+            margin-bottom: var(--spacing-4);
         }
 
         .btn {
-            padding: 15px 30px;
-            font-size: 1.1em;
-            font-weight: bold;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s;
-            color: white;
             flex: 1;
-            max-width: 150px;
+            padding: var(--spacing-3) var(--spacing-4);
+            font-size: 0.9rem;
+            font-weight: 700;
+            font-family: var(--font-primary);
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: white;
+            box-shadow: var(--shadow-md);
         }
 
         .btn-start {
-            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            background: linear-gradient(135deg, var(--theme-color-primary-light), var(--theme-color-primary));
         }
 
         .btn-reset {
-            background: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%);
+            background: linear-gradient(135deg, #ef4444, #dc2626);
         }
 
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: var(--shadow-lg);
         }
 
         .btn:active {
@@ -138,29 +210,33 @@
             transform: none;
         }
 
+        /* モバイルコントロール */
         .mobile-controls {
             display: none;
             grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-top: 20px;
+            gap: var(--spacing-2);
         }
 
         .mobile-btn {
-            padding: 20px;
+            padding: var(--spacing-4);
             font-size: 1.5em;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--theme-color-game), #be185d);
             color: white;
             border: none;
-            border-radius: 10px;
+            border-radius: var(--radius-md);
             cursor: pointer;
             touch-action: manipulation;
             user-select: none;
+            box-shadow: var(--shadow-md);
+            font-weight: 900;
         }
 
         .mobile-btn:active {
-            opacity: 0.7;
+            opacity: 0.8;
+            transform: scale(0.95);
         }
 
+        /* ゲームオーバー */
         .game-over-overlay {
             position: fixed;
             top: 0;
@@ -176,68 +252,124 @@
 
         .game-over-box {
             background: white;
-            padding: 40px;
-            border-radius: 20px;
+            padding: var(--spacing-6);
+            border-radius: var(--radius-xl);
             text-align: center;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            box-shadow: var(--shadow-xl);
+            max-width: 90%;
         }
 
         .game-over-box h2 {
-            font-size: 2.5em;
-            color: #ee0979;
-            margin-bottom: 20px;
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--theme-color-game);
+            margin-bottom: var(--spacing-4);
         }
 
         .game-over-box p {
-            font-size: 1.5em;
-            margin: 10px 0;
-            color: #333;
+            font-size: 1.1rem;
+            margin: var(--spacing-2) 0;
+            color: var(--gray-700);
+            font-weight: 600;
         }
 
+        .game-over-box .btn {
+            margin-top: var(--spacing-4);
+            width: 100%;
+        }
+
+        /* 戻るボタン */
         .back-button {
             display: inline-block;
-            margin-top: 30px;
-            padding: 15px 30px;
-            background: rgba(255, 255, 255, 0.95);
-            color: #667eea;
+            margin-top: var(--spacing-4);
+            padding: var(--spacing-3) var(--spacing-5);
+            background: white;
+            color: var(--theme-color-primary);
             text-decoration: none;
-            font-size: 1.2em;
-            font-weight: bold;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s;
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            transition: all 0.2s ease;
+            border: 2px solid var(--theme-color-primary);
         }
 
         .back-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
-            background: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-xl);
+            background: var(--gray-50);
         }
 
+        /* レスポンシブ */
         @media (max-width: 768px) {
+            body {
+                padding: var(--spacing-2);
+            }
+
+            .game-container {
+                padding: var(--spacing-3);
+            }
+
+            .game-title {
+                font-size: 1.5rem;
+                margin-bottom: var(--spacing-3);
+            }
+
+            .info-panel {
+                grid-template-columns: repeat(3, 1fr);
+                gap: var(--spacing-2);
+            }
+
+            .info-label {
+                font-size: 0.65rem;
+            }
+
+            .info-value {
+                font-size: 1rem;
+            }
+
+            .info-small {
+                font-size: 0.85rem;
+            }
+
+            .game-layout {
+                flex-direction: column;
+                align-items: center;
+                gap: var(--spacing-3);
+            }
+
+            .side-info {
+                width: 100%;
+                max-width: 300px;
+            }
+
             .mobile-controls {
                 display: grid;
             }
 
-            .game-title {
-                font-size: 1.8em;
-            }
-
-            .game-container {
-                padding: 15px;
-            }
-
-            .back-button {
-                font-size: 1em;
-                padding: 12px 24px;
-            }
-
             .controls {
-                flex-direction: column;
+                gap: var(--spacing-2);
             }
 
             .btn {
-                max-width: none;
+                padding: var(--spacing-3);
+                font-size: 0.85rem;
+            }
+
+            .back-button {
+                font-size: 0.85rem;
+                padding: var(--spacing-2) var(--spacing-4);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-title {
+                font-size: 1.3rem;
+            }
+
+            .mobile-btn {
+                padding: var(--spacing-3);
+                font-size: 1.3em;
             }
         }
     </style>
@@ -246,33 +378,34 @@
     <div class="game-container">
         <h1 class="game-title">🎮 ShapeDrop</h1>
         
+        <!-- コンパクトな情報パネル -->
+        <div class="info-panel">
+            <div class="info-box">
+                <div class="info-label">スコア</div>
+                <div class="info-value" id="score">0</div>
+            </div>
+            <div class="info-box">
+                <div class="info-label">レベル</div>
+                <div class="info-value" id="level">1</div>
+            </div>
+            <div class="info-box">
+                <div class="info-label">ライン</div>
+                <div class="info-value" id="lines">0</div>
+            </div>
+        </div>
+        
         <div class="game-layout">
             <canvas id="gameCanvas" class="game-board"></canvas>
             
-            <div class="side-panel">
-                <div class="info-box">
-                    <h3>スコア</h3>
-                    <div class="info-value" id="score">0</div>
+            <div class="side-info">
+                <div class="next-box">
+                    <div class="next-label">NEXT</div>
+                    <canvas id="nextCanvas" class="next-preview" width="80" height="80"></canvas>
                 </div>
                 
                 <div class="info-box">
-                    <h3>レベル</h3>
-                    <div class="info-value" id="level">1</div>
-                </div>
-                
-                <div class="info-box">
-                    <h3>プレイ時間</h3>
-                    <div class="info-text" id="playTime">0:00</div>
-                </div>
-                
-                <div class="info-box">
-                    <h3>消去ライン数</h3>
-                    <div class="info-value" id="lines">0</div>
-                </div>
-                
-                <div class="info-box">
-                    <h3>次のシェイプ</h3>
-                    <canvas id="nextCanvas" class="next-preview" width="120" height="120"></canvas>
+                    <div class="info-label">プレイ時間</div>
+                    <div class="info-value info-small" id="playTime">0:00</div>
                 </div>
             </div>
         </div>
@@ -290,9 +423,11 @@
             <button class="mobile-btn" id="dropBtn">⬇⬇</button>
             <div></div>
         </div>
+        
+        <div style="text-align: center;">
+            <a href="friend-benefit.html" class="back-button">← お友達特典ページへ戻る</a>
+        </div>
     </div>
-    
-    <a href="friend-benefit.html" class="back-button">お友達特典ページへ戻る</a>
     
     <div class="game-over-overlay" id="gameOverOverlay">
         <div class="game-over-box">
@@ -306,19 +441,18 @@
 
     <script>
         const CONFIG = {
-            COLS: 12,
-            ROWS: 22,
-            BLOCK_SIZE: 25,
+            COLS: 10,
+            ROWS: 18,
+            BLOCK_SIZE: 20,
             INITIAL_SPEED: 800,
             SPEED_DECREASE: 50,
             LEVEL_UP_LINES: 10,
             TIME_SPEED_DECREASE: 30
         };
 
-        // 完全オリジナルで簡単な形状（テトリミノと明確に異なる）
+        // 完全オリジナルで簡単な形状
         const SHAPES = [
             {
-                // 3マスの直線（縦）
                 pattern: [
                     [1],
                     [1],
@@ -327,14 +461,12 @@
                 color: '#FF6B9D'
             },
             {
-                // 3マスの直線（横）
                 pattern: [
                     [1, 1, 1]
                 ],
                 color: '#4ECDC4'
             },
             {
-                // 3マスの斜め
                 pattern: [
                     [1, 1],
                     [0, 1]
@@ -342,7 +474,6 @@
                 color: '#FFE66D'
             },
             {
-                // 5マスの十字
                 pattern: [
                     [0, 1, 0],
                     [1, 1, 1],
@@ -351,7 +482,6 @@
                 color: '#A8E6CF'
             },
             {
-                // 5マスの長いL（テトリスは4マス、これは5マス）
                 pattern: [
                     [1, 0],
                     [1, 0],
@@ -360,7 +490,6 @@
                 color: '#FF8B94'
             },
             {
-                // 5マスの階段
                 pattern: [
                     [1, 1, 0],
                     [0, 1, 1],
@@ -369,7 +498,6 @@
                 color: '#B4A7D6'
             },
             {
-                // 2マスだけ
                 pattern: [
                     [1],
                     [1]
@@ -377,7 +505,6 @@
                 color: '#FFD3B6'
             },
             {
-                // 5マスのコの字
                 pattern: [
                     [1, 0, 1],
                     [1, 1, 1]
@@ -385,7 +512,6 @@
                 color: '#98DDCA'
             },
             {
-                // 5マスのY字
                 pattern: [
                     [1, 0, 1],
                     [0, 1, 0],
@@ -394,7 +520,6 @@
                 color: '#D4A5A5'
             },
             {
-                // 6マスのブロック（3×2）
                 pattern: [
                     [1, 1, 1],
                     [1, 1, 1]
@@ -410,8 +535,9 @@
                 this.nextCanvas = document.getElementById('nextCanvas');
                 this.nextCtx = this.nextCanvas.getContext('2d');
                 
-                this.canvas.width = CONFIG.COLS * CONFIG.BLOCK_SIZE;
-                this.canvas.height = CONFIG.ROWS * CONFIG.BLOCK_SIZE;
+                // レスポンシブ対応
+                this.updateCanvasSize();
+                window.addEventListener('resize', () => this.updateCanvasSize());
                 
                 this.board = this.createBoard();
                 this.score = 0;
@@ -434,6 +560,19 @@
                 this.initControls();
                 this.generateNextPiece();
                 this.generateNextPiece();
+            }
+
+            updateCanvasSize() {
+                const isMobile = window.innerWidth <= 768;
+                const blockSize = isMobile ? 16 : 20;
+                CONFIG.BLOCK_SIZE = blockSize;
+                
+                this.canvas.width = CONFIG.COLS * blockSize;
+                this.canvas.height = CONFIG.ROWS * blockSize;
+                
+                if (this.board) {
+                    this.draw();
+                }
             }
 
             createBoard() {
@@ -536,7 +675,7 @@
                 this.nextCtx.clearRect(0, 0, this.nextCanvas.width, this.nextCanvas.height);
                 if (!this.nextPiece) return;
 
-                const blockSize = 20;
+                const blockSize = 15;
                 const offsetX = (this.nextCanvas.width - this.nextPiece.pattern[0].length * blockSize) / 2;
                 const offsetY = (this.nextCanvas.height - this.nextPiece.pattern.length * blockSize) / 2;
 
@@ -696,7 +835,7 @@
                 this.ctx.fillStyle = '#1a1a2e';
                 this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-                this.ctx.strokeStyle = 'rgba(102, 126, 234, 0.1)';
+                this.ctx.strokeStyle = 'rgba(0, 160, 193, 0.1)';
                 for (let y = 0; y < CONFIG.ROWS; y++) {
                     for (let x = 0; x < CONFIG.COLS; x++) {
                         this.ctx.strokeRect(
