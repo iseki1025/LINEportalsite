@@ -6,6 +6,87 @@
     <title>災害情報ポータル</title>
     <!-- 共通のCSSファイルを読み込み -->
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* 折りたたみヒントのスタイル */
+        .collapse-hint {
+            display: inline-block;
+            font-size: 0.7em;
+            color: #666;
+            margin-right: 8px;
+            font-weight: normal;
+        }
+
+        /* 透析状況をコンパクトに表示 */
+        .status-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: space-around;
+        }
+
+        .status-item {
+            flex: 1 1 auto;
+            min-width: 100px;
+            max-width: 150px;
+            padding: 10px 8px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background-color: #fff;
+        }
+
+        .status-item h3 {
+            font-size: 0.95em;
+            margin: 0 0 8px 0;
+            color: #333;
+        }
+
+        .status-text {
+            font-size: 1em;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+
+        .status-ok {
+            color: #28a745;
+        }
+
+        .status-ng {
+            color: #dc3545;
+        }
+
+        .reason {
+            display: block;
+            font-size: 0.7em;
+            font-weight: normal;
+            color: #666;
+            margin-top: 3px;
+        }
+
+        .status-note {
+            text-align: center;
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 12px;
+        }
+
+        /* スマホ対応 */
+        @media (max-width: 600px) {
+            .status-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .status-item {
+                max-width: none;
+                width: 100%;
+            }
+
+            .collapse-hint {
+                font-size: 0.65em;
+            }
+        }
+    </style>
 </head>
 <!-- bodyタグには災害テーマのクラスを指定 -->
 <body class="theme-disaster">
@@ -18,7 +99,10 @@
 
         <!-- 現在の透析状況 (折りたたみ) -->
         <section id="dialysis-status" class="collapsible-section is-open">
-            <h2 class="collapsible-trigger">現在の透析状況</h2>
+            <h2 class="collapsible-trigger">
+                <span class="collapse-hint">▼ タップで折りたたみ</span>
+                現在の透析状況
+            </h2>
             <div class="collapsible-content">
                 <div class="status-container">
                     <!-- 本院 -->
@@ -29,7 +113,10 @@
                     <!-- なかもず分院 -->
                     <div class="status-item">
                         <h3>なかもず分院</h3>
-                        <p class="status-text status-ng">透析不可 <span class="reason">（断水のため）</span></p>
+                        <p class="status-text status-ng">
+                            透析不可
+                            <span class="reason">（断水のため）</span>
+                        </p>
                     </div>
                     <!-- 三国ケ丘分院 -->
                     <div class="status-item">
@@ -58,16 +145,16 @@
                 <h2>梶本クリニック 防災ハンドブック</h2>
                 <p>災害時にすべきこと、起こる前の備えについてまとめています。日頃から内容を確認しておきましょう。</p>
                 <!-- ▼▼▼ PC向けの埋め込み表示 (パスを修正) ▼▼▼ -->
-                <embed src="files/disaster-guide-book.pdf#toolbar=0" type="application/pdf" class="pdf-embed-desktop">
+                <embed src="/files/disaster-guide-book.pdf#toolbar=0" type="application/pdf" class="pdf-embed-desktop">
                 <!-- ▼▼▼ スマホ向けのボタン表示 (パスを修正) ▼▼▼ -->
                 <div class="pdf-link-mobile-wrapper">
-                    <a href="files/disaster-guide-book.pdf" target="_blank" class="pdf-link-mobile">防災ガイドブックを開く (PDF)</a>
+                    <a href="/files/disaster-guide-book.pdf" target="_blank" class="pdf-link-mobile">防災ガイドブックを開く (PDF)</a>
                 </div>
             </section>
 
             <!-- ② 基本情報 の内容 -->
             <section id="info" class="content-section active">
-                <h2>災害への備え：基本情報</h2>
+                <h2>災害への備え:基本情報</h2>
                 <p>災害はいつ起こるかわかりません。日頃から適切な準備をしておくことで、いざという時に自分や家族の命を守ることができます。このページでは、災害に備えるための基本的なポイントを解説します。</p>
                 <h3>防災の基本5つのポイント</h3>
                 <ul>
@@ -75,7 +162,7 @@
                     <li><strong>非常用持ち出し袋の準備</strong><br>避難時に最低限必要なものをリュックなどにまとめておきましょう。水、食料、常備薬、携帯ラジオ、懐中電灯などが基本です。</li>
                     <li><strong>家庭での備蓄</strong><br>断水や停電に備え、最低3日分、できれば1週間分の水と食料を備蓄しておきましょう。カセットコンロやガスボンベも役立ちます。</li>
                     <li><strong>家具の固定</strong><br>地震による家具の転倒を防ぐため、タンスや本棚などを壁に固定しましょう。</li>
-                    <li><strong>安否確認方法の共有</strong><br>災害時には電話が繋がりにくくなります。災害用伝言ダイヤル（171）やSNSなど、家族で安否確認の方法を決めておきましょう。</li>
+                    <li><strong>安否確認方法の共有</strong><br>災害時には電話が繋がりにくくなります。災害用伝言ダイヤル(171)やSNSなど、家族で安否確認の方法を決めておきましょう。</li>
                 </ul>
             </section>
 
@@ -87,21 +174,21 @@
                 <h3>透析患者として特に重要なもの</h3>
                 <ul>
                     <li><strong>身体障害者手帳・保険証・各種受給者証</strong><br>すぐに取り出せるよう、コピーをまとめておくとスムーズに医療を受けられます。</li>
-                    <li><strong>普段飲んでいる薬（最低3日分）・お薬手帳</strong><br>薬が切れると急激に体調を崩すおそれがあります。必ず備えてください。</li>
+                    <li><strong>普段飲んでいる薬(最低3日分)・お薬手帳</strong><br>薬が切れると急激に体調を崩すおそれがあります。必ず備えてください。</li>
                     <li><strong>透析カード</strong><br>他施設で透析を受ける際に、ご自身の透析情報を正確に伝えるために不可欠です。</li>
                 </ul>
 
-                <h3>非常用食料・水（低カリウム・低食塩を意識）</h3>
+                <h3>非常用食料・水(低カリウム・低食塩を意識)</h3>
                 <ul>
-                    <li><strong>飲料水（1人1日500mlが目安）</strong><br>普段より水分制限を意識しましょう。</li>
-                    <li><strong>低カリウム・低食塩の食品</strong><br>体調を悪化させずにカロリーを摂取できるものを選びましょう。（例：ビスケット、クッキー、飴など）</li>
+                    <li><strong>飲料水(1人1日500mlが目安)</strong><br>普段より水分制限を意識しましょう。</li>
+                    <li><strong>低カリウム・低食塩の食品</strong><br>体調を悪化させずにカロリーを摂取できるものを選びましょう。(例:ビスケット、クッキー、飴など)</li>
                     <li><strong>普段飲んでいるカリウムを下げる薬</strong><br>万が一、カリウムの高いものを口にしてしまった場合に備えましょう。</li>
                 </ul>
 
                 <h3>情報収集・生活のための備え</h3>
                 <ul>
-                    <li><strong>小銭（公衆電話用）</strong><br>携帯電話が使えない状況でも、公衆電話はつながりやすい重要なライフラインです。</li>
-                    <li><strong>携帯ラジオ（乾電池式）</strong><br>停電時でも情報を得るための必需品です。AM・FMの両方が聴けるものが役立ちます。</li>
+                    <li><strong>小銭(公衆電話用)</strong><br>携帯電話が使えない状況でも、公衆電話はつながりやすい重要なライフラインです。</li>
+                    <li><strong>携帯ラジオ(乾電池式)</strong><br>停電時でも情報を得るための必需品です。AM・FMの両方が聴けるものが役立ちます。</li>
                     <li><strong>乾電池・モバイルバッテリー</strong><br>ラジオやスマートフォンの電源を確保するために重要です。</li>
                 </ul>
             </section>
@@ -112,7 +199,7 @@
                 <p>お住まいの市区町村が公開しているハザードマップや防災マップで、指定された避難場所や安全な避難経路を事前に確認しておくことが非常に重要です。</p>
                 <div class="quiz-section" style="margin-top:20px;">
                     <a href="https://disaportal.gsi.go.jp/" target="_blank" class="quiz-button">ハザードマップポータルサイトを開く</a>
-                    <p style="margin-top: 15px; font-size: 0.9em;">（※国土交通省のサイトが新しいウィンドウで開きます）</p>
+                    <p style="margin-top: 15px; font-size: 0.9em;">(※国土交通省のサイトが新しいウィンドウで開きます)</p>
                 </div>
             </section>
 
