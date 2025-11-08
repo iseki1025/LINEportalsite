@@ -210,6 +210,45 @@ header h1 {
 }
 
 
+/* === お友達特典ページ内のボタン用テーマカラー === */
+
+/* 運動療法ボタン */
+.portal-button.theme-exercise::before {
+    background: #ea580c;
+}
+.portal-button.theme-exercise .button-title {
+    color: #ea580c;
+}
+.portal-button.theme-exercise:hover {
+    border-color: #ea580c;
+    background: linear-gradient(to bottom, white, #fff7ed);
+}
+
+/* フットケアボタン */
+.portal-button.theme-footcare::before {
+    background: #06b6d4;
+}
+.portal-button.theme-footcare .button-title {
+    color: #06b6d4;
+}
+.portal-button.theme-footcare:hover {
+    border-color: #06b6d4;
+    background: linear-gradient(to bottom, white, #ecfeff);
+}
+
+/* ゲームボタン */
+.portal-button.theme-game::before {
+    background: #ec4899;
+}
+.portal-button.theme-game .button-title {
+    color: #ec4899;
+}
+.portal-button.theme-game:hover {
+    border-color: #ec4899;
+    background: linear-gradient(to bottom, white, #fdf2f8);
+}
+
+
 /* === タブナビゲーション === */
 .page-nav {
     display: flex;
@@ -416,7 +455,7 @@ ol li::before {
     height: 85vh; /* 表示領域を十分に確保 */
     border: 1px solid var(--gray-200);
     border-radius: var(--radius-lg);
-    display: none; /* 初期状態（スマホ）では非表示 */
+    display: none; /* 初期状態(スマホ)では非表示 */
 }
 /* スマホ向けPDFリンクボタン */
 .pdf-link-mobile-wrapper {
