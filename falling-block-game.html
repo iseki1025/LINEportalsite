@@ -123,9 +123,10 @@
         /* ゲームレイアウト */
         .game-layout {
             display: flex;
-            gap: var(--spacing-4);
-            align-items: flex-start;
+            gap: var(--spacing-3);
+            align-items: center;
             margin-bottom: var(--spacing-4);
+            justify-content: center;
         }
 
         .game-board {
@@ -136,12 +137,18 @@
             flex-shrink: 0;
         }
 
+        .left-controls {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-2);
+            min-width: 80px;
+        }
+
         .side-info {
-            flex: 1;
             display: flex;
             flex-direction: column;
             gap: var(--spacing-3);
-            min-width: 100px;
+            min-width: 80px;
         }
 
         .next-box {
@@ -167,16 +174,9 @@
         }
 
         /* コントロールボタン */
-        .controls {
-            display: flex;
-            gap: var(--spacing-3);
-            margin-bottom: var(--spacing-4);
-        }
-
         .btn {
-            flex: 1;
             padding: var(--spacing-3) var(--spacing-4);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 700;
             font-family: var(--font-primary);
             border: none;
@@ -185,6 +185,7 @@
             transition: all 0.2s ease;
             color: white;
             box-shadow: var(--shadow-md);
+            width: 100%;
         }
 
         .btn-start {
@@ -318,6 +319,7 @@
             .info-panel {
                 grid-template-columns: repeat(3, 1fr);
                 gap: var(--spacing-2);
+                margin-bottom: var(--spacing-3);
             }
 
             .info-label {
@@ -333,27 +335,46 @@
             }
 
             .game-layout {
-                flex-direction: column;
-                align-items: center;
-                gap: var(--spacing-3);
+                gap: var(--spacing-2);
+                margin-bottom: var(--spacing-3);
+            }
+
+            .left-controls {
+                gap: var(--spacing-2);
+                min-width: 70px;
             }
 
             .side-info {
-                width: 100%;
-                max-width: 300px;
+                gap: var(--spacing-2);
+                min-width: 60px;
+            }
+
+            .next-box {
+                padding: var(--spacing-2);
+            }
+
+            .next-label {
+                font-size: 0.65rem;
+                margin-bottom: var(--spacing-1);
+            }
+
+            .next-preview {
+                width: 60px;
+                height: 60px;
+            }
+
+            .info-box {
+                padding: var(--spacing-2);
             }
 
             .mobile-controls {
                 display: grid;
-            }
-
-            .controls {
-                gap: var(--spacing-2);
+                margin-bottom: var(--spacing-3);
             }
 
             .btn {
-                padding: var(--spacing-3);
-                font-size: 0.85rem;
+                padding: var(--spacing-2) var(--spacing-3);
+                font-size: 0.75rem;
             }
 
             .back-button {
@@ -370,6 +391,23 @@
             .mobile-btn {
                 padding: var(--spacing-3);
                 font-size: 1.3em;
+            }
+
+            .info-label {
+                font-size: 0.6rem;
+            }
+
+            .info-value {
+                font-size: 0.9rem;
+            }
+
+            .left-controls {
+                min-width: 60px;
+            }
+
+            .btn {
+                font-size: 0.7rem;
+                padding: var(--spacing-2);
             }
         }
     </style>
@@ -395,24 +433,24 @@
         </div>
         
         <div class="game-layout">
+            <div class="left-controls">
+                <button class="btn btn-start" id="startBtn">スタート</button>
+                <button class="btn btn-reset" id="resetBtn">リセット</button>
+            </div>
+            
             <canvas id="gameCanvas" class="game-board"></canvas>
             
             <div class="side-info">
                 <div class="next-box">
                     <div class="next-label">NEXT</div>
-                    <canvas id="nextCanvas" class="next-preview" width="80" height="80"></canvas>
+                    <canvas id="nextCanvas" class="next-preview" width="60" height="60"></canvas>
                 </div>
                 
                 <div class="info-box">
-                    <div class="info-label">プレイ時間</div>
+                    <div class="info-label">時間</div>
                     <div class="info-value info-small" id="playTime">0:00</div>
                 </div>
             </div>
-        </div>
-
-        <div class="controls">
-            <button class="btn btn-start" id="startBtn">スタート</button>
-            <button class="btn btn-reset" id="resetBtn">リセット</button>
         </div>
         
         <div class="mobile-controls">
@@ -424,7 +462,7 @@
             <div></div>
         </div>
         
-        <div style="text-align: center;">
+        <div style="text-align: center; margin-top: var(--spacing-3);">
             <a href="friend-benefit.html" class="back-button">← お友達特典ページへ戻る</a>
         </div>
     </div>
@@ -564,7 +602,7 @@
 
             updateCanvasSize() {
                 const isMobile = window.innerWidth <= 768;
-                const blockSize = isMobile ? 16 : 20;
+                const blockSize = isMobile ? 14 : 20;
                 CONFIG.BLOCK_SIZE = blockSize;
                 
                 this.canvas.width = CONFIG.COLS * blockSize;
@@ -675,7 +713,7 @@
                 this.nextCtx.clearRect(0, 0, this.nextCanvas.width, this.nextCanvas.height);
                 if (!this.nextPiece) return;
 
-                const blockSize = 15;
+                const blockSize = 12;
                 const offsetX = (this.nextCanvas.width - this.nextPiece.pattern[0].length * blockSize) / 2;
                 const offsetY = (this.nextCanvas.height - this.nextPiece.pattern.length * blockSize) / 2;
 
