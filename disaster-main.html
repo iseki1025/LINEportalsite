@@ -16,12 +16,28 @@
             font-weight: normal;
         }
 
+        /* 透析状況セクション全体を中央寄せ */
+        #dialysis-status {
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* 折りたたみ時も小さく表示 */
+        #dialysis-status:not(.is-open) {
+            padding: 8px 15px;
+        }
+
+        #dialysis-status:not(.is-open) .collapsible-trigger {
+            font-size: 0.95em;
+        }
+
         /* 透析状況をコンパクトに表示 */
         .status-container {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
-            justify-content: space-around;
+            justify-content: center;
         }
 
         .status-item {
@@ -86,6 +102,96 @@
                 font-size: 0.65em;
             }
         }
+
+        /* 避難手段セクション用のスタイル */
+        .evacuation-item {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            background-color: #fff;
+        }
+
+        .evacuation-item-header {
+            padding: 12px 15px;
+            background-color: #f8f9fa;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background-color 0.3s;
+        }
+
+        .evacuation-item-header:hover {
+            background-color: #e9ecef;
+        }
+
+        .evacuation-item-title {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #333;
+            margin: 0;
+        }
+
+        .evacuation-item-icon {
+            font-size: 1.2em;
+            color: #666;
+            transition: transform 0.3s;
+        }
+
+        .evacuation-item.is-open .evacuation-item-icon {
+            transform: rotate(180deg);
+        }
+
+        .evacuation-item-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .evacuation-item.is-open .evacuation-item-content {
+            max-height: 2000px;
+            transition: max-height 0.5s ease-in;
+        }
+
+        .evacuation-item-body {
+            padding: 15px;
+        }
+
+        .evacuation-item-body p {
+            margin: 0 0 15px 0;
+            line-height: 1.6;
+        }
+
+        /* 動画埋め込み用スタイル */
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 アスペクト比 */
+            margin: 15px 0;
+            background-color: #000;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .video-container iframe,
+        .video-container video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .video-placeholder {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            text-align: center;
+            font-size: 0.9em;
+        }
     </style>
 </head>
 <!-- bodyタグには災害テーマのクラスを指定 -->
@@ -133,6 +239,7 @@
             <a href="#" class="nav-button" data-target="guidebook">防災ガイドブック</a>
             <a href="#" class="nav-button active" data-target="info">基本情報</a>
             <a href="#" class="nav-button" data-target="checklist">備蓄リスト</a>
+            <a href="#" class="nav-button" data-target="evacuation">当院の避難手段</a>
             <a href="#" class="nav-button" data-target="shelter">避難場所マップ</a>
             <a href="#" class="nav-button" data-target="faq">災害Q&A</a>
         </nav>
@@ -193,6 +300,95 @@
                 </ul>
             </section>
 
+            <!-- ③-2 当院の避難手段 -->
+            <section id="evacuation" class="content-section">
+                <h2>当院の避難手段</h2>
+                <p>災害時、当院では様々な避難手段を用意しています。各設備の使用方法を事前に確認しておきましょう。</p>
+
+                <!-- イーバックチェア -->
+                <div class="evacuation-item">
+                    <div class="evacuation-item-header">
+                        <h3 class="evacuation-item-title">イーバックチェア（階段避難車）</h3>
+                        <span class="evacuation-item-icon">▼</span>
+                    </div>
+                    <div class="evacuation-item-content">
+                        <div class="evacuation-item-body">
+                            <p><strong>概要:</strong> 車椅子の方や歩行が困難な方を、階段を使って安全に避難させるための専用チェアです。キャタピラ式の構造により、介助者1〜2名で階段を降りることができます。</p>
+                            <p><strong>設置場所:</strong> 各階の避難経路入口付近</p>
+                            <p><strong>使用方法:</strong></p>
+                            <ul>
+                                <li>使用者をチェアに座らせ、安全ベルトで固定します</li>
+                                <li>介助者は後方から取っ手を持ち、ゆっくりと階段を降ります</li>
+                                <li>キャタピラが自動的に段差を吸収します</li>
+                            </ul>
+                            <div class="video-container">
+                                <!-- 動画URLを設定してください -->
+                                <iframe src="https://www.youtube.com/embed/VIDEO_ID_1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                <!-- または以下のようにプレースホルダーを表示 -->
+                                <!-- <div class="video-placeholder">動画をここに埋め込みます<br>（YouTube URLまたは動画ファイルを設定）</div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- UDエスケープ -->
+                <div class="evacuation-item">
+                    <div class="evacuation-item-header">
+                        <h3 class="evacuation-item-title">UDエスケープ（緊急脱出シュート）</h3>
+                        <span class="evacuation-item-icon">▼</span>
+                    </div>
+                    <div class="evacuation-item-content">
+                        <div class="evacuation-item-body">
+                            <p><strong>概要:</strong> 窓やベランダから地上へ素早く避難するための布製シュートです。滑り台のような構造で、階段が使えない緊急時に使用します。</p>
+                            <p><strong>設置場所:</strong> 2階・3階の窓際（非常口表示あり）</p>
+                            <p><strong>使用方法:</strong></p>
+                            <ul>
+                                <li>窓枠にシュートを固定します</li>
+                                <li>シュートを窓の外に広げます</li>
+                                <li>足から入り、体を預けるようにして滑り降ります</li>
+                                <li>速度は自動的に調整されるため、ゆっくり安全に降りられます</li>
+                            </ul>
+                            <div class="video-container">
+                                <iframe src="https://www.youtube.com/embed/VIDEO_ID_2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                <!-- <div class="video-placeholder">動画をここに埋め込みます<br>（YouTube URLまたは動画ファイルを設定）</div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 外部の滑り台 -->
+                <div class="evacuation-item">
+                    <div class="evacuation-item-header">
+                        <h3 class="evacuation-item-title">外部避難用滑り台</h3>
+                        <span class="evacuation-item-icon">▼</span>
+                    </div>
+                    <div class="evacuation-item-content">
+                        <div class="evacuation-item-body">
+                            <p><strong>概要:</strong> 建物外部に設置された金属製の避難用滑り台です。火災などで建物内の避難経路が使えない場合に使用します。</p>
+                            <p><strong>設置場所:</strong> 建物東側2階・3階</p>
+                            <p><strong>使用方法:</strong></p>
+                            <ul>
+                                <li>専用の出口から滑り台にアクセスします</li>
+                                <li>手すりをしっかり握り、座った状態で滑り降ります</li>
+                                <li>複数名が連続して使用する場合は、前の人が着地してから次の人が滑ります</li>
+                                <li>着地地点には職員が誘導します</li>
+                            </ul>
+                            <div class="video-container">
+                                <iframe src="https://www.youtube.com/embed/VIDEO_ID_3" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                <!-- <div class="video-placeholder">動画をここに埋め込みます<br>（YouTube URLまたは動画ファイルを設定）</div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 追加の避難手段があれば同様に追加 -->
+
+                <p style="margin-top: 20px; padding: 15px; background-color: #fff3cd; border-left: 4px solid #ffc107; border-radius: 4px;">
+                    <strong>⚠ 注意事項:</strong><br>
+                    これらの避難手段は、職員の指示に従ってご使用ください。定期的に避難訓練を実施していますので、ぜひご参加ください。
+                </p>
+            </section>
+
             <!-- ④ 避難場所マップ の内容 -->
             <section id="shelter" class="content-section">
                 <h2>お近くの避難場所を確認しましょう</h2>
@@ -229,10 +425,18 @@
     <script src="qa-loader.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // 折りたたみ機能
+            // 透析状況の折りたたみ機能
             const triggers = document.querySelectorAll('.collapsible-trigger');
             triggers.forEach(trigger => {
                 trigger.addEventListener('click', function() {
+                    this.parentElement.classList.toggle('is-open');
+                });
+            });
+
+            // 避難手段項目の折りたたみ機能
+            const evacuationItems = document.querySelectorAll('.evacuation-item-header');
+            evacuationItems.forEach(header => {
+                header.addEventListener('click', function() {
                     this.parentElement.classList.toggle('is-open');
                 });
             });
