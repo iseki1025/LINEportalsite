@@ -6,6 +6,157 @@
     <title>透析情報ポータル | 栄養情報</title>
     <!-- 共通のCSSファイルを読み込み -->
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* PDF折りたたみセクション用のスタイル */
+        .pdf-collapsible {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin: 20px 0;
+            overflow: hidden;
+            background-color: #fff;
+        }
+
+        .pdf-collapsible-header {
+            padding: 12px 15px;
+            background-color: #f0f8ff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background-color 0.3s;
+            border-left: 4px solid #ff6b9d;
+        }
+
+        .pdf-collapsible-header:hover {
+            background-color: #e3f2fd;
+        }
+
+        .pdf-collapsible-title {
+            font-size: 1.05em;
+            font-weight: bold;
+            color: #ff6b9d;
+            margin: 0;
+        }
+
+        .pdf-collapsible-icon {
+            font-size: 1.2em;
+            color: #ff6b9d;
+            transition: transform 0.3s;
+        }
+
+        .pdf-collapsible.is-open .pdf-collapsible-icon {
+            transform: rotate(180deg);
+        }
+
+        .pdf-collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .pdf-collapsible.is-open .pdf-collapsible-content {
+            max-height: 1200px;
+            transition: max-height 0.5s ease-in;
+        }
+
+        .pdf-collapsible-body {
+            padding: 15px;
+        }
+
+        /* PDFローディング表示 */
+        .pdf-loading-container {
+            position: relative;
+            min-height: 600px;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pdf-loading-message {
+            text-align: center;
+            color: #666;
+        }
+
+        .pdf-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #ff6b9d;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .pdf-embed-desktop {
+            width: 100%;
+            height: 600px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .pdf-link-mobile-wrapper {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .pdf-link-mobile {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #ff6b9d;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .pdf-link-mobile:hover {
+            background-color: #ff4081;
+        }
+
+        /* スマホではembedを非表示、PCではボタンを非表示 */
+        @media (max-width: 768px) {
+            .pdf-embed-desktop {
+                display: none;
+            }
+            .pdf-loading-container {
+                display: none !important;
+            }
+            .pdf-link-mobile-wrapper {
+                order: -1; /* スマホでは一番上に表示 */
+            }
+            .pdf-mobile-notice {
+                display: block;
+                background-color: #fff0f5;
+                padding: 12px;
+                border-radius: 6px;
+                margin-bottom: 15px;
+                border-left: 4px solid #ff6b9d;
+                font-size: 0.9em;
+                color: #c71585;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .pdf-link-mobile-wrapper {
+                display: none;
+            }
+            .pdf-mobile-notice {
+                display: none;
+            }
+        }
+
+        .pdf-mobile-notice {
+            display: none; /* デフォルトは非表示 */
+        }
+    </style>
 </head>
 <!-- bodyタグには栄養テーマのクラスを指定 -->
 <body class="theme-nutrition">
@@ -49,15 +200,67 @@
             <!-- ② おすすめレシピ の内容 -->
             <section id="recipe" class="content-section">
                 <h2>おすすめレシピ</h2>
-                <p>スマートフォンなど一部の環境ではPDF上部のツールバーが表示されることがあります。見にくい場合は「全画面で見る」リンクをご利用ください。</p>
-                <div class="recipe-grid">
-                    <div class="recipe-item">
-                        <iframe src="pdfs/ドライカレーオムライスこいのぼり.pdf#toolbar=0"></iframe>
-                        <a href="pdfs/ドライカレーオムライスこいのぼり.pdf" target="_blank" class="pdf-link">PDFを全画面で見る / ダウンロード</a>
+                <p>透析患者さんでも楽しめる、栄養バランスを考えたレシピをご紹介します。下のレシピタイトルをクリックして詳細をご覧ください。</p>
+
+                <!-- レシピ1: ドライカレーオムライスこいのぼり -->
+                <div class="pdf-collapsible" data-pdf-id="recipe1">
+                    <div class="pdf-collapsible-header">
+                        <h3 class="pdf-collapsible-title">🍳 ドライカレーオムライスこいのぼり</h3>
+                        <span class="pdf-collapsible-icon">▼</span>
                     </div>
-                    <div class="recipe-item">
-                        <iframe src="pdfs/2020年秋冬2.pdf#toolbar=0"></iframe>
-                        <a href="pdfs/2020年秋冬2.pdf" target="_blank" class="pdf-link">PDFを全画面で見る / ダウンロード</a>
+                    <div class="pdf-collapsible-content">
+                        <div class="pdf-collapsible-body">
+                            <p>季節を感じる楽しいレシピです。こどもの日にもぴったり！</p>
+                            
+                            <!-- スマホ向けのメッセージとボタン（上部に配置） -->
+                            <div class="pdf-mobile-notice">
+                                <strong>📱 スマートフォンでご覧の方へ</strong><br>
+                                下のボタンから別ページでPDFを開くことをおすすめします。
+                            </div>
+                            <div class="pdf-link-mobile-wrapper">
+                                <a href="pdfs/ドライカレーオムライスこいのぼり.pdf" target="_blank" class="pdf-link-mobile">レシピを開く (PDF)</a>
+                            </div>
+                            
+                            <!-- PC向けの埋め込み表示 -->
+                            <div class="pdf-loading-container" id="pdfLoadingContainer1">
+                                <div class="pdf-loading-message">
+                                    <div class="pdf-spinner"></div>
+                                    <p>レシピを読み込んでいます...<br><small>少々お待ちください</small></p>
+                                </div>
+                            </div>
+                            <embed id="pdfEmbed1" src="" type="application/pdf" class="pdf-embed-desktop" style="display: none;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- レシピ2: 2020年秋冬2 -->
+                <div class="pdf-collapsible" data-pdf-id="recipe2">
+                    <div class="pdf-collapsible-header">
+                        <h3 class="pdf-collapsible-title">🍂 秋冬のおすすめレシピ</h3>
+                        <span class="pdf-collapsible-icon">▼</span>
+                    </div>
+                    <div class="pdf-collapsible-content">
+                        <div class="pdf-collapsible-body">
+                            <p>秋冬の旬の食材を使った、体が温まるレシピです。</p>
+                            
+                            <!-- スマホ向けのメッセージとボタン（上部に配置） -->
+                            <div class="pdf-mobile-notice">
+                                <strong>📱 スマートフォンでご覧の方へ</strong><br>
+                                下のボタンから別ページでPDFを開くことをおすすめします。
+                            </div>
+                            <div class="pdf-link-mobile-wrapper">
+                                <a href="pdfs/2020年秋冬2.pdf" target="_blank" class="pdf-link-mobile">レシピを開く (PDF)</a>
+                            </div>
+                            
+                            <!-- PC向けの埋め込み表示 -->
+                            <div class="pdf-loading-container" id="pdfLoadingContainer2">
+                                <div class="pdf-loading-message">
+                                    <div class="pdf-spinner"></div>
+                                    <p>レシピを読み込んでいます...<br><small>少々お待ちください</small></p>
+                                </div>
+                            </div>
+                            <embed id="pdfEmbed2" src="" type="application/pdf" class="pdf-embed-desktop" style="display: none;">
+                        </div>
                     </div>
                 </div>
             </section>
@@ -96,5 +299,50 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <script src="tab-script.js"></script>
     <script src="qa-loader.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // PDF折りたたみ機能と遅延読み込み（複数PDF対応）
+            const pdfCollapsibles = document.querySelectorAll('.pdf-collapsible');
+            
+            pdfCollapsibles.forEach((collapsible, index) => {
+                const header = collapsible.querySelector('.pdf-collapsible-header');
+                const pdfId = collapsible.getAttribute('data-pdf-id');
+                const embedId = 'pdfEmbed' + (index + 1);
+                const loadingId = 'pdfLoadingContainer' + (index + 1);
+                const pdfEmbed = document.getElementById(embedId);
+                const pdfLoadingContainer = document.getElementById(loadingId);
+                let pdfLoaded = false;
+
+                // PDFファイルのパスを設定
+                let pdfPath = '';
+                if (pdfId === 'recipe1') {
+                    pdfPath = 'pdfs/ドライカレーオムライスこいのぼり.pdf#toolbar=0';
+                } else if (pdfId === 'recipe2') {
+                    pdfPath = 'pdfs/2020年秋冬2.pdf#toolbar=0';
+                }
+
+                if (header) {
+                    header.addEventListener('click', function() {
+                        collapsible.classList.toggle('is-open');
+                        
+                        // 折りたたみが開かれて、まだPDFが読み込まれていない場合
+                        if (collapsible.classList.contains('is-open') && !pdfLoaded && pdfEmbed && pdfLoadingContainer) {
+                            // PDFを読み込み開始
+                            setTimeout(function() {
+                                pdfEmbed.src = pdfPath;
+                                pdfLoaded = true;
+                                
+                                // PDFが読み込まれるまで少し待ってから表示を切り替え
+                                setTimeout(function() {
+                                    pdfLoadingContainer.style.display = 'none';
+                                    pdfEmbed.style.display = 'block';
+                                }, 2000); // 2秒後にローディングを非表示
+                            }, 100);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>
