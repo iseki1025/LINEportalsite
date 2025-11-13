@@ -150,6 +150,29 @@ header h1 {
     overflow: hidden;
 }
 
+/* 画像付きボタン用 */
+.portal-button.with-image {
+    padding: 0;
+    min-height: 320px;
+}
+
+.portal-button-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    object-position: center;
+    background: var(--gray-100);
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+}
+
+.portal-button-content {
+    padding: var(--spacing-6) var(--spacing-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+    flex: 1;
+}
+
 .portal-button::before {
     content: '';
     position: absolute;
@@ -315,6 +338,15 @@ header h1 {
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* === イントロテキスト === */
+.intro-text {
+    padding: var(--spacing-8) var(--spacing-6);
+    background: var(--gray-50);
+    text-align: center;
+    color: var(--gray-700);
+    font-size: 1.0625rem;
+    line-height: 1.8;
+}
 
 /* === タイポグラフィ === */
 h2 {
@@ -511,4 +543,8 @@ footer { text-align: center; padding: var(--spacing-8); background: var(--gray-1
     header { padding: var(--spacing-8) var(--spacing-4) var(--spacing-6); }
     .qa-search-container { padding: var(--spacing-6) var(--spacing-4); }
     .qa-search-input { font-size: 1.2rem; }
+    
+    .portal-button-image {
+        height: 150px;
+    }
 }
