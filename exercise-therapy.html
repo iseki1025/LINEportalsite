@@ -11,18 +11,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         /* 画像用の追加スタイル */
-        .hero-image {
-            width: 100%;
-            max-width: 400px;
-            margin: 2rem auto;
-            display: block;
-            border-radius: 20px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        
         .exercise-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem;
             margin: 2rem 0;
         }
@@ -32,34 +23,44 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
-            padding: 1.5rem;
-            background: #f9fafb;
-            border-radius: 12px;
-            transition: transform 0.2s;
+            padding: 0;
+            background: #ffffff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
         }
         
         .exercise-item:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+            transform: translateY(-6px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
         }
         
         .exercise-icon {
-            width: 120px;
-            height: 120px;
-            margin-bottom: 1rem;
-            border-radius: 15px;
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            object-position: center 35%;
+            display: block;
+        }
+        
+        .exercise-text {
+            padding: 1.5rem;
+            width: 100%;
         }
         
         .exercise-item h4 {
-            margin: 0.5rem 0;
+            margin: 0 0 0.75rem 0;
             color: #2c5282;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
+            font-weight: 600;
         }
         
         .exercise-item p {
-            margin: 0.5rem 0 0 0;
-            font-size: 0.9rem;
+            margin: 0;
+            font-size: 0.95rem;
             color: #555;
+            line-height: 1.6;
         }
         
         .caution-box {
@@ -68,16 +69,19 @@
             gap: 1.5rem;
             background: #fff3cd;
             padding: 2rem;
-            border-radius: 12px;
+            border-radius: 16px;
             border-left: 5px solid #ffc107;
             margin: 2rem 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
         
         .caution-icon-img {
-            width: 80px;
-            height: 80px;
+            width: 100px;
+            height: 100px;
             flex-shrink: 0;
-            border-radius: 10px;
+            border-radius: 12px;
+            object-fit: cover;
+            object-position: center;
         }
         
         .caution-content {
@@ -86,22 +90,57 @@
         
         .caution-content h3 {
             margin-top: 0;
+            margin-bottom: 1rem;
             color: #856404;
+            font-size: 1.3rem;
+        }
+        
+        .caution-content p {
+            margin: 0;
+            color: #856404;
+            line-height: 1.7;
+        }
+        
+        .intro-text {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+            line-height: 1.8;
+        }
+        
+        h2 {
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            color: #2c5282;
+        }
+        
+        h3 {
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            color: #2c5282;
+            font-size: 1.4rem;
         }
         
         @media (max-width: 768px) {
             .exercise-grid {
                 grid-template-columns: 1fr;
+                gap: 1.5rem;
             }
             
-            .hero-image {
-                max-width: 300px;
+            .exercise-icon {
+                height: 160px;
             }
             
             .caution-box {
                 flex-direction: column;
                 align-items: center;
                 text-align: center;
+            }
+            
+            .caution-icon-img {
+                width: 80px;
+                height: 80px;
             }
         }
     </style>
@@ -113,11 +152,10 @@
         </header>
         <main>
             <section class="content-section active">
-                <!-- メイン画像 -->
-                <img src="files/exercise_therapy_icon.png" alt="運動療法" class="hero-image">
-                
                 <h2>なぜ運動が大切？</h2>
-                <p>透析患者さんにとって、適切な運動は体力を維持し、合併症を予防するために非常に重要です。筋力や柔軟性を保つことで、日常生活の質(QOL)の向上にも繋がります。</p>
+                <div class="intro-text">
+                    <p>透析患者さんにとって、適切な運動は体力を維持し、合併症を予防するために非常に重要です。筋力や柔軟性を保つことで、日常生活の質(QOL)の向上にも繋がります。</p>
+                </div>
                 
                 <h3>透析中の運動(オンダイアライシス運動)</h3>
                 <p>透析治療中の時間を利用して、ベッド上で行える軽い運動です。スタッフの指導のもと、安全に行いましょう。</p>
@@ -125,20 +163,26 @@
                 <div class="exercise-grid">
                     <div class="exercise-item">
                         <img src="files/ankle_exercise_icon.png" alt="足首の曲げ伸ばし" class="exercise-icon">
-                        <h4>足首の曲げ伸ばし</h4>
-                        <p>血行を促進し、むくみの改善に繋がります。</p>
+                        <div class="exercise-text">
+                            <h4>足首の曲げ伸ばし</h4>
+                            <p>血行を促進し、むくみの改善に繋がります。</p>
+                        </div>
                     </div>
                     
                     <div class="exercise-item">
                         <img src="files/dumbbell_exercise_icon.png" alt="軽いおもりの上げ下げ" class="exercise-icon">
-                        <h4>軽いおもりの上げ下げ</h4>
-                        <p>専用の軽いおもりを使って、腕や足の筋力を維持します。</p>
+                        <div class="exercise-text">
+                            <h4>軽いおもりの上げ下げ</h4>
+                            <p>専用の軽いおもりを使って、腕や足の筋力を維持します。</p>
+                        </div>
                     </div>
                     
                     <div class="exercise-item">
                         <img src="files/ergometer_icon.png" alt="エルゴメーター" class="exercise-icon">
-                        <h4>エルゴメーター</h4>
-                        <p>ベッドサイドで使える自転車こぎ運動で、心肺機能の維持に役立ちます。</p>
+                        <div class="exercise-text">
+                            <h4>エルゴメーター</h4>
+                            <p>ベッドサイドで使える自転車こぎ運動で、心肺機能の維持に役立ちます。</p>
+                        </div>
                     </div>
                 </div>
 
@@ -148,20 +192,26 @@
                 <div class="exercise-grid">
                     <div class="exercise-item">
                         <img src="files/walking_icon.png" alt="ウォーキング" class="exercise-icon">
-                        <h4>ウォーキング</h4>
-                        <p>最も手軽で効果的な有酸素運動です。まずは1日15分程度から始めてみましょう。</p>
+                        <div class="exercise-text">
+                            <h4>ウォーキング</h4>
+                            <p>最も手軽で効果的な有酸素運動です。まずは1日15分程度から始めてみましょう。</p>
+                        </div>
                     </div>
                     
                     <div class="exercise-item">
                         <img src="files/stretching_icon.png" alt="ストレッチ" class="exercise-icon">
-                        <h4>ストレッチ</h4>
-                        <p>筋肉の緊張をほぐし、関節の可動域を広げます。</p>
+                        <div class="exercise-text">
+                            <h4>ストレッチ</h4>
+                            <p>筋肉の緊張をほぐし、関節の可動域を広げます。</p>
+                        </div>
                     </div>
                     
                     <div class="exercise-item">
                         <img src="files/radio_exercise_icon.png" alt="軽い体操" class="exercise-icon">
-                        <h4>軽い体操</h4>
-                        <p>ラジオ体操なども全身を動かす良い運動です。</p>
+                        <div class="exercise-text">
+                            <h4>軽い体操</h4>
+                            <p>ラジオ体操なども全身を動かす良い運動です。</p>
+                        </div>
                     </div>
                 </div>
                 
