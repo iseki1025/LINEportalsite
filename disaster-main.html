@@ -580,92 +580,9 @@
             <section id="shelter" class="content-section">
                 <h2>お近くの避難場所を確認しましょう</h2>
                 <p>お住まいの市区町村が公開しているハザードマップや防災マップで、指定された避難場所や安全な避難経路を事前に確認しておくことが非常に重要です。</p>
+                
+                <!-- 各市の防災マップ -->
                 <div class="quiz-section" style="margin-top:20px;">
-                    <a href="https://disaportal.gsi.go.jp/" target="_blank" class="quiz-button">ハザードマップポータルサイトを開く</a>
-                    <p style="margin-top: 15px; font-size: 0.9em;">(※国土交通省のサイトが新しいウィンドウで開きます)</p>
-                </div>
-            </section>
-
-            <!-- ⑤ 災害Q&A の内容 -->
-            <section id="faq" class="content-section qa-search-section" data-csv-path="files/qa-data.csv" data-category="災害">
-                <h2>災害対策についての よくあるご質問 (Q&A)</h2>
-                <div class="qa-search-container">
-                    <input type="search" class="qa-search-input" placeholder="キーワードを入力 (例: 備蓄, 避難所)" autocomplete="off">
-                </div>
-                <div class="qa-results-container">
-                    <!-- 検索結果はここに表示されます -->
-                </div>
-            </section>
-            
-        </main>
-            <!-- 戻るボタン -->
-            <a href="index.html" class="back-to-portal-button">総合情報ポータルへ戻る</a>
-        <!-- フッター -->
-        <footer>
-            <p><small>&copy; 2025 医療法人 好輝会 梶本クリニック</small></p>
-        </footer>
-    </div>
-
-    <!-- 各種JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
-    <script src="tab-script.js"></script>
-    <script src="qa-loader.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // 透析状況の折りたたみ機能（wrapper全体をクリック可能に）
-            const collapsibleWrapper = document.querySelector('.collapsible-header-wrapper');
-            const collapsibleSection = document.getElementById('dialysis-status');
-            const collapseHint = document.querySelector('.collapse-hint');
-            
-            if (collapsibleWrapper && collapsibleSection && collapseHint) {
-                collapsibleWrapper.addEventListener('click', function() {
-                    collapsibleSection.classList.toggle('is-open');
-                    // アイコンを切り替え
-                    if (collapsibleSection.classList.contains('is-open')) {
-                        collapseHint.textContent = '▼ タップで折りたたみ';
-                    } else {
-                        collapseHint.textContent = '▶ タップで開く';
-                    }
-                });
-            }
-
-            // 避難手段項目の折りたたみ機能
-            const evacuationItems = document.querySelectorAll('.evacuation-item-header');
-            evacuationItems.forEach(header => {
-                header.addEventListener('click', function() {
-                    this.parentElement.classList.toggle('is-open');
-                });
-            });
-
-            // PDF折りたたみ機能と遅延読み込み
-            const pdfCollapsible = document.querySelector('.pdf-collapsible');
-            const pdfHeader = document.querySelector('.pdf-collapsible-header');
-            const pdfEmbed = document.getElementById('pdfEmbed');
-            const pdfLoadingContainer = document.getElementById('pdfLoadingContainer');
-            let pdfLoaded = false;
-
-            if (pdfHeader) {
-                pdfHeader.addEventListener('click', function() {
-                    pdfCollapsible.classList.toggle('is-open');
-                    
-                    // 折りたたみが開かれて、まだPDFが読み込まれていない場合
-                    if (pdfCollapsible.classList.contains('is-open') && !pdfLoaded && pdfEmbed && pdfLoadingContainer) {
-                        // PDFを読み込み開始
-                        setTimeout(function() {
-                            pdfEmbed.src = 'files/disaster-guide-book.pdf#toolbar=0';
-                            pdfLoaded = true;
-                            
-                            // PDFが読み込まれるまで少し待ってから表示を切り替え
-                            // embedのloadイベントは確実ではないので、タイムアウトで処理
-                            setTimeout(function() {
-                                pdfLoadingContainer.style.display = 'none';
-                                pdfEmbed.style.display = 'block';
-                            }, 2000); // 2秒後にローディングを非表示
-                        }, 100);
-                    }
-                });
-            }
-        });
-    </script>
-</body>
-</html>
+                    <h3 style="margin-bottom: 15px;">各市の防災マップ</h3>
+                    <a href="https://www.city.osaka.lg.jp/kikikanrishitsu/page/0000139402.html" target="_blank" class="quiz-button" style="margin-bottom: 10px;">大阪市防災マップを開く</a>
+                    <a href="https://www.city.sakai.lg.jp/kurashi/bosai/kangaeru/pamphlet/bosai/
