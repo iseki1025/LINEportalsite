@@ -197,6 +197,49 @@
             transform: translateY(-3px);
             box-shadow: 0 6px 20px rgba(255, 107, 157, 0.6);
         }
+
+        /* よく検索されるワードのスタイル */
+        .qa-popular-keywords {
+            background-color: #f8f8f8;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .qa-popular-keywords h3 {
+            color: #4a4a4a;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+            display: inline-block; /* h3の幅をコンテンツに合わせる */
+        }
+
+        .keyword-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .keyword-button {
+            background-color: #ff6b9d; /* 栄養テーマの色に合わせる */
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 18px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .keyword-button:hover {
+            background-color: #e45585;
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 <!-- bodyタグには栄養テーマのクラスを指定 -->
@@ -323,6 +366,19 @@
                 <div class="qa-search-container">
                     <input type="search" class="qa-search-input" placeholder="キーワードを入力 (例: リン, 外食)" autocomplete="off">
                 </div>
+
+                <!-- ここに「よく検索されるワード」を追加 -->
+                <div class="qa-popular-keywords">
+                    <h3>よく検索されるワード</h3>
+                    <div class="keyword-buttons">
+                        <button class="keyword-button" data-keyword="リン">リン</button>
+                        <button class="keyword-button" data-keyword="カリウム">カリウム</button>
+                        <button class="keyword-button" data-keyword="水分">水分</button>
+                        <button class="keyword-button" data-keyword="塩分">塩分</button>
+                        <button class="keyword-button" data-keyword="たんぱく質">たんぱく質</button>
+                    </div>
+                </div>
+
                 <div class="qa-results-container">
                     <!-- 検索結果はここに表示されます -->
                 </div>
@@ -383,6 +439,18 @@
                         }
                     });
                 }
+            });
+
+            // よく検索されるワードボタンの機能（栄養ページ用）
+            document.querySelectorAll('.qa-popular-keywords .keyword-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const keyword = this.getAttribute('data-keyword');
+                    const searchInput = this.closest('.content-section').querySelector('.qa-search-input');
+                    if (searchInput) {
+                        searchInput.value = keyword;
+                        searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+                    }
+                });
             });
         });
     </script>

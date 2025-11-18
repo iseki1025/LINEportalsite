@@ -53,6 +53,49 @@
             /* 栄養クイズタブのボタンのホバー時の影の色と強さに合わせる */
             box-shadow: 0 6px 20px rgba(255, 107, 157, 0.6);
         }
+
+        /* よく検索されるワードのスタイル */
+        .qa-popular-keywords {
+            background-color: #f8f8f8;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .qa-popular-keywords h3 {
+            color: #4a4a4a;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+            display: inline-block; /* h3の幅をコンテンツに合わせる */
+        }
+
+        .keyword-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .keyword-button {
+            background-color: #667eea; /* シャントテーマの色に合わせる */
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 18px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .keyword-button:hover {
+            background-color: #556be4;
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 <!-- bodyタグにはシャント管理テーマのクラスを指定 -->
@@ -107,7 +150,6 @@
                     <h2>挑戦してみよう！シャント管理クイズ</h2>
                     <p>日頃のシャント管理に役立つ知識が、ゲーム感覚で楽しく身につきます。<br>あなたのシャント管理知識レベルをチェックしてみませんか？</p>
                     <a href="shunt-quiz.html" class="quiz-button">クイズに挑戦する！</a>
-                    <!-- ここを修正：ご希望のテキストに変更 -->
                     <p style="margin-top: 15px; font-size: 0.9em; color: #666;">10問の中からランダムに5問出題されます。何度でもチャレンジできます！</p>
                 </div>
             </section>
@@ -118,6 +160,19 @@
                 <div class="qa-search-container">
                     <input type="search" class="qa-search-input" placeholder="キーワードを入力 (例: 痛み, 閉塞)" autocomplete="off">
                 </div>
+
+                <!-- ここに「よく検索されるワード」を追加 -->
+                <div class="qa-popular-keywords">
+                    <h3>よく検索されるワード</h3>
+                    <div class="keyword-buttons">
+                        <button class="keyword-button" data-keyword="痛み">痛み</button>
+                        <button class="keyword-button" data-keyword="閉塞">閉塞</button>
+                        <button class="keyword-button" data-keyword="感染">感染</button>
+                        <button class="keyword-button" data-keyword="音">音</button>
+                        <button class="keyword-button" data-keyword="出血">出血</button>
+                    </div>
+                </div>
+
                 <div class="qa-results-container">
                     <!-- 検索結果はここに表示されます -->
                 </div>
@@ -135,5 +190,25 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <script src="tab-script.js"></script>
     <script src="qa-loader.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // ... 既存のJavaScriptコード ...
+
+            // よく検索されるワードボタンの機能
+            document.querySelectorAll('.qa-popular-keywords .keyword-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const keyword = this.getAttribute('data-keyword');
+                    const searchInput = this.closest('.content-section').querySelector('.qa-search-input');
+                    if (searchInput) {
+                        searchInput.value = keyword;
+                        // qa-loader.js の検索関数を呼び出す（例: searchQA関数を想定）
+                        // qa-loader.jsのsearchQA関数がイベントリスナーで動くように設定されている場合、
+                        // input.value = keyword の後に inputイベントをdispatchすると自動で検索が走る
+                        searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
