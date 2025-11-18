@@ -226,7 +226,6 @@
             margin-bottom: 20px;
         }
         
-        /* ▼▼▼ ここから追加したCSS ▼▼▼ */
         .back-to-nutrition-button {
             display: block;
             width: fit-content;
@@ -248,7 +247,6 @@
             color: #667eea;
             border-color: #667eea;
         }
-        /* ▲▲▲ ここまでが追加したCSS ▲▲▲ */
     </style>
 </head>
 <body>
@@ -274,7 +272,6 @@
             <button id="nextButton" class="next-button" style="display: none;">次の問題へ</button>
         </div>
         
-        <!-- ▼▼▼ ここに栄養情報ページへ戻るボタンを追加 ▼▼▼ -->
         <a href="nutrition-main.html" class="back-to-nutrition-button">栄養情報ページへ戻る</a>
 
     </div>
@@ -498,13 +495,19 @@
             const progress = ((currentQuestion + 1) / selectedQuestions.length) * 100;
             document.getElementById('progressFill').style.width = progress + '%';
 
+            // 選択肢をシャッフル（正解を追跡）
+            const shuffledOptions = shuffleArray(data.options.map((option, index) => ({
+                text: option,
+                isCorrect: index === data.correct
+            })));
+
             quizContainer.innerHTML = `
                 <div class="question-number">問題 ${currentQuestion + 1} / ${selectedQuestions.length}</div>
                 <div class="question-text">${data.question}</div>
                 <div class="options" id="options">
-                    ${data.options.map((option, index) => `
-                        <div class="option" onclick="selectOption(${index})" data-index="${index}">
-                            ${option}
+                    ${shuffledOptions.map((option, index) => `
+                        <div class="option" onclick="selectOption(${index}, ${option.isCorrect})" data-index="${index}">
+                            ${option.text}
                         </div>
                     `).join('')}
                 </div>
@@ -517,23 +520,23 @@
             document.getElementById('nextButton').style.display = 'none';
         }
 
-        function selectOption(selectedIndex) {
+        function selectOption(selectedIndex, isCorrect) {
             if (answered) return;
             
             answered = true;
-            const data = selectedQuestions[currentQuestion];
             const options = document.querySelectorAll('.option');
             
             options.forEach((option, index) => {
                 option.classList.add('disabled');
-                if (index === data.correct) {
+                const optionIsCorrect = option.onclick.toString().includes('true');
+                if (optionIsCorrect) {
                     option.classList.add('correct');
                 } else if (index === selectedIndex) {
                     option.classList.add('incorrect');
                 }
             });
 
-            if (selectedIndex === data.correct) {
+            if (isCorrect) {
                 score++;
             }
 
