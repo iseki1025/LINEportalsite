@@ -156,6 +156,47 @@
         .pdf-mobile-notice {
             display: none; /* デフォルトは非表示 */
         }
+
+        /* クイズセクション用のスタイル (栄養ページ用) */
+        .quiz-section {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 1px solid #ddd;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+
+        .quiz-section h2 {
+            color: #ff6b9d;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+        }
+
+        .quiz-section p {
+            color: #555;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .quiz-button {
+            display: inline-block;
+            padding: 18px 40px;
+            background: linear-gradient(135deg, #ff6b9d 0%, #c71585 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px; /* 角が丸まった四角 */
+            font-size: 1.2em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 157, 0.4);
+        }
+
+        .quiz-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 107, 157, 0.6);
+        }
     </style>
 </head>
 <!-- bodyタグには栄養テーマのクラスを指定 -->
@@ -271,7 +312,8 @@
                     <h2>挑戦してみよう！透析栄養クイズ</h2>
                     <p>毎日の食事管理に役立つ知識が、ゲーム感覚で楽しく身につきます。<br>あなたの栄養知識レベルをチェックしてみませんか？</p>
                     <a href="dialysis-nutrition-quiz.html" class="quiz-button">クイズに挑戦する！</a>
-                    <p style="margin-top: 15px; font-size: 0.9em;">（※現在、楽しいクイズページを準備中です。もうしばらくお待ちください。）</p>
+                    <!-- ここを修正：ご希望のテキストに変更 -->
+                    <p style="margin-top: 15px; font-size: 0.9em;">10問の中からランダムに5問出題されます。何度でもチャレンジできます！</p>
                 </div>
             </section>
 

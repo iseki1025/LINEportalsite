@@ -11,16 +11,17 @@
         .quiz-section {
             text-align: center;
             padding: 40px 20px;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            border-radius: 15px;
+            /* 栄養クイズタブのデザインに合わせる */
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); /* 栄養クイズと同じ */
+            border-radius: 15px; /* 栄養クイズと同じ */
             margin: 20px 0;
-            /* 栄養クイズタブのデザインに合わせるために追加 */
-            border: 1px solid #ddd; /* ボーダーを追加 */
-            box-shadow: 0 4px 8px rgba(0,0,0,0.05); /* 影を追加 */
+            border: 1px solid #ddd; /* 栄養クイズと同じ */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05); /* 栄養クイズと同じ */
         }
 
         .quiz-section h2 {
-            color: #ff6b9d; /* 栄養クイズタブのh2の色に合わせる */
+            /* 栄養クイズタブのh2の色に合わせる */
+            color: #ff6b9d; 
             margin-bottom: 15px;
             font-size: 1.8em;
         }
@@ -34,19 +35,23 @@
         .quiz-button {
             display: inline-block;
             padding: 18px 40px;
-            background: linear-gradient(135deg, #ff6b9d 0%, #c71585 100%); /* 栄養クイズタブのボタンの色に合わせる */
+            /* 栄養クイズタブのボタンの色とグラデーションに合わせる */
+            background: linear-gradient(135deg, #ff6b9d 0%, #c71585 100%);
             color: white;
             text-decoration: none;
-            border-radius: 50px;
+            /* ここを修正：栄養ページのボタンのborder-radiusに合わせる */
+            border-radius: 6px; 
             font-size: 1.2em;
             font-weight: bold;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(255, 107, 157, 0.4); /* 栄養クイズタブのボタンの影の色に合わせる */
+            /* 栄養クイズタブのボタンの影の色と強さに合わせる */
+            box-shadow: 0 4px 15px rgba(255, 107, 157, 0.4);
         }
 
         .quiz-button:hover {
             transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(255, 107, 157, 0.6); /* 栄養クイズタブのボタンのホバー時の影の色に合わせる */
+            /* 栄養クイズタブのボタンのホバー時の影の色と強さに合わせる */
+            box-shadow: 0 6px 20px rgba(255, 107, 157, 0.6);
         }
     </style>
 </head>
@@ -102,7 +107,8 @@
                     <h2>挑戦してみよう！シャント管理クイズ</h2>
                     <p>日頃のシャント管理に役立つ知識が、ゲーム感覚で楽しく身につきます。<br>あなたのシャント管理知識レベルをチェックしてみませんか？</p>
                     <a href="shunt-quiz.html" class="quiz-button">クイズに挑戦する！</a>
-                    <p style="margin-top: 15px; font-size: 0.9em; color: #666;">（※現在、楽しいクイズページを準備中です。もうしばらくお待ちください。）</p>
+                    <!-- ここを修正：ご希望のテキストに変更 -->
+                    <p style="margin-top: 15px; font-size: 0.9em; color: #666;">10問の中からランダムに5問出題されます。何度でもチャレンジできます！</p>
                 </div>
             </section>
             
