@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ゲームまとめサイト</title>
+</head>
+<body>
+    <h1>ゲームポータル</h1>
+    <p>ここはトップページです。</p>
+    
+    <!-- 接続テスト用のボタン -->
+    <button id="testBtn" style="padding:10px; font-size:16px;">接続テスト：データを送る</button>
+
+    <!-- JavaScript：ボタンが押されたらFirebaseに書き込む -->
+    <script type="module">
+        // さっき作った設定ファイル(js/firebase.js)から必要な道具を借りてくる
+        import { db, collection, addDoc } from "./js/firebase.js";
+
+        // ボタンを押したときの動きを設定
+        document.getElementById("testBtn").addEventListener("click", async () => {
+            try {
+                // "test_log" という名前のリストに、メッセージと時間を保存する
+                await addDoc(collection(db, "test_log"), {
+                    message: "Codespacesからこんにちは！",
+                    time: new Date()
+                });
+                
+                // うまくいったらこれを表示
+                alert("成功！Firebaseに保存されました");
+            } catch (e) {
+                // 失敗したらエラー内容を表示
+                console.error(e);
+                alert("エラー！保存できませんでした。コンソール(F12)を確認してください。");
+            }
+        });
+    </script>
+</body>
+</html>
