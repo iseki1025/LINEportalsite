@@ -14,26 +14,8 @@
 
     <!-- JavaScript：ボタンが押されたらFirebaseに書き込む -->
     <script type="module">
-        // さっき作った設定ファイル(js/firebase.js)から必要な道具を借りてくる
-        import { db, collection, addDoc } from "./js/firebase.js";
-
-        // ボタンを押したときの動きを設定
-        document.getElementById("testBtn").addEventListener("click", async () => {
-            try {
-                // "test_log" という名前のリストに、メッセージと時間を保存する
-                await addDoc(collection(db, "test_log"), {
-                    message: "Codespacesからこんにちは！",
-                    time: new Date()
-                });
-                
-                // うまくいったらこれを表示
-                alert("成功！Firebaseに保存されました");
-            } catch (e) {
-                // 失敗したらエラー内容を表示
-                console.error(e);
-                alert("エラー！保存できませんでした。コンソール(F12)を確認してください。");
-            }
-        });
+    console.log("プログラムは動いています");
+    alert("JSは正常です！");
     </script>
 </body>
 </html>
