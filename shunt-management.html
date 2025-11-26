@@ -1,3 +1,8 @@
+Skip to main content
+透析情報ポータル：シャント管理
+tokens
+
+User
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -18,9 +23,483 @@
             border: 1px solid #ddd; /* 栄養クイズと同じ */
             box-shadow: 0 4px 8px rgba(0,0,0,0.05); /* 栄養クイズと同じ */
         }
+code
+Code
+.quiz-section h2 {
+        /* 栄養クイズタブのh2の色に合わせる */
+        color: #ff6b9d; 
+        margin-bottom: 15px;
+        font-size: 1.8em;
+    }
+
+    .quiz-section p {
+        color: #555;
+        margin-bottom: 25px;
+        line-height: 1.6;
+    }
+
+    .quiz-button {
+        display: inline-block;
+        padding: 18px 40px;
+        /* 栄養クイズタブのボタンの色とグラデーションに合わせる */
+        background: linear-gradient(135deg, #ff6b9d 0%, #c71585 100%);
+        color: white;
+        text-decoration: none;
+        /* ここを修正：栄養ページのボタンのborder-radiusに合わせる */
+        border-radius: 6px; 
+        font-size: 1.2em;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        /* 栄養クイズタブのボタンの影の色と強さに合わせる */
+        box-shadow: 0 4px 15px rgba(255, 107, 157, 0.4);
+    }
+
+    .quiz-button:hover {
+        transform: translateY(-3px);
+        /* 栄養クイズタブのボタンのホバー時の影の色と強さに合わせる */
+        box-shadow: 0 6px 20px rgba(255, 107, 157, 0.6);
+    }
+
+    /* よく検索されるワードのスタイル */
+    .qa-popular-keywords {
+        background-color: #f8f8f8;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        padding: 20px;
+        margin-top: 30px;
+        text-align: center;
+    }
+
+    .qa-popular-keywords h3 {
+        color: #4a4a4a;
+        font-size: 1.2em;
+        margin-bottom: 15px;
+        border-bottom: 2px solid #e0e0e0;
+        padding-bottom: 10px;
+        display: inline-block; /* h3の幅をコンテンツに合わせる */
+    }
+
+    .keyword-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .keyword-button {
+        background-color: #667eea; /* シャントテーマの色に合わせる */
+        color: white;
+        border: none;
+        border-radius: 20px;
+        padding: 8px 18px;
+        font-size: 0.9em;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .keyword-button:hover {
+        background-color: #556be4;
+        transform: translateY(-2px);
+    }
+</style>
+</head>
+<!-- bodyタグにはシャント管理テーマのクラスを指定 -->
+<body class="theme-shunt">
+    <div class="container">
+        <header>
+            <h1>シャント管理について</h1>
+        </header>
+code
+Code
+<!-- タブナビゲーション -->
+    <nav class="page-nav">
+        <a href="#" class="nav-button active" data-target="info">シャント管理の基本</a>
+        <a href="#" class="nav-button" data-target="quiz">シャントクイズ</a>
+        <a href="#" class="nav-button" data-target="qa">シャントQ&A</a>
+    </nav>
+
+    <main id="content-area">
+        <!-- ① シャント管理の基本 の内容 -->
+        <section id="info" class="content-section active">
+            <h2>シャントは透析治療の「命綱」です</h2>
+            <p>
+                バスキュラーアクセス（シャント）は、透析治療のために血液を効率よく体外に取り出し、きれいにして体内に戻すための大切な出入り口です。シャントを長持ちさせるためには、日頃の自己管理が非常に重要になります。
+            </p>
+            
+            <h3>毎日行いましょう：見て・聴いて・触って 確認</h3>
+            <ul>
+                <li><strong>見る（視診）</strong><br>
+                    シャント肢に「赤み」「腫れ」「傷」「出血」などがないか、目で見て確認します。感染の兆候を見逃さないようにしましょう。</li>
+                <li><strong>聴く（聴診）</strong><br>
+                    シャント血管に耳を近づけるか、聴診器を当てて、「ザーザー」「ゴーゴー」という連続した血流の音（シャント音）が聴こえるか確認します。音が弱くなったり、途切れたりする場合は注意が必要です。</li>
+                <li><strong>触る（触診）</strong><br>
+                    シャント血管の上を指で軽く触れて、血流による細かな振動（スリル）を感じられるか確認します。スリルが普段より弱い、または感じられない場合は閉塞のサインかもしれません。</li>
+            </ul>
+
+            <h3>日常生活で気をつけること</h3>
+            <ul>
+                <li>シャント側の腕で重いものを持たないようにしましょう。</li>
+                <li>シャント側の腕で血圧を測ったり、採血をしたり、腕時計をしたりしないようにしましょう。</li>
+                <li>寝るときにシャント側の腕を体の下にしないように注意しましょう。</li>
+                <li>シャント部分は清潔に保ち、掻いたりしないようにしてください。</li>
+            </ul>
+
+            <h3>こんな時はすぐに連絡を！</h3>
+            <p>
+                シャントの音が聞こえない、スリルを感じない、シャント肢が赤く腫れて痛む、出血が止まらないなど、普段と違う様子に気づいた場合は、自己判断せず、すぐに当院のスタッフへご連絡ください。
+            </p>
+        </section>
+        
+        <!-- ② シャントクイズ の内容 -->
+        <section id="quiz" class="content-section">
+            <div class="quiz-section">
+                <h2>挑戦してみよう！シャント管理クイズ</h2>
+                <p>日頃のシャント管理に役立つ知識が、ゲーム感覚で楽しく身につきます。<br>あなたのシャント管理知識レベルをチェックしてみませんか？</p>
+                <a href="shunt-quiz.html" class="quiz-button">クイズに挑戦する！</a>
+                <p style="margin-top: 15px; font-size: 0.9em; color: #666;">10問の中からランダムに5問出題されます。何度でもチャレンジできます！</p>
+            </div>
+        </section>
+        
+        <!-- ③ シャントQ&A の内容 -->
+        <section id="qa" class="content-section qa-search-section" data-csv-path="files/qa-data.csv" data-category="シャント">
+            <h2>シャント管理についての よくあるご質問 (Q&A)</h2>
+            <div class="qa-search-container">
+                <input type="search" class="qa-search-input" placeholder="キーワードを入力 (例: 痛み, 閉塞)" autocomplete="off">
+            </div>
+
+            <!-- ここに「よく検索されるワード」を追加 -->
+            <div class="qa-popular-keywords">
+                <h3>よく検索されるワード</h3>
+                <div class="keyword-buttons">
+                    <button class="keyword-button" data-keyword="痛み">痛み</button>
+                    <button class="keyword-button" data-keyword="閉塞">閉塞</button>
+                    <button class="keyword-button" data-keyword="感染">感染</button>
+                    <button class="keyword-button" data-keyword="音">音</button>
+                    <button class="keyword-button" data-keyword="出血">出血</button>
+                </div>
+            </div>
+
+            <div class="qa-results-container">
+                <!-- 検索結果はここに表示されます -->
+            </div>
+        </section>
+
+    </main>
+    
+    <a href="index.html" class="back-to-portal-button">総合情報ポータルへ戻る</a>
+    <footer>
+        <p><small>&copy; 2025 医療法人 好輝会 梶本クリニック</small></p>
+    </footer>
+</div>
+
+<!-- 共通の切り替え用JavaScriptとQ&A用スクリプトを読み込む -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+<script src="tab-script.js"></script>
+<script src="qa-loader.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // ... 既存のJavaScriptコード ...
+
+        // よく検索されるワードボタンの機能
+        document.querySelectorAll('.qa-popular-keywords .keyword-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const keyword = this.getAttribute('data-keyword');
+                const searchInput = this.closest('.content-section').querySelector('.qa-search-input');
+                if (searchInput) {
+                    searchInput.value = keyword;
+                    // qa-loader.js の検索関数を呼び出す（例: searchQA関数を想定）
+                    // qa-loader.jsのsearchQA関数がイベントリスナーで動くように設定されている場合、
+                    // input.value = keyword の後に inputイベントをdispatchすると自動で検索が走る
+                    searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>
+このページのこんな時はすぐに連絡を！の部分に、各施設への連絡先を追加したい。連絡先はポップアップ式のボタンになるように設定。連絡先は3か所。本院・なかもず分院・三国ヶ丘分院。それぞれボタンを押すと電話がつながるようにしたい。試しに三国ヶ丘分院には電話番号を登録。080-6178-9783を使用。
+Model
+ThinkingThoughts
+Expand to view model thoughts
+
+chevron_right
+ご要望に合わせて、以下の3点を実装します。
+連絡先ボタンの追加: 「こんな時はすぐに連絡を！」のセクションに、緊急連絡先を表示する目立つボタンを配置します。
+ポップアップ（モーダル）の実装: ボタンを押すと、3つの施設の連絡先リストがポップアップで表示されるようにします。
+電話発信機能: 各施設のボタンを押すと、そのまま電話が発信されるように設定します。
+以下が修正後のコードです。既存のstyleブロック、HTMLの該当箇所、そしてscriptに追加を行ってください。
+1. CSSの追加 (headタグ内の style タグの末尾に追加)
+既存のCSSの下に、ポップアップウィンドウ（モーダル）と緊急ボタン用のスタイルを追加します。
+code
+CSS
+/* --- 追加：緊急連絡先ボタンとモーダルのスタイル --- */
+        
+        /* 緊急連絡先を表示するトリガーボタン */
+        .emergency-btn {
+            display: block;
+            width: 100%;
+            max-width: 350px;
+            margin: 20px auto;
+            padding: 15px;
+            background-color: #e74c3c; /* 緊急性を表す赤 */
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .emergency-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.6);
+            background-color: #d62c1a;
+        }
+
+        .emergency-btn::before {
+            content: '📞';
+            margin-right: 10px;
+        }
+
+        /* モーダル（ポップアップ）の背景 */
+        .modal-overlay {
+            display: none; /* デフォルトは非表示 */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex; /* activeクラスで表示 */
+            opacity: 1;
+        }
+
+        /* モーダルの中身 */
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: relative;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-title {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        /* 閉じるボタン（×） */
+        .close-modal-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #aaa;
+            cursor: pointer;
+        }
+        
+        .close-modal-btn:hover {
+            color: #333;
+        }
+
+        /* 各施設の電話ボタンリスト */
+        .contact-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 20px;
+            background-color: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .contact-link:hover {
+            background-color: #e3f2fd;
+            border-color: #2196f3;
+            transform: scale(1.02);
+        }
+
+        .contact-link span {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .contact-icon {
+            color: #2196f3;
+            font-size: 1.2em;
+            margin-left: 10px;
+        }
+2. HTMLの修正 (body内の該当箇所を修正)
+① section#info の「こんな時はすぐに連絡を！」の部分にボタンを追加します。
+② body タグの閉じタグ直前に、モーダルのHTML構造を追加します。
+① section#info の修正:
+code
+Html
+<!-- ① シャント管理の基本 の内容 -->
+            <section id="info" class="content-section active">
+                <!-- ... (中略) ... -->
+                
+                <h3>こんな時はすぐに連絡を！</h3>
+                <p>
+                    シャントの音が聞こえない、スリルを感じない、シャント肢が赤く腫れて痛む、出血が止まらないなど、普段と違う様子に気づいた場合は、自己判断せず、すぐに当院のスタッフへご連絡ください。
+                </p>
+                <!-- ▼ 追加：緊急連絡先ボタン ▼ -->
+                <button id="open-contact-modal" class="emergency-btn">各施設への連絡先はこちら</button>
+            </section>
+② bodyの最後（scriptタグの上あたり）にモーダルを追加:
+code
+Html
+<!-- ▼ 追加：連絡先ポップアップモーダル ▼ -->
+    <div id="contact-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="close-modal-btn">&times;</button>
+            <h3 class="modal-title">連絡先を選択してください</h3>
+            <p style="font-size:0.9em; margin-bottom:15px; color:#666;">タップすると電話がかかります</p>
+            
+            <div class="contact-list">
+                <!-- 本院 (電話番号は一般的な代表番号を使用しています。必要に応じて変更してください) -->
+                <a href="tel:0664519010" class="contact-link">
+                    <div>
+                        <div style="font-size:1.1em;">本院</div>
+                        <span style="font-size:0.8em;">(福島区)</span>
+                    </div>
+                    <i class="contact-icon">📞</i>
+                </a>
+
+                <!-- なかもず分院 (電話番号は一般的な代表番号を使用しています) -->
+                <a href="tel:0722502960" class="contact-link">
+                    <div>
+                        <div style="font-size:1.1em;">なかもず分院</div>
+                        <span style="font-size:0.8em;">(堺市北区)</span>
+                    </div>
+                    <i class="contact-icon">📞</i>
+                </a>
+
+                <!-- 三国ヶ丘分院 (ご指定の番号) -->
+                <a href="tel:08061789783" class="contact-link">
+                    <div>
+                        <div style="font-size:1.1em;">三国ヶ丘分院</div>
+                        <span style="font-size:0.8em; color:#e74c3c;">(緊急連絡先)</span>
+                    </div>
+                    <i class="contact-icon">📞</i>
+                </a>
+            </div>
+        </div>
+    </div>
+3. JavaScriptの追加 (scriptタグ内に追加)
+既存の document.addEventListener('DOMContentLoaded', ...) の中に、モーダルの開閉処理を追加します。
+code
+JavaScript
+<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // ... (既存のコード) ...
+
+            // --- 追加：モーダルの開閉処理 ---
+            const modal = document.getElementById('contact-modal');
+            const openBtn = document.getElementById('open-contact-modal');
+            const closeBtn = document.querySelector('.close-modal-btn');
+
+            // ボタンクリックでモーダルを開く
+            openBtn.addEventListener('click', function() {
+                modal.classList.add('active');
+            });
+
+            // ×ボタンでモーダルを閉じる
+            closeBtn.addEventListener('click', function() {
+                modal.classList.remove('active');
+            });
+
+            // モーダルの外側をクリックしても閉じる
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                }
+            });
+            // ---------------------------------
+            
+            // ... (よく検索されるワードボタンの機能など既存コード) ...
+        });
+    </script>
+実装のポイント
+デザイン: 緊急時に迷わないよう、ボタンは「赤色」で目立つようにし、アイコンも電話マーク（📞）を使用しました。
+電話番号: 三国ヶ丘分院はご指定の 080-6178-9783 を設定しています。本院となかもず分院については、公開されている代表番号（本院：06-6451-9010、なかもず：072-250-2960）を設定していますが、もし緊急用の携帯番号などがある場合は href="tel:..." の中身を書き換えてください。
+使い勝手: モーダルを開いた後、施設名が大きく書かれたボタンを押すだけで発信できるため、緊急時でも操作しやすくなっています。
+Sources
+help
+kajimoto-clinic.com
+kajimoto-clinic.com
+Google Search Suggestions
+Display of Search Suggestions is required when using Grounding with Google Search. Learn more
+Google logo
+Model
+ThinkingThoughts
+Expand to view model thoughts
+
+chevron_right
+ご要望の機能を実装した完全なHTMLコードです。
+ご提示いただいたコードに、緊急連絡先ボタン、ポップアップ画面、電話発信機能、およびそれらを制御するスクリプトを追加しました。
+このまま html ファイルとして保存してご使用いただけます。
+code
+Html
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>透析情報ポータル | シャント管理</title>
+    <!-- 共通のCSSファイルを読み込み -->
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* クイズセクション用のスタイル */
+        .quiz-section {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 1px solid #ddd;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
 
         .quiz-section h2 {
-            /* 栄養クイズタブのh2の色に合わせる */
             color: #ff6b9d; 
             margin-bottom: 15px;
             font-size: 1.8em;
@@ -35,22 +514,18 @@
         .quiz-button {
             display: inline-block;
             padding: 18px 40px;
-            /* 栄養クイズタブのボタンの色とグラデーションに合わせる */
             background: linear-gradient(135deg, #ff6b9d 0%, #c71585 100%);
             color: white;
             text-decoration: none;
-            /* ここを修正：栄養ページのボタンのborder-radiusに合わせる */
             border-radius: 6px; 
             font-size: 1.2em;
             font-weight: bold;
             transition: all 0.3s ease;
-            /* 栄養クイズタブのボタンの影の色と強さに合わせる */
             box-shadow: 0 4px 15px rgba(255, 107, 157, 0.4);
         }
 
         .quiz-button:hover {
             transform: translateY(-3px);
-            /* 栄養クイズタブのボタンのホバー時の影の色と強さに合わせる */
             box-shadow: 0 6px 20px rgba(255, 107, 157, 0.6);
         }
 
@@ -70,7 +545,7 @@
             margin-bottom: 15px;
             border-bottom: 2px solid #e0e0e0;
             padding-bottom: 10px;
-            display: inline-block; /* h3の幅をコンテンツに合わせる */
+            display: inline-block;
         }
 
         .keyword-buttons {
@@ -81,7 +556,7 @@
         }
 
         .keyword-button {
-            background-color: #667eea; /* シャントテーマの色に合わせる */
+            background-color: #667eea;
             color: white;
             border: none;
             border-radius: 20px;
@@ -95,6 +570,154 @@
         .keyword-button:hover {
             background-color: #556be4;
             transform: translateY(-2px);
+        }
+
+        /* --- 追加：緊急連絡先ボタンとモーダルのスタイル --- */
+        
+        /* 緊急連絡先を表示するトリガーボタン */
+        .emergency-btn {
+            display: block;
+            width: 100%;
+            max-width: 350px;
+            margin: 25px auto;
+            padding: 18px;
+            background-color: #e74c3c; /* 緊急性を表す赤 */
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .emergency-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.6);
+            background-color: #d62c1a;
+        }
+
+        .emergency-btn::before {
+            content: '📞';
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+
+        /* モーダル（ポップアップ）の背景 */
+        .modal-overlay {
+            display: none; /* デフォルトは非表示 */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex; /* activeクラスで表示 */
+            opacity: 1;
+        }
+
+        /* モーダルの中身 */
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: relative;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-title {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        /* 閉じるボタン（×） */
+        .close-modal-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 28px;
+            color: #aaa;
+            cursor: pointer;
+            line-height: 1;
+        }
+        
+        .close-modal-btn:hover {
+            color: #333;
+        }
+
+        /* 各施設の電話ボタンリスト */
+        .contact-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 20px;
+            background-color: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .contact-link:hover {
+            background-color: #e3f2fd;
+            border-color: #2196f3;
+            transform: scale(1.02);
+        }
+
+        .contact-text-group {
+            text-align: left;
+        }
+
+        .contact-name {
+            font-size: 1.1em;
+            display: block;
+        }
+
+        .contact-sub {
+            font-size: 0.8em;
+            color: #666;
+        }
+
+        .contact-icon {
+            color: #2196f3;
+            font-size: 1.4em;
+            margin-left: 10px;
+            font-style: normal;
         }
     </style>
 </head>
@@ -142,6 +765,10 @@
                 <p>
                     シャントの音が聞こえない、スリルを感じない、シャント肢が赤く腫れて痛む、出血が止まらないなど、普段と違う様子に気づいた場合は、自己判断せず、すぐに当院のスタッフへご連絡ください。
                 </p>
+                
+                <!-- ▼ 追加：緊急連絡先ボタン ▼ -->
+                <button id="open-contact-modal" class="emergency-btn">各施設への連絡先はこちら</button>
+
             </section>
             
             <!-- ② シャントクイズ の内容 -->
@@ -186,13 +813,83 @@
         </footer>
     </div>
     
+    <!-- ▼ 追加：連絡先ポップアップモーダル ▼ -->
+    <div id="contact-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="close-modal-btn">&times;</button>
+            <h3 class="modal-title">連絡先を選択してください</h3>
+            <p style="font-size:0.9em; margin-bottom:20px; color:#666;">ボタンをタップすると電話がかかります</p>
+            
+            <div class="contact-list">
+                <!-- 本院 -->
+                <!-- 電話番号は代表番号を想定しています。必要に応じて変更してください -->
+                <a href="tel:0664519010" class="contact-link">
+                    <div class="contact-text-group">
+                        <span class="contact-name">本院</span>
+                        <span class="contact-sub">大阪市福島区</span>
+                    </div>
+                    <i class="contact-icon">📞</i>
+                </a>
+
+                <!-- なかもず分院 -->
+                <!-- 電話番号は代表番号を想定しています。必要に応じて変更してください -->
+                <a href="tel:0722502960" class="contact-link">
+                    <div class="contact-text-group">
+                        <span class="contact-name">なかもず分院</span>
+                        <span class="contact-sub">堺市北区</span>
+                    </div>
+                    <i class="contact-icon">📞</i>
+                </a>
+
+                <!-- 三国ヶ丘分院 -->
+                <!-- ご指定の電話番号を設定しています -->
+                <a href="tel:08061789783" class="contact-link">
+                    <div class="contact-text-group">
+                        <span class="contact-name">三国ヶ丘分院</span>
+                        <span class="contact-sub" style="color:#e74c3c; font-weight:bold;">緊急連絡先</span>
+                    </div>
+                    <i class="contact-icon">📞</i>
+                </a>
+            </div>
+        </div>
+    </div>
+
     <!-- 共通の切り替え用JavaScriptとQ&A用スクリプトを読み込む -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <script src="tab-script.js"></script>
     <script src="qa-loader.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // ... 既存のJavaScriptコード ...
+            
+            // --- 追加：モーダルの開閉処理 ---
+            const modal = document.getElementById('contact-modal');
+            const openBtn = document.getElementById('open-contact-modal');
+            const closeBtn = document.querySelector('.close-modal-btn');
+
+            // ボタンクリックでモーダルを開く
+            if (openBtn) {
+                openBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    modal.classList.add('active');
+                });
+            }
+
+            // ×ボタンでモーダルを閉じる
+            if (closeBtn) {
+                closeBtn.addEventListener('click', function() {
+                    modal.classList.remove('active');
+                });
+            }
+
+            // モーダルの外側をクリックしても閉じる
+            if (modal) {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        modal.classList.remove('active');
+                    }
+                });
+            }
+            // ---------------------------------
 
             // よく検索されるワードボタンの機能
             document.querySelectorAll('.qa-popular-keywords .keyword-button').forEach(button => {
@@ -201,9 +898,7 @@
                     const searchInput = this.closest('.content-section').querySelector('.qa-search-input');
                     if (searchInput) {
                         searchInput.value = keyword;
-                        // qa-loader.js の検索関数を呼び出す（例: searchQA関数を想定）
-                        // qa-loader.jsのsearchQA関数がイベントリスナーで動くように設定されている場合、
-                        // input.value = keyword の後に inputイベントをdispatchすると自動で検索が走る
+                        // qa-loader.js の検索関数を呼び出す
                         searchInput.dispatchEvent(new Event('input', { bubbles: true }));
                     }
                 });
@@ -212,3 +907,13 @@
     </script>
 </body>
 </html>
+41.6s
+Use Arrow Up and Arrow Down to select a turn, Enter to jump to it, and Escape to return to the chat.
+Start typing a prompt
+
+Run
+Ctrl
+1
+
+
+Response ready.
