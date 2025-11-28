@@ -34,10 +34,8 @@ body {
     font-family: var(--font-primary);
     line-height: 1.6;
     color: var(--gray-900);
-    background-image: url('files/background-main.png');
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
+    /* 修正: アイコン画像をやめ、目に優しい清潔感のあるグラデーションに変更 */
+    background: linear-gradient(180deg, #f0f8ff 0%, #ffffff 100%);
     background-attachment: fixed;
     min-height: 100vh;
     font-size: 16px;
@@ -57,10 +55,12 @@ body {
 .portal-header, header {
     text-align: center;
     padding: var(--spacing-12) var(--spacing-6);
-    background-image: url('files/background-header.png');
+    /* 修正: 背景画像の上に半透明の青系フィルターを重ねて文字を見やすくする */
+    background-image: linear-gradient(rgba(0, 88, 106, 0.6), rgba(0, 160, 193, 0.3)), url('files/background-header.png');
     background-size: cover;
     background-position: center center;
-    color: var(--gray-800);
+    /* 修正: 文字色を白に統一 */
+    color: #ffffff;
     position: relative;
     overflow: hidden;
 }
@@ -70,18 +70,22 @@ header {
 }
 
 .portal-header h1, .portal-header p, header h1 {
-    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.4);
+    /* 修正: 白文字が浮き出るように濃い影を設定 */
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
 }
 
 header h1 {
     font-weight: 900;
 }
 
-.theme-nutrition header h1 { color: var(--theme-color-primary); }
-.theme-disaster header h1 { color: var(--theme-color-disaster); }
-.theme-shunt header h1 { color: var(--theme-color-green); }
-.theme-friend header h1 { color: var(--theme-color-purple); }
-.theme-qa header h1 { color: var(--theme-color-orange); }
+/* 修正: ヘッダー内のタイトルは視認性優先で白(#fff)で統一するよう !important を付与 */
+.theme-nutrition header h1,
+.theme-disaster header h1,
+.theme-shunt header h1,
+.theme-friend header h1,
+.theme-qa header h1 { 
+    color: #ffffff !important; 
+}
 
 
 /* === 透析ステータス === */
