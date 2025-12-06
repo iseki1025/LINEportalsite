@@ -29,24 +29,73 @@
             overflow: hidden;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
             transition: all 0.3s ease;
+            cursor: pointer; /* クリックできることを示す */
+            position: relative;
         }
         
         .exercise-item:hover {
             transform: translateY(-6px);
             box-shadow: 0 8px 20px rgba(0,0,0,0.15);
         }
+
+        /* 画像コンテナ（再生ボタン配置用） */
+        .img-container {
+            width: 100%;
+            height: 180px;
+            position: relative;
+            overflow: hidden;
+        }
         
         .exercise-icon {
             width: 100%;
-            height: 180px;
+            height: 100%;
             object-fit: cover;
             object-position: center 35%;
             display: block;
+            transition: transform 0.3s ease;
+        }
+
+        /* ホバー時に画像を少しズーム */
+        .exercise-item:hover .exercise-icon {
+            transform: scale(1.05);
+        }
+
+        /* 再生ボタンオーバーレイ */
+        .play-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s ease;
+            pointer-events: none; /* 画像クリックの邪魔にならないように */
+        }
+
+        .play-overlay::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 0;
+            border-left: 14px solid #fff;
+            border-top: 9px solid transparent;
+            border-bottom: 9px solid transparent;
+            margin-left: 4px; /* 三角形の位置微調整 */
+        }
+
+        .exercise-item:hover .play-overlay {
+            background: rgba(44, 82, 130, 0.9); /* ホバー時は青色に */
         }
         
         .exercise-text {
             padding: 1.5rem;
             width: 100%;
+            box-sizing: border-box;
         }
         
         .exercise-item h4 {
@@ -63,6 +112,7 @@
             line-height: 1.6;
         }
         
+        /* 注意事項ボックス */
         .caution-box {
             display: flex;
             align-items: flex-start;
@@ -121,6 +171,77 @@
             color: #2c5282;
             font-size: 1.4rem;
         }
+
+        /* --- モーダル（動画ポップアップ）のスタイル --- */
+        .modal {
+            display: none; /* 初期状態は非表示 */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8);
+            animation: fadeIn 0.3s;
+        }
+
+        .modal-content {
+            position: relative;
+            background-color: #000;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 800px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            animation: slideIn 0.3s;
+        }
+
+        /* 動画をレスポンシブにする */
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 アスペクト比 */
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .video-wrapper video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* 閉じるボタン */
+        .close-modal {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .close-modal:hover,
+        .close-modal:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+        @keyframes slideIn {
+            from {transform: translateY(-20px); opacity: 0;}
+            to {transform: translateY(0); opacity: 1;}
+        }
         
         @media (max-width: 768px) {
             .exercise-grid {
@@ -128,7 +249,7 @@
                 gap: 1.5rem;
             }
             
-            .exercise-icon {
+            .img-container {
                 height: 160px;
             }
             
@@ -141,6 +262,11 @@
             .caution-icon-img {
                 width: 80px;
                 height: 80px;
+            }
+
+            .modal-content {
+                margin: 20% auto;
+                width: 95%;
             }
         }
     </style>
@@ -158,27 +284,37 @@
                 </div>
                 
                 <h3>透析中の運動(オンダイアライシス運動)</h3>
-                <p>透析治療中の時間を利用して、ベッド上で行える軽い運動です。スタッフの指導のもと、安全に行いましょう。</p>
+                <p>透析治療中の時間を利用して、ベッド上で行える軽い運動です。写真をクリックすると動画解説が見られます。</p>
                 
                 <div class="exercise-grid">
-                    <div class="exercise-item">
-                        <img src="files/ankle_exercise_icon.png" alt="足首の曲げ伸ばし" class="exercise-icon">
+                    <!-- data-video属性に再生したい動画ファイル名を指定してください -->
+                    <div class="exercise-item" data-video="files/movies/ankle_exercise.mp4">
+                        <div class="img-container">
+                            <img src="files/ankle_exercise_icon.png" alt="足首の曲げ伸ばし" class="exercise-icon">
+                            <div class="play-overlay"></div>
+                        </div>
                         <div class="exercise-text">
                             <h4>足首の曲げ伸ばし</h4>
                             <p>血行を促進し、むくみの改善に繋がります。</p>
                         </div>
                     </div>
                     
-                    <div class="exercise-item">
-                        <img src="files/dumbbell_exercise_icon.png" alt="軽いおもりの上げ下げ" class="exercise-icon">
+                    <div class="exercise-item" data-video="files/movies/dumbbell_exercise.mp4">
+                        <div class="img-container">
+                            <img src="files/dumbbell_exercise_icon.png" alt="軽いおもりの上げ下げ" class="exercise-icon">
+                            <div class="play-overlay"></div>
+                        </div>
                         <div class="exercise-text">
                             <h4>軽いおもりの上げ下げ</h4>
                             <p>専用の軽いおもりを使って、腕や足の筋力を維持します。</p>
                         </div>
                     </div>
                     
-                    <div class="exercise-item">
-                        <img src="files/ergometer_icon.png" alt="エルゴメーター" class="exercise-icon">
+                    <div class="exercise-item" data-video="files/movies/ergometer.mp4">
+                        <div class="img-container">
+                            <img src="files/ergometer_icon.png" alt="エルゴメーター" class="exercise-icon">
+                            <div class="play-overlay"></div>
+                        </div>
                         <div class="exercise-text">
                             <h4>エルゴメーター</h4>
                             <p>ベッドサイドで使える自転車こぎ運動で、心肺機能の維持に役立ちます。</p>
@@ -187,27 +323,36 @@
                 </div>
 
                 <h3>透析のない日の運動</h3>
-                <p>体調の良い日には、無理のない範囲で体を動かす習慣をつけましょう。始める前には必ず医師やスタッフにご相談ください。</p>
+                <p>体調の良い日には、無理のない範囲で体を動かす習慣をつけましょう。</p>
                 
                 <div class="exercise-grid">
-                    <div class="exercise-item">
-                        <img src="files/walking_icon.png" alt="ウォーキング" class="exercise-icon">
+                    <div class="exercise-item" data-video="files/movies/walking.mp4">
+                        <div class="img-container">
+                            <img src="files/walking_icon.png" alt="ウォーキング" class="exercise-icon">
+                            <div class="play-overlay"></div>
+                        </div>
                         <div class="exercise-text">
                             <h4>ウォーキング</h4>
                             <p>最も手軽で効果的な有酸素運動です。まずは1日15分程度から始めてみましょう。</p>
                         </div>
                     </div>
                     
-                    <div class="exercise-item">
-                        <img src="files/stretching_icon.png" alt="ストレッチ" class="exercise-icon">
+                    <div class="exercise-item" data-video="files/movies/stretching.mp4">
+                        <div class="img-container">
+                            <img src="files/stretching_icon.png" alt="ストレッチ" class="exercise-icon">
+                            <div class="play-overlay"></div>
+                        </div>
                         <div class="exercise-text">
                             <h4>ストレッチ</h4>
                             <p>筋肉の緊張をほぐし、関節の可動域を広げます。</p>
                         </div>
                     </div>
                     
-                    <div class="exercise-item">
-                        <img src="files/radio_exercise_icon.png" alt="軽い体操" class="exercise-icon">
+                    <div class="exercise-item" data-video="files/movies/gymnastics.mp4">
+                        <div class="img-container">
+                            <img src="files/radio_exercise_icon.png" alt="軽い体操" class="exercise-icon">
+                            <div class="play-overlay"></div>
+                        </div>
                         <div class="exercise-text">
                             <h4>軽い体操</h4>
                             <p>ラジオ体操なども全身を動かす良い運動です。</p>
@@ -225,10 +370,69 @@
                 </div>
             </section>
         </main>
-            <a href="friend-benefit.html" class="back-to-portal-button">特典ページへ戻る</a>
+        <a href="friend-benefit.html" class="back-to-portal-button">特典ページへ戻る</a>
         <footer>
             <p><small>&copy; 2025 医療法人 好輝会 梶本クリニック</small></p>
         </footer>
     </div>
+
+    <!-- 動画再生用モーダル -->
+    <div id="videoModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="video-wrapper">
+                <video id="popupVideo" controls>
+                    <source src="" type="video/mp4">
+                    お使いのブラウザは動画タグに対応していません。
+                </video>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM要素の取得
+        const modal = document.getElementById("videoModal");
+        const videoPlayer = document.getElementById("popupVideo");
+        const closeBtn = document.getElementsByClassName("close-modal")[0];
+        const exerciseItems = document.querySelectorAll(".exercise-item");
+
+        // 各カードにクリックイベントを設定
+        exerciseItems.forEach(item => {
+            item.addEventListener("click", function() {
+                // data-video属性からファイルパスを取得
+                const videoSrc = this.getAttribute("data-video");
+                
+                if (videoSrc) {
+                    // 動画パスを設定してモーダルを表示
+                    videoPlayer.src = videoSrc;
+                    modal.style.display = "block";
+                    // 自動再生（音声が出る可能性があるためミュート推奨だが、今回はそのまま再生）
+                    videoPlayer.play().catch(e => console.log("自動再生がブロックされました"));
+                } else {
+                    alert("動画ファイルが指定されていません。");
+                }
+            });
+        });
+
+        // 閉じるボタン（×）をクリックした時の処理
+        closeBtn.onclick = function() {
+            closeModal();
+        }
+
+        // モーダルの背景をクリックした時の処理
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        // モーダルを閉じる関数
+        function closeModal() {
+            modal.style.display = "none";
+            videoPlayer.pause(); // 動画を停止
+            videoPlayer.currentTime = 0; // 再生位置をリセット
+            videoPlayer.src = ""; // ソースを空にして読み込み停止
+        }
+    </script>
 </body>
 </html>
