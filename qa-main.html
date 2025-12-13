@@ -3,12 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Q&A 検索</title>
+    <title>Q&A 検索 | 梶本クリニック</title>
+    <!-- 共通スタイル -->
     <link rel="stylesheet" href="style.css">
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body class="theme-qa">
     <div class="container">
@@ -16,17 +13,34 @@
             <h1>Q&A 検索</h1>
         </header>
         <main>
-            <!--
-                qa-loader.js の仕様に合わせて構造を変更。
-                data-category 属性を指定しないことで、CSV内の全データが検索対象になります。
+            <div class="intro-text">
+                <p>キーワードを入力して、よくある質問を検索できます。<br>（例：食事, 災害, シャント, 運動 など）</p>
+            </div>
+
+            <!-- 
+                検索セクション 
+                パス修正: files/data/qa-data.csv
+                data-category属性なし = 全カテゴリ検索モード
             -->
-            <section class="qa-search-section" data-csv-path="files/qa-data.csv">
+            <section class="qa-search-section" data-csv-path="files/data/qa-data.csv">
                 <div class="qa-search-container">
-                    <input type="search" class="qa-search-input" placeholder="キーワードを入力して質問を検索 (例: 塩分, 災害, シャント)" autocomplete="off">
+                    <input type="search" class="qa-search-input" placeholder="キーワードを入力 (例: 塩分, 災害, シャント)" autocomplete="off">
+                </div>
+                
+                <!-- よく検索されるワード（全般用） -->
+                <div class="qa-popular-keywords">
+                    <h3>人気のキーワード</h3>
+                    <div class="keyword-buttons">
+                        <button class="keyword-button" onclick="setKeyword('食事')">食事</button>
+                        <button class="keyword-button" onclick="setKeyword('水分')">水分</button>
+                        <button class="keyword-button" onclick="setKeyword('シャント')">シャント</button>
+                        <button class="keyword-button" onclick="setKeyword('災害')">災害</button>
+                        <button class="keyword-button" onclick="setKeyword('運動')">運動</button>
+                    </div>
                 </div>
                 
                 <div class="qa-results-container">
-                    <!-- 初期メッセージはJavaScriptで制御されます -->
+                    <!-- 検索結果はここに表示されます -->
                 </div>
             </section>
         </main>
@@ -38,13 +52,22 @@
         </footer>
     </div>
 
-    <!-- ▼▼▼ 必要なライブラリとスクリプト ▼▼▼ -->
-
-    <!-- 1. CSV解析ライブラリ (Papa Parse) -->
+    <!-- ライブラリとスクリプト -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     
-    <!-- 2. 汎用Q&A検索スクリプト (旧 qa-script.js から qa-loader.js に変更) -->
-    <script src="qa-loader.js"></script>
+    <!-- パス修正: js/qa/qa-loader.js -->
+    <script src="js/qa/qa-loader.js"></script>
 
+    <!-- キーワードボタン用簡易スクリプト -->
+    <script>
+        function setKeyword(word) {
+            const input = document.querySelector('.qa-search-input');
+            if(input) {
+                input.value = word;
+                // 入力イベントを発火させて検索を実行
+                input.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+        }
+    </script>
 </body>
 </html>

@@ -1,585 +1,436 @@
-/* === Google Fonts (おしゃれな明朝体 'Shippori Mincho' を追加) === */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;900&family=Shippori+Mincho:wght@500;600;700;800&display=swap');
+@charset "UTF-8";
 
-/* === CSS変数 (基本設定はそのまま) === */
-:root {
-    --font-primary: 'Inter', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
-    /* ヘッダー用のおしゃれなフォント変数を追加 */
-    --font-header: 'Shippori Mincho', 'Noto Serif JP', serif;
-    
-    /* カラーパレット等は既存のまま維持 */
-    --gray-50: #f9fafb; --gray-100: #f3f4f6; --gray-200: #e5e7eb; --gray-300: #d1d5db; --gray-400: #9ca3af; --gray-500: #6b7280; --gray-600: #4b5563; --gray-700: #374151; --gray-800: #1f2937; --gray-900: #111827;
-    
-    --theme-color-primary: #00586A;
-    --theme-color-primary-light: #00A0C1;
-    --theme-color-disaster: #D90000;
-    --theme-color-green: #059669;
-    --theme-color-purple: #7c3aed;
-    --theme-color-orange: #ea580c;
+/* =========================================
+   1. Google Fonts & リセット & 変数
+   ========================================= */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;900&family=Mochiy+Pop+One&display=swap');
 
-    --spacing-1: 0.25rem; --spacing-2: 0.5rem; --spacing-3: 0.75rem; --spacing-4: 1rem; --spacing-5: 1.25rem; --spacing-6: 1.5rem; --spacing-8: 2rem; --spacing-10: 2.5rem; --spacing-12: 3rem; --spacing-16: 4rem;
-    
-    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05); --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1); --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-    
-    --radius-sm: 0.375rem; --radius: 0.5rem; --radius-md: 0.75rem; --radius-lg: 1rem; --radius-xl: 1.5rem; --radius-2xl: 2rem;
-}
-
-/* === リセット === */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* === body === */
+:root {
+    /* フォント */
+    --font-primary: 'Inter', 'Noto Sans JP', sans-serif;
+    --font-header: 'Mochiy Pop One', sans-serif;
+    
+    /* テーマカラー */
+    --theme-friend: #7c3aed;   /* 運動/特典 (紫) */
+    --theme-disaster: #D90000; /* 災害 (赤) */
+    --theme-nutrition: #00586A;/* 栄養 (青緑) */
+    --theme-shunt: #059669;    /* シャント (緑) */
+    --theme-qa: #ea580c;       /* Q&A (オレンジ) */
+    --theme-foot: #06b6d4;     /* フットケア (水色) */
+    --theme-game: #db2777;     /* ゲーム (ピンク) */
+
+    /* 基本カラー */
+    --bg-color: #f3f4f6;
+    --text-color: #111827;
+    --white: #ffffff;
+    --gray-border: #e5e7eb;
+    
+    /* レイアウト */
+    --radius-main: 2rem;
+    --radius-card: 1rem;
+    --shadow-main: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    --shadow-card: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    --shadow-hover: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+}
+
+/* =========================================
+   2. 基本レイアウト (Body, Container)
+   ========================================= */
 body {
     font-family: var(--font-primary);
     line-height: 1.6;
-    color: var(--gray-900);
-    
-    /* 修正: 指定の背景画像に変更 */
-    background: url('files/background-main.png') no-repeat center center fixed;
+    color: var(--text-color);
+    background: url('files/common/background-main.png') no-repeat center center fixed;
     background-size: cover;
-    
+    background-color: var(--bg-color);
     min-height: 100vh;
-    font-size: 16px;
-    -webkit-font-smoothing: antialiased;
 }
 
-.container {
+.container, .game-container {
     max-width: 1200px;
-    margin: var(--spacing-8) auto;
-    /* 背景画像が透けないようにコンテナの白背景をしっかり確保 */
+    margin: 2rem auto;
     background: rgba(255, 255, 255, 0.95);
-    border-radius: var(--radius-2xl);
+    border-radius: var(--radius-main);
     overflow: hidden;
-    box-shadow: var(--shadow-xl);
-    /* すりガラス効果をコンテナ自体にも少し入れるとおしゃれ */
+    box-shadow: var(--shadow-main);
     backdrop-filter: blur(10px);
 }
 
-/* === ヘッダー (ぼかし効果 & おしゃれな文字) === */
-.portal-header, header {
+/* ゲーム用コンテナの微調整 */
+.game-container { max-width: 700px; padding: 2rem; border: 1px solid var(--gray-border); text-align: center; }
+
+/* =========================================
+   3. ヘッダー & フッター
+   ========================================= */
+header, .portal-header {
     text-align: center;
-    padding: var(--spacing-16) var(--spacing-6); /* 余白を少し広げて優雅に */
-    color: #ffffff;
+    padding: 4rem 1.5rem 2rem;
     position: relative;
-    overflow: hidden;
-    /* 元のbackgroundプロパティは削除し、以下の疑似要素で制御します */
-    background: transparent;
-    z-index: 1; /* コンテンツを手前に */
+    z-index: 1;
 }
 
-/* 背景画像をぼかすための疑似要素 */
-.portal-header::before, header::before {
-    content: '';
-    position: absolute;
-    top: -20px; left: -20px; right: -20px; bottom: -20px; /* ぼかしの端が見えないように広げる */
-    background-image: url('files/background-header.png');
-    background-size: cover;
-    background-position: center center;
-    
-    /* 修正: ここで「ぼかし」と「明度調整」を行う */
-    filter: blur(15px) brightness(0.75); 
-    
-    z-index: -1; /* 文字の背面に配置 */
+/* ヘッダー背景（共通） */
+header::before, .portal-header::before {
+    content: ''; position: absolute; top: -20px; left: -20px; right: -20px; bottom: -20px;
+    background-image: url('files/common/background-header.png');
+    background-size: cover; background-position: center;
+    filter: blur(15px) brightness(0.85); z-index: -1;
 }
 
-header {
-    padding-bottom: var(--spacing-8);
-}
-
-/* ヘッダーのテキストスタイル変更 */
-.portal-header h1, header h1 {
-    /* 修正: おしゃれな明朝体に変更 */
+header h1, .portal-header h1 {
     font-family: var(--font-header);
-    font-weight: 800;
-    
-    /* 修正: 文字間隔を広げて洗練された印象に */
-    letter-spacing: 0.1em;
-    
-    /* 修正: 影を「濃い線」ではなく「ふんわりとした浮き出し」に変更して可読性と美しさを両立 */
-    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
-    
-    margin-bottom: var(--spacing-4);
+    font-weight: 400;
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    color: var(--white);
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+    margin-bottom: 1rem;
 }
 
-.portal-header p {
-    font-family: var(--font-primary);
-    font-weight: 500;
-    letter-spacing: 0.05em;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
-    opacity: 0.95;
+.portal-header p { font-weight: bold; color: rgba(255,255,255,0.9); }
+
+footer {
+    text-align: center; padding: 2rem;
+    background: #f3f4f6; color: #4b5563; font-size: 0.875rem;
 }
 
-/* 修正: テーマカラーごとのh1も白文字・明朝体で統一 */
-.theme-nutrition header h1,
-.theme-disaster header h1,
-.theme-shunt header h1,
-.theme-friend header h1,
-.theme-qa header h1 { 
-    color: #ffffff !important;
-    font-family: var(--font-header) !important;
-}
-
-/* === ここから下は以前のスタイルを維持 === */
-
-/* === 透析ステータス === */
-#dialysis-status {
-    padding: var(--spacing-10) var(--spacing-6);
-    border-bottom: 2px solid var(--gray-200);
-}
-
-#dialysis-status h2 {
-    font-size: clamp(1.5rem, 3vw, 2rem);
-    font-weight: 900;
-    text-align: center;
-    margin-bottom: var(--spacing-8);
-    color: var(--gray-800);
-}
-
-.status-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: var(--spacing-6);
-    max-width: 900px;
-    margin: 0 auto;
-}
-
-.status-item {
-    background: white;
-    border-radius: var(--radius-xl);
-    padding: var(--spacing-8);
-    box-shadow: var(--shadow-md);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 2px solid transparent;
-}
-.status-item:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-xl);
-}
-.status-text {
-    font-size: 2rem;
-    font-weight: 900;
-}
-.status-ok { color: var(--theme-color-primary); }
-.status-ng { color: var(--theme-color-disaster); }
-
-
-/* === カードタイル型ポータルナビゲーション === */
-.portal-nav {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: var(--spacing-6);
-    padding: var(--spacing-10) var(--spacing-6);
-    background: white;
-}
-
-.portal-button {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    padding: var(--spacing-8);
-    background: white;
-    border: 2px solid var(--gray-200);
-    border-radius: var(--radius-xl);
-    text-decoration: none;
-    color: var(--gray-900);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: var(--shadow);
-    overflow: hidden;
-}
-
-/* 画像付きボタン用 */
-.portal-button.with-image {
-    padding: 0;
-    min-height: 320px;
-}
-
-.portal-button-image {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-    object-position: center;
-    background: var(--gray-100);
-    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-}
-
-.portal-button-content {
-    padding: var(--spacing-6) var(--spacing-8);
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-3);
-    flex: 1;
-}
-
-.portal-button::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 6px;
-    transition: all 0.3s ease;
-}
-.portal-button.theme-nutrition::before { background: var(--theme-color-primary); }
-.portal-button.theme-disaster::before { background: var(--theme-color-disaster); }
-.portal-button.theme-shunt::before { background: var(--theme-color-green); }
-.portal-button.theme-friend::before { background: var(--theme-color-purple); }
-.portal-button.theme-qa::before { background: var(--theme-color-orange); }
-
-.portal-button:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-xl);
-    border-color: transparent;
-}
-.portal-button.theme-nutrition:hover { border-color: var(--theme-color-primary); background: linear-gradient(to bottom, white, #eaf4f6); }
-.portal-button.theme-disaster:hover { border-color: var(--theme-color-disaster); background: linear-gradient(to bottom, white, #fdecec); }
-.portal-button.theme-shunt:hover { border-color: var(--theme-color-green); background: linear-gradient(to bottom, white, #ecfdf5); }
-.portal-button.theme-friend:hover { border-color: var(--theme-color-purple); background: linear-gradient(to bottom, white, #f5f3ff); }
-.portal-button.theme-qa:hover { border-color: var(--theme-color-orange); background: linear-gradient(to bottom, white, #fff7ed); }
-
-
-.portal-button .button-title {
-    font-size: 1.5rem;
-    font-weight: 900;
-    margin-bottom: var(--spacing-3);
-    letter-spacing: -0.02em;
-}
-.portal-button.theme-nutrition .button-title { color: var(--theme-color-primary); }
-.portal-button.theme-disaster .button-title { color: var(--theme-color-disaster); }
-.portal-button.theme-shunt .button-title { color: var(--theme-color-green); }
-.portal-button.theme-friend .button-title { color: var(--theme-color-purple); }
-.portal-button.theme-qa .button-title { color: var(--theme-color-orange); }
-
-
-.portal-button .button-desc {
-    font-size: 0.9375rem;
-    color: var(--gray-600);
-}
-
-.portal-button::after {
-    content: '→';
-    position: absolute;
-    right: var(--spacing-6);
-    bottom: var(--spacing-6);
-    font-size: 1.75rem;
-    font-weight: 900;
-    opacity: 0.15;
-    transition: all 0.3s ease;
-}
-
-.portal-button:hover::after {
-    opacity: 0.4;
-    transform: translateX(4px);
-}
-
-/* === お友達特典ページ内のボタン用テーマカラー === */
-
-/* 運動療法ボタン */
-.portal-button.theme-exercise::before {
-    background: #ea580c;
-}
-.portal-button.theme-exercise .button-title {
-    color: #ea580c;
-}
-.portal-button.theme-exercise:hover {
-    border-color: #ea580c;
-    background: linear-gradient(to bottom, white, #fff7ed);
-}
-
-/* フットケアボタン */
-.portal-button.theme-footcare::before {
-    background: #06b6d4;
-}
-.portal-button.theme-footcare .button-title {
-    color: #06b6d4;
-}
-.portal-button.theme-footcare:hover {
-    border-color: #06b6d4;
-    background: linear-gradient(to bottom, white, #ecfeff);
-}
-
-/* ゲームボタン */
-.portal-button.theme-game::before {
-    background: #ec4899;
-}
-.portal-button.theme-game .button-title {
-    color: #ec4899;
-}
-.portal-button.theme-game:hover {
-    border-color: #ec4899;
-    background: linear-gradient(to bottom, white, #fdf2f8);
-}
-
-
-/* === タブナビゲーション === */
-.page-nav {
-    display: flex;
-    gap: var(--spacing-2);
-    padding: 0 var(--spacing-6) var(--spacing-6);
-    background: white;
-    border-bottom: 2px solid var(--gray-200);
-    overflow-x: auto;
-}
-
-.nav-button {
-    position: relative;
-    padding: var(--spacing-4) var(--spacing-6);
-    background: transparent;
-    color: var(--gray-600);
-    text-decoration: none;
-    border: none;
-    border-radius: var(--radius) var(--radius) 0 0;
-    font-weight: 700;
-    font-size: 0.9375rem;
-    transition: all 0.2s ease;
-    white-space: nowrap;
-    cursor: pointer;
-}
-
-.nav-button:hover {
-    color: var(--gray-900);
-    background: var(--gray-50);
-}
-
-.nav-button.active {
-    color: var(--gray-900);
-    background: var(--gray-50);
-}
-
-.nav-button.active::after {
-    content: '';
-    position: absolute;
-    bottom: -2px; left: 0; right: 0;
-    height: 3px;
-    border-radius: 3px 3px 0 0;
-}
-.theme-nutrition .nav-button.active::after { background: var(--theme-color-primary); }
-.theme-disaster .nav-button.active::after { background: var(--theme-color-disaster); }
-.theme-qa .nav-button.active::after { background: var(--theme-color-orange); }
-
-
-/* === コンテンツエリア === */
-#content-area {
-    padding: var(--spacing-10) var(--spacing-6);
-    background: var(--gray-50);
-}
-
-.content-section {
-    display: none;
-}
-.content-section.active {
-    display: block;
-    animation: fadeIn 0.4s ease;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* === イントロテキスト === */
-.intro-text {
-    padding: var(--spacing-8) var(--spacing-6);
-    background: var(--gray-50);
-    text-align: center;
-    color: var(--gray-700);
-    font-size: 1.0625rem;
-    line-height: 1.8;
-}
-
-/* === タイポグラフィ === */
+/* =========================================
+   4. 共通UIコンポーネント (見出し, ボタン, リスト)
+   ========================================= */
 h2 {
     font-size: clamp(1.5rem, 3vw, 2rem);
     font-weight: 900;
-    margin-top: 0;
-    margin-bottom: var(--spacing-6);
-    color: var(--gray-800);
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: var(--text-color);
 }
-#content-area > .content-section.active > h2:first-of-type {
-    margin-top: 0;
-}
-
 
 h3 {
-    font-size: clamp(1.25rem, 2.5vw, 1.5rem);
-    font-weight: 700;
-    margin: var(--spacing-8) 0 var(--spacing-4);
-    color: var(--gray-800);
+    font-size: 1.4rem; font-weight: 700; margin: 2rem 0 1rem;
+    border-bottom: 2px solid var(--gray-border); padding-bottom: 0.5rem;
 }
 
-/* === リスト === */
-ul, ol {
-    list-style: none;
-    margin: var(--spacing-4) 0;
+/* テーマ別 見出し色 */
+.theme-friend h3, .theme-friend .game-title { color: var(--theme-friend); border-color: var(--theme-friend); }
+.theme-disaster h3 { color: var(--theme-disaster); border-color: var(--theme-disaster); }
+.theme-nutrition h3 { color: var(--theme-nutrition); border-color: var(--theme-nutrition); }
+.theme-shunt h3 { color: var(--theme-shunt); border-color: var(--theme-shunt); }
+.theme-qa h3 { color: var(--theme-qa); border-color: var(--theme-qa); }
+
+/* 戻るボタン（全ページ共通） */
+.back-to-portal-button, .back-button, .back-to-main-button, .back-to-nutrition-button {
+    display: inline-flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+    color: white; padding: 0.8rem 2rem; margin: 2rem auto;
+    text-decoration: none; border-radius: 0.5rem; font-weight: bold;
+    transition: transform 0.2s, box-shadow 0.2s; border: none; cursor: pointer;
+    box-shadow: var(--shadow-card);
+}
+.back-to-portal-button:hover, .back-button:hover {
+    transform: translateY(-2px); box-shadow: var(--shadow-hover);
+}
+.back-to-portal-button::before, .back-button::before { content: "←"; margin-right: 0.5rem; }
+
+/* イントロテキスト */
+.intro-text { padding: 2rem 1.5rem; background: #f9fafb; text-align: center; }
+
+/* リスト */
+ul { margin: 1rem 0 1rem 1.5rem; }
+li { margin-bottom: 0.5rem; }
+
+/* NGリスト（×印） */
+.ng-list { list-style: none; padding-left: 0; margin-top: 1rem; }
+.ng-list li { position: relative; padding-left: 1.8em; margin-bottom: 0.8rem; font-weight: 500; }
+.ng-list li::before {
+    content: '×'; position: absolute; left: 0; top: 0; color: #e74c3c; font-weight: bold; font-size: 1.5em; line-height: 1.2;
 }
 
-ul li, ol li {
-    position: relative;
-    padding: var(--spacing-4) var(--spacing-4) var(--spacing-4) var(--spacing-12);
-    margin: var(--spacing-3) 0;
-    background: white;
-    border-radius: var(--radius-md);
-    border-left: 4px solid var(--theme-color-primary);
-    box-shadow: var(--shadow-sm);
-    transition: all 0.2s ease;
+/* 案内ボックス（青） */
+.info-box {
+    margin-top: 20px; padding: 20px; background-color: #e7f3ff;
+    border-left: 5px solid #007bff; border-radius: 8px; color: #004085;
 }
 
-ul li:hover, ol li:hover {
-    box-shadow: var(--shadow-md);
-    transform: translateX(4px);
+/* =========================================
+   5. 統合レイアウト：グリッド & カード
+   ========================================= */
+/* グリッドレイアウト統合 */
+.grid-layout, 
+.exercise-grid, 
+.check-grid, 
+.prevention-grid, 
+.portal-nav {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin: 2rem 0;
+    padding: 0;
+}
+/* ポータルトップなど余白が必要な場合 */
+.portal-nav { padding: 2rem; }
+
+/* カードデザイン統合 */
+.card,
+.exercise-item,
+.check-item,
+.prevention-card,
+.portal-button {
+    display: flex; flex-direction: column;
+    background: var(--white);
+    border: 1px solid var(--gray-border);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    transition: transform 0.3s, box-shadow 0.3s;
+    text-decoration: none; color: var(--text-color);
+    cursor: pointer;
 }
 
-ul li::before {
-    content: "✓";
-    position: absolute;
-    left: var(--spacing-5);
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--theme-color-primary);
-    font-weight: 900;
-    font-size: 1.25rem;
+.card:hover, .exercise-item:hover, .check-item:hover, .prevention-card:hover, .portal-button:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-hover);
+    border-color: transparent;
 }
 
-ol {
-    counter-reset: item;
+/* カード内画像エリア */
+.img-container, .prevention-card-img-wrapper, .portal-button-image {
+    width: 100%; height: 180px;
+    background: #f3f4f6; position: relative; overflow: hidden;
+    flex-shrink: 0; border-bottom: 1px solid #f3f4f6;
+}
+.exercise-icon, .check-icon, .portal-button-image, .prevention-card img {
+    width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s;
+}
+.exercise-item:hover .exercise-icon, .check-item:hover .check-icon { transform: scale(1.05); }
+
+/* カード内テキストエリア */
+.card-body, .exercise-text, .check-text, .prevention-card-body, .portal-button-content {
+    padding: 1.5rem; flex-grow: 1; text-align: left;
 }
 
-ol li::before {
-    content: counter(item);
-    counter-increment: item;
-    position: absolute;
-    left: var(--spacing-5);
-    top: 50%;
-    transform: translateY(-50%);
-    background: var(--theme-color-primary);
-    color: white;
-    width: 28px; height: 28px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.875rem;
-    font-weight: 700;
+/* カード内見出し */
+.exercise-item h4, .check-item h4, .prevention-card h3, .button-title {
+    margin: 0 0 0.5rem 0; font-size: 1.2rem; font-weight: 700; text-align: center;
 }
-.theme-disaster ul li, .theme-disaster ol li { border-left-color: var(--theme-color-disaster); }
-.theme-disaster ul li::before { color: var(--theme-color-disaster); }
-.theme-disaster ol li::before { background-color: var(--theme-color-disaster); }
+.button-title { font-family: var(--font-header); font-size: 1.4rem; font-weight: 900; }
 
+/* カードテーマ色適用 */
+.theme-friend .exercise-item h4, .portal-button.theme-friend .button-title { color: var(--theme-friend); }
+.theme-shunt .check-item h4, .portal-button.theme-shunt .button-title { color: var(--theme-shunt); }
+.prevention-card h3, .portal-button.theme-disaster .button-title { color: var(--theme-disaster); }
+.portal-button.theme-nutrition .button-title { color: var(--theme-nutrition); }
+.portal-button.theme-footcare .button-title { color: var(--theme-foot); }
+.portal-button.theme-qa .button-title { color: var(--theme-qa); }
+.portal-button.theme-game .button-title { color: var(--theme-game); }
 
-/* === Q&Aセクション === */
-.qa-search-container {
-    padding: var(--spacing-10) var(--spacing-6);
-    background: white;
-    text-align: center;
-    border-radius: var(--radius-xl);
-    margin-bottom: var(--spacing-8);
+/* テキストのみのボタン（トップページ用） */
+.portal-button:not(.with-image) {
+    padding: 2rem; justify-content: center; text-align: center; border-left: 6px solid transparent;
 }
+.portal-button.theme-disaster:not(.with-image) { border-left-color: var(--theme-disaster); }
+.portal-button.theme-friend:not(.with-image) { border-left-color: var(--theme-friend); }
+.portal-button.theme-qa:not(.with-image) { border-left-color: var(--theme-qa); }
 
-.qa-search-input {
-    width: 90%;
-    max-width: 800px;
-    padding: var(--spacing-5) var(--spacing-6);
-    font-size: 1.5rem;
-    font-family: var(--font-primary);
-    border: 3px solid var(--gray-300);
-    border-radius: var(--radius-2xl);
-    box-shadow: var(--shadow-sm);
-    transition: all 0.2s ease;
-    -webkit-appearance: none;
-    appearance: none;
+/* =========================================
+   6. 統合コンポーネント：アコーディオン & モーダル
+   ========================================= */
+/* アコーディオン (折りたたみ) */
+.accordion, .collapsible-section, .pdf-collapsible, .evacuation-item {
+    background: #fff; border: 1px solid var(--gray-border);
+    border-radius: 0.5rem; overflow: hidden; margin-bottom: 1.5rem;
 }
-.theme-disaster .qa-search-input:focus {
-    outline: none;
-    border-color: var(--theme-color-disaster);
-    box-shadow: 0 0 0 4px rgba(217, 0, 0, 0.1), var(--shadow-md);
+.accordion-header, .collapsible-header-wrapper, .pdf-collapsible-header, .evacuation-item-header {
+    padding: 1rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: bold;
+    background: #f9fafb; transition: background 0.2s;
 }
-.qa-search-input::placeholder { color: var(--gray-400); }
-
-.qa-results-container { padding-top: var(--spacing-6); }
-.qa-search-item { background: white; border-radius: var(--radius-lg); margin-bottom: var(--spacing-4); box-shadow: var(--shadow); overflow: hidden; border: 1px solid var(--gray-200); transition: all 0.3s ease; }
-.qa-search-item:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
-.qa-search-question { padding: var(--spacing-6); font-weight: 700; font-size: 1.0625rem; cursor: pointer; background: var(--gray-50); position: relative; transition: background-color 0.2s ease; }
-.theme-disaster .qa-search-question:hover { background: #fdecec; }
-.qa-search-question::after { content: '▼'; position: absolute; right: var(--spacing-6); top: 50%; transform: translateY(-50%); font-weight: 900; transition: transform 0.3s ease; }
-.theme-disaster .qa-search-question::after { color: var(--theme-color-disaster); }
-.qa-search-item.active .qa-search-question::after { transform: translateY(-50%) rotate(180deg); }
-.qa-search-answer { display: none; padding: var(--spacing-6); color: var(--gray-700); line-height: 1.8; border-top: 1px solid var(--gray-200); }
-.qa-search-item.active .qa-search-answer { display: block; animation: fadeIn 0.3s ease; }
-.qa-no-result, .qa-loading, .qa-initial-message { padding: var(--spacing-12); text-align: center; color: var(--gray-500); background: white; border-radius: var(--radius-lg); border: 2px dashed var(--gray-300); margin: var(--spacing-6) 0; }
-
-
-/* === その他の要素 === */
-.back-to-portal-button { display: inline-flex; align-items: center; background: linear-gradient(135deg, #6c757d 0%, #495057 100%); color: white; padding: var(--spacing-3) var(--spacing-6); margin: var(--spacing-8) var(--spacing-6) 0; text-decoration: none; border-radius: var(--radius); font-size: 0.9375rem; font-weight: 600; transition: all 0.2s ease; box-shadow: var(--shadow); border: none; }
-.back-to-portal-button::before { content: "←"; margin-right: var(--spacing-2); font-weight: 900; }
-.back-to-portal-button:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
-.quiz-section { text-align: center; padding: var(--spacing-10); background: white; border-radius: var(--radius-xl); margin-top: var(--spacing-8); box-shadow: var(--shadow-md); border: 2px solid var(--gray-200); }
-.quiz-button { display: inline-flex; align-items: center; gap: var(--spacing-3); padding: var(--spacing-4) var(--spacing-8); color: white; border: none; border-radius: var(--radius-lg); font-size: 1.125rem; font-weight: 700; text-decoration: none; cursor: pointer; transition: all 0.3s ease; box-shadow: var(--shadow-md); }
-.quiz-button:hover { transform: translateY(-4px); box-shadow: var(--shadow-xl); }
-.theme-nutrition .quiz-button { background: linear-gradient(135deg, var(--theme-color-primary-light), var(--theme-color-primary)); }
-.theme-disaster .quiz-button { background: linear-gradient(135deg, #ef4444, var(--theme-color-disaster)); }
-
-
-/* === ▼▼▼ PDF表示 & 折りたたみ機能 ▼▼▼ === */
-/* PC向け埋め込みPDF */
-.pdf-embed-desktop {
-    width: 100%;
-    height: 85vh; /* 表示領域を十分に確保 */
-    border: 1px solid var(--gray-200);
-    border-radius: var(--radius-lg);
-    display: none; /* 初期状態(スマホ)では非表示 */
+.accordion-header:hover { background: #f3f4f6; }
+.accordion-content, .collapsible-content, .pdf-collapsible-content, .evacuation-item-content {
+    max-height: 0; overflow: hidden; transition: max-height 0.4s ease;
 }
-/* スマホ向けPDFリンクボタン */
-.pdf-link-mobile-wrapper {
-    margin-top: var(--spacing-8);
-    text-align: center;
+.is-open .collapsible-content, .is-open .pdf-collapsible-content, .is-open .evacuation-item-content {
+    max-height: 2000px; /* 十分な高さ */
 }
-.pdf-link-mobile {
-    display: inline-block;
-    padding: var(--spacing-4) var(--spacing-8);
-    background: var(--theme-color-disaster);
-    color: white;
-    border-radius: var(--radius-lg);
-    font-weight: 700;
-    text-decoration: none;
-    transition: all 0.2s ease;
-    box-shadow: var(--shadow-md);
+.pdf-collapsible-body, .evacuation-item-body { padding: 1.5rem; }
+
+/* PDFローディング */
+.pdf-loading-container {
+    min-height: 300px; display: flex; align-items: center; justify-content: center; flex-direction: column; background: #f9fafb; color: #6b7280;
 }
-.pdf-link-mobile:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
+.pdf-spinner {
+    border: 4px solid #f3f3f3; border-top: 4px solid #007bff; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 1rem;
+}
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+.pdf-embed-desktop { width: 100%; height: 600px; display: none; border: none; }
+
+/* モーダル (全画面オーバーレイ) */
+.modal-overlay, .modal, .game-over-overlay {
+    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.7); z-index: 2000;
+    justify-content: center; align-items: center;
+    backdrop-filter: blur(3px);
+}
+.modal-overlay.active { display: flex; animation: fadeIn 0.3s; }
+.modal[style*="display: block"] { display: flex !important; }
+
+/* モーダルの中身 */
+.modal-content, .game-over-box {
+    background: white; padding: 2rem; border-radius: 1rem;
+    width: 90%; max-width: 500px; text-align: center; position: relative;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+/* 動画モーダル用（黒背景） */
+.modal-content.dark-mode, .video-wrapper {
+    background-color: #000; padding: 0; max-width: 800px; overflow: hidden;
+}
+.video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; border-radius: 8px; }
+.video-wrapper video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+/* 閉じるボタン */
+.close-modal, .close-modal-btn {
+    position: absolute; top: 10px; right: 15px; color: #aaa; font-size: 30px; cursor: pointer; line-height: 1; background: none; border: none;
+}
+.close-modal { top: -40px; right: 0; color: white; }
+
+/* =========================================
+   7. タブナビゲーション & コンテンツエリア
+   ========================================= */
+.page-nav {
+    display: flex; justify-content: center; background: #fff;
+    padding: 1rem 1.5rem 0; border-bottom: 1px solid var(--gray-border); overflow-x: auto;
+}
+.nav-button {
+    background: #f3f4f6; color: #6b7280; border: 1px solid var(--gray-border); border-bottom: none;
+    border-radius: 1rem 1rem 0 0; padding: 1rem 1.5rem; margin-right: 4px;
+    font-weight: bold; cursor: pointer; min-width: 120px; text-align: center;
+    line-height: 1.4; white-space: normal;
+}
+.nav-button:hover { background: #e5e7eb; }
+.nav-button.active {
+    background: #f9fafb; color: var(--text-color); border-top: 4px solid #333;
+    transform: scale(1.05) translateY(1px); z-index: 2;
 }
 
-/* 折りたたみ */
-.collapsible-trigger { cursor: pointer; position: relative; padding-right: 25px; }
-.collapsible-trigger::after { content: '▼'; position: absolute; right: 5px; top: 50%; transform: translateY(-50%); transition: transform 0.3s ease; }
-.is-open .collapsible-trigger::after { transform: translateY(-50%) rotate(180deg); }
-.collapsible-content { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out; }
-.is-open .collapsible-content { max-height: 500px; }
+/* テーマ別タブ色 */
+.theme-friend .nav-button.active { border-top-color: var(--theme-friend); color: var(--theme-friend); }
+.theme-disaster .nav-button.active { border-top-color: var(--theme-disaster); color: var(--theme-disaster); }
+.theme-nutrition .nav-button.active { border-top-color: var(--theme-nutrition); color: var(--theme-nutrition); }
+.theme-shunt .nav-button.active { border-top-color: var(--theme-shunt); color: var(--theme-shunt); }
 
+#content-area {
+    padding: 2.5rem 1.5rem; background: #f9fafb;
+    border-radius: 0 0 var(--radius-main) var(--radius-main); min-height: 400px;
+}
+.content-section { display: none; animation: fadeIn 0.4s; }
+.content-section.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-/* === フッター === */
-footer { text-align: center; padding: var(--spacing-8); background: var(--gray-100); color: var(--gray-600); font-size: 0.875rem; }
+/* =========================================
+   8. クイズ・Q&A 専用スタイル
+   ========================================= */
+.quiz-section {
+    text-align: center; padding: 3rem 1.5rem; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    border-radius: 1rem; margin: 2rem 0; box-shadow: var(--shadow-card);
+}
+.quiz-button {
+    display: inline-block; padding: 1rem 3rem; color: white; text-decoration: none; border-radius: 0.5rem;
+    font-size: 1.2rem; font-weight: bold; transition: transform 0.2s; box-shadow: var(--shadow-card);
+    background: linear-gradient(135deg, var(--theme-friend), #4f46e5); border: none; cursor: pointer;
+}
+.quiz-button:hover { transform: translateY(-2px); }
+.theme-nutrition .quiz-button { background: linear-gradient(135deg, var(--theme-nutrition), #0e7490); }
+.theme-shunt .quiz-button { background: linear-gradient(135deg, var(--theme-shunt), #047857); }
 
-/* === レスポンシブ === */
-@media (min-width: 769px) {
-    /* PC・タブレット横向き以上 */
-    .pdf-embed-desktop {
-        display: block; /* PCでは埋め込みを表示 */
-    }
-    .pdf-link-mobile-wrapper {
-        display: none; /* PCではリンクボタンを非表示 */
-    }
+/* クイズ進行・選択肢 */
+.quiz-progress-container { width: 100%; height: 10px; background: #e5e7eb; border-radius: 5px; margin-bottom: 2rem; }
+.quiz-progress-fill { height: 100%; background: var(--theme-friend); width: 0%; transition: width 0.3s; }
+.theme-nutrition .quiz-progress-fill { background: var(--theme-nutrition); }
+.theme-shunt .quiz-progress-fill { background: var(--theme-shunt); }
+
+.quiz-option {
+    padding: 1rem; background: #fff; border: 2px solid #e5e7eb; border-radius: 1rem;
+    cursor: pointer; margin-bottom: 1rem; text-align: left; font-weight: bold; transition: all 0.2s;
+}
+.quiz-option:hover { border-color: #d1d5db; transform: translateX(5px); }
+.quiz-option.correct { background: #dcfce7; border-color: #22c55e; color: #166534; }
+.quiz-option.incorrect { background: #fee2e2; border-color: #ef4444; color: #991b1b; }
+.quiz-explanation {
+    margin-top: 1.5rem; padding: 1.5rem; background: #f0f9ff; border-radius: 0.8rem;
+    border-left: 5px solid #333; display: none;
+}
+.quiz-explanation.show { display: block; animation: fadeIn 0.5s; }
+
+/* Q&A検索 */
+.qa-search-container { padding: 1.5rem; background: #fff; text-align: center; border-radius: 1rem; margin-bottom: 2rem; }
+.qa-search-input { width: 90%; max-width: 600px; padding: 1rem; font-size: 1.1rem; border: 2px solid var(--gray-border); border-radius: 2rem; }
+.qa-popular-keywords { margin-top: 2rem; text-align: center; padding: 1.5rem; background: #f8f8f8; border-radius: 0.5rem; }
+.keyword-button {
+    background: var(--theme-friend); color: white; border: none; border-radius: 1rem; padding: 0.5rem 1rem;
+    margin: 0.25rem; cursor: pointer; transition: transform 0.2s;
+}
+.keyword-button:hover { transform: translateY(-2px); opacity: 0.9; }
+.theme-nutrition .keyword-button { background: var(--theme-nutrition); }
+.theme-shunt .keyword-button { background: var(--theme-shunt); }
+
+/* =========================================
+   9. その他（ステータス、緊急連絡、ゲーム）
+   ========================================= */
+/* 透析ステータス */
+.status-container { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+.status-item { border: 1px solid var(--gray-border); padding: 1rem; border-radius: 0.5rem; width: 160px; text-align: center; background: #fff; }
+.status-ok { color: var(--theme-shunt); font-weight: bold; font-size: 1.2rem; }
+.status-ng { color: var(--theme-disaster); font-weight: bold; font-size: 1.2rem; }
+
+/* 緊急連絡先ボタン */
+.emergency-btn {
+    display: block; width: 100%; max-width: 350px; margin: 2rem auto; padding: 1rem;
+    background: #e74c3c; color: white; border: none; border-radius: 2rem; font-size: 1.2rem; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(231,76,60,0.4);
+}
+.emergency-btn:hover { transform: translateY(-2px); background: #c0392b; }
+.contact-link {
+    display: flex; align-items: center; justify-content: space-between; padding: 1rem; background: #f8f9fa; border: 2px solid #e9ecef; border-radius: 0.8rem; text-decoration: none; color: #333; margin-bottom: 1rem;
 }
 
+/* ゲーム画面共通パーツ */
+.game-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+.stat-box { background: #f9fafb; padding: 1rem; border-radius: 0.8rem; border: 1px solid var(--gray-border); }
+.stat-value { font-size: 1.25rem; font-weight: 900; color: var(--theme-friend); }
+.game-canvas { background: #1a1a2e; border-radius: 1rem; max-width: 100%; display: block; margin: 0 auto; }
+.reaction-area {
+    width: 100%; height: 300px; border-radius: 1rem; display: flex; justify-content: center; align-items: center;
+    font-size: 1.5rem; font-weight: 700; color: white; cursor: pointer; user-select: none;
+}
+.reaction-area.idle { background: var(--theme-friend); }
+.reaction-area.waiting { background: #ef4444; }
+.reaction-area.ready { background: #059669; }
+
+/* 再生マーク(運動用) */
+.play-overlay {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 50px; height: 50px; background: rgba(0,0,0,0.6); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; pointer-events: none;
+}
+.play-overlay::after {
+    content: ''; border-left: 14px solid #fff; border-top: 9px solid transparent; border-bottom: 9px solid transparent; margin-left: 4px;
+}
+.card:hover .play-overlay { background: rgba(124, 58, 237, 0.9); }
+
+/* 注意事項 */
+.caution-box {
+    display: flex; gap: 1.5rem; background: #fff; padding: 2rem; border-radius: 1rem; border-left: 6px solid #fbbf24; margin: 2rem 0; align-items: start;
+}
+.caution-icon-img { width: 80px; height: 80px; object-fit: cover; border-radius: 12px; }
+
+/* スマホ対応 */
 @media (max-width: 768px) {
-    .container { margin: var(--spacing-4); border-radius: var(--radius-xl); }
-    .portal-header { padding: var(--spacing-8) var(--spacing-4); }
-    #content-area, #dialysis-status { padding: var(--spacing-6) var(--spacing-4); }
-    .portal-nav { grid-template-columns: 1fr; padding: var(--spacing-6) var(--spacing-4); }
-    .status-container { grid-template-columns: 1fr; }
-    .page-nav { padding: 0 var(--spacing-4) var(--spacing-4); }
-    .back-to-portal-button { margin: var(--spacing-6) var(--spacing-4) 0; }
-    header { padding: var(--spacing-8) var(--spacing-4) var(--spacing-6); }
-    .qa-search-container { padding: var(--spacing-6) var(--spacing-4); }
-    .qa-search-input { font-size: 1.2rem; }
-    
-    .portal-button-image {
-        height: 150px;
-    }
+    .container { margin: 1rem; border-radius: 1rem; }
+    .page-nav { justify-content: start; }
+    .grid-layout, .exercise-grid, .check-grid, .prevention-grid, .portal-nav { grid-template-columns: 1fr; gap: 1.5rem; }
+    .caution-box { flex-direction: column; align-items: center; text-align: center; }
+    .pdf-embed-desktop { display: none; }
+    .pdf-mobile-notice { display: block; margin-bottom: 1rem; color: #007bff; font-size: 0.9rem; }
+}
+@media (min-width: 769px) {
+    .pdf-embed-desktop { display: block; }
+    .pdf-mobile-notice, .pdf-link-mobile-wrapper { display: none; }
 }
