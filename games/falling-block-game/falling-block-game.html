@@ -5,77 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ShapeDrop - オリジナル落ちものパズル</title>
     <style>
-        /* Google Fonts - Inter & Noto Sans JP */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
 
-        /* CSS変数 */
+        /* ポータルサイトのCSS変数 */
         :root {
-            --font-primary: 'Inter', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-primary: 'Inter', 'Noto Sans JP', sans-serif;
+            --gray-50: #f9fafb; --gray-100: #f3f4f6; --gray-200: #e5e7eb; --gray-300: #d1d5db; --gray-400: #9ca3af; --gray-500: #6b7280; --gray-600: #4b5563; --gray-700: #374151; --gray-800: #1f2937; --gray-900: #111827;
             
-            /* カラーパレット */
-            --gray-50: #f9fafb;
-            --gray-100: #f3f4f6;
-            --gray-200: #e5e7eb;
-            --gray-300: #d1d5db;
-            --gray-400: #9ca3af;
-            --gray-500: #6b7280;
-            --gray-600: #4b5563;
-            --gray-700: #374151;
-            --gray-800: #1f2937;
-            --gray-900: #111827;
-            
-            /* テーマカラー */
             --theme-color-primary: #00586A;
             --theme-color-primary-light: #00A0C1;
-            --theme-color-game: #ec4899;
+            --theme-color-game: #ec4899; /* ゲームのアクセントカラー */
+            --theme-color-disaster: #D90000;
             
-            /* スペーシング */
-            --spacing-1: 0.25rem;
-            --spacing-2: 0.5rem;
-            --spacing-3: 0.75rem;
-            --spacing-4: 1rem;
-            --spacing-5: 1.25rem;
-            --spacing-6: 1.5rem;
-            
-            /* シャドウ */
-            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            --spacing-1: 0.25rem; --spacing-2: 0.5rem; --spacing-3: 0.75rem; --spacing-4: 1rem; --spacing-5: 1.25rem; --spacing-6: 1.5rem;
             --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
             --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
             --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-            
-            /* ボーダーラジアス */
-            --radius: 0.5rem;
-            --radius-md: 0.75rem;
-            --radius-lg: 1rem;
-            --radius-xl: 1.5rem;
+            --radius-md: 0.75rem; --radius-lg: 1rem; --radius-xl: 1.5rem;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: var(--font-primary);
-            background: linear-gradient(135deg, var(--theme-color-primary) 0%, var(--theme-color-primary-light) 100%);
+            /* ポータル背景 */
+            background: linear-gradient(180deg, #f0f8ff 0%, #ffffff 100%);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             padding: var(--spacing-4);
-            -webkit-font-smoothing: antialiased;
+            color: var(--gray-900);
         }
 
         .game-container {
             background: white;
             border-radius: var(--radius-xl);
-            padding: var(--spacing-4);
+            padding: var(--spacing-6);
             box-shadow: var(--shadow-xl);
             max-width: 600px;
             width: 100%;
+            border: 1px solid var(--gray-200);
         }
 
         .game-title {
@@ -87,7 +58,6 @@
             letter-spacing: -0.02em;
         }
 
-        /* 情報パネルをコンパクトに横並び */
         .info-panel {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -96,10 +66,10 @@
         }
 
         .info-box {
-            background: linear-gradient(135deg, var(--gray-50), white);
+            background: var(--gray-50);
             padding: var(--spacing-3);
             border-radius: var(--radius-md);
-            border: 2px solid var(--gray-200);
+            border: 1px solid var(--gray-200);
             text-align: center;
         }
 
@@ -116,11 +86,6 @@
             color: var(--theme-color-primary);
         }
 
-        .info-small {
-            font-size: 1rem;
-        }
-
-        /* ゲームレイアウト */
         .game-layout {
             display: flex;
             gap: var(--spacing-3);
@@ -130,57 +95,43 @@
         }
 
         .game-board {
-            border: 3px solid var(--theme-color-primary);
+            border: 3px solid var(--gray-800);
             background: var(--gray-900);
             box-shadow: var(--shadow-lg);
-            border-radius: var(--radius);
+            border-radius: 4px;
             flex-shrink: 0;
         }
 
-        .left-controls {
+        .left-controls, .side-info {
             display: flex;
             flex-direction: column;
             gap: var(--spacing-2);
             min-width: 80px;
         }
 
-        .side-info {
-            display: flex;
-            flex-direction: column;
-            gap: var(--spacing-3);
-            min-width: 80px;
-        }
-
         .next-box {
-            background: linear-gradient(135deg, var(--gray-50), white);
+            background: var(--gray-50);
             padding: var(--spacing-3);
             border-radius: var(--radius-md);
-            border: 2px solid var(--gray-200);
+            border: 1px solid var(--gray-200);
             text-align: center;
-        }
-
-        .next-label {
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: var(--gray-600);
-            margin-bottom: var(--spacing-2);
         }
 
         .next-preview {
             background: var(--gray-900);
-            border: 2px solid var(--theme-color-primary);
-            border-radius: var(--radius);
+            border: 1px solid var(--gray-600);
+            border-radius: 4px;
             margin: 0 auto;
         }
 
-        /* コントロールボタン */
+        /* ボタン類 */
         .btn {
             padding: var(--spacing-3) var(--spacing-4);
             font-size: 0.85rem;
             font-weight: 700;
             font-family: var(--font-primary);
             border: none;
-            border-radius: var(--radius-md);
+            border-radius: var(--radius-lg);
             cursor: pointer;
             transition: all 0.2s ease;
             color: white;
@@ -193,25 +144,13 @@
         }
 
         .btn-reset {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
+            background: linear-gradient(135deg, #ef4444, var(--theme-color-disaster));
         }
 
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
-        }
+        .btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+        .btn:active { transform: translateY(0); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
 
-        .btn:active {
-            transform: translateY(0);
-        }
-
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* モバイルコントロール */
         .mobile-controls {
             display: none;
             grid-template-columns: repeat(3, 1fr);
@@ -221,30 +160,23 @@
         .mobile-btn {
             padding: var(--spacing-4);
             font-size: 1.5em;
-            background: linear-gradient(135deg, var(--theme-color-game), #be185d);
+            background: linear-gradient(135deg, #ec4899, #be185d);
             color: white;
             border: none;
-            border-radius: var(--radius-md);
+            border-radius: var(--radius-lg);
             cursor: pointer;
             touch-action: manipulation;
             user-select: none;
             box-shadow: var(--shadow-md);
             font-weight: 900;
         }
+        .mobile-btn:active { transform: scale(0.95); }
 
-        .mobile-btn:active {
-            opacity: 0.8;
-            transform: scale(0.95);
-        }
-
-        /* ゲームオーバー */
         .game-over-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(2px);
             display: none;
             justify-content: center;
             align-items: center;
@@ -258,157 +190,36 @@
             text-align: center;
             box-shadow: var(--shadow-xl);
             max-width: 90%;
+            border: 3px solid var(--theme-color-game);
         }
-
+        
         .game-over-box h2 {
-            font-size: 2rem;
-            font-weight: 900;
             color: var(--theme-color-game);
-            margin-bottom: var(--spacing-4);
+            margin-bottom: 1rem;
+            font-weight: 900;
         }
 
-        .game-over-box p {
-            font-size: 1.1rem;
-            margin: var(--spacing-2) 0;
-            color: var(--gray-700);
-            font-weight: 600;
-        }
-
-        .game-over-box .btn {
-            margin-top: var(--spacing-4);
-            width: 100%;
-        }
-
-        /* 戻るボタン */
+        /* 戻るボタン (共通スタイル) */
         .back-button {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
             margin-top: var(--spacing-4);
-            padding: var(--spacing-3) var(--spacing-5);
-            background: white;
-            color: var(--theme-color-primary);
+            padding: var(--spacing-3) var(--spacing-6);
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+            color: white;
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 0.9375rem;
             font-weight: 700;
-            border-radius: var(--radius-md);
-            box-shadow: var(--shadow-lg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
             transition: all 0.2s ease;
-            border: 2px solid var(--theme-color-primary);
         }
+        .back-button::before { content: "←"; margin-right: 8px; font-weight: 900; }
+        .back-button:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
 
-        .back-button:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-xl);
-            background: var(--gray-50);
-        }
-
-        /* レスポンシブ */
         @media (max-width: 768px) {
-            body {
-                padding: var(--spacing-2);
-            }
-
-            .game-container {
-                padding: var(--spacing-3);
-            }
-
-            .game-title {
-                font-size: 1.5rem;
-                margin-bottom: var(--spacing-3);
-            }
-
-            .info-panel {
-                grid-template-columns: repeat(3, 1fr);
-                gap: var(--spacing-2);
-                margin-bottom: var(--spacing-3);
-            }
-
-            .info-label {
-                font-size: 0.65rem;
-            }
-
-            .info-value {
-                font-size: 1rem;
-            }
-
-            .info-small {
-                font-size: 0.85rem;
-            }
-
-            .game-layout {
-                gap: var(--spacing-2);
-                margin-bottom: var(--spacing-3);
-            }
-
-            .left-controls {
-                gap: var(--spacing-2);
-                min-width: 70px;
-            }
-
-            .side-info {
-                gap: var(--spacing-2);
-                min-width: 60px;
-            }
-
-            .next-box {
-                padding: var(--spacing-2);
-            }
-
-            .next-label {
-                font-size: 0.65rem;
-                margin-bottom: var(--spacing-1);
-            }
-
-            .next-preview {
-                width: 60px;
-                height: 60px;
-            }
-
-            .info-box {
-                padding: var(--spacing-2);
-            }
-
-            .mobile-controls {
-                display: grid;
-                margin-bottom: var(--spacing-3);
-            }
-
-            .btn {
-                padding: var(--spacing-2) var(--spacing-3);
-                font-size: 0.75rem;
-            }
-
-            .back-button {
-                font-size: 0.85rem;
-                padding: var(--spacing-2) var(--spacing-4);
-            }
-        }
-
-        @media (max-width: 480px) {
-            .game-title {
-                font-size: 1.3rem;
-            }
-
-            .mobile-btn {
-                padding: var(--spacing-3);
-                font-size: 1.3em;
-            }
-
-            .info-label {
-                font-size: 0.6rem;
-            }
-
-            .info-value {
-                font-size: 0.9rem;
-            }
-
-            .left-controls {
-                min-width: 60px;
-            }
-
-            .btn {
-                font-size: 0.7rem;
-                padding: var(--spacing-2);
-            }
+            .mobile-controls { display: grid; margin-bottom: var(--spacing-3); }
+            .btn { font-size: 0.75rem; }
         }
     </style>
 </head>
@@ -416,7 +227,6 @@
     <div class="game-container">
         <h1 class="game-title">🎮 ShapeDrop</h1>
         
-        <!-- コンパクトな情報パネル -->
         <div class="info-panel">
             <div class="info-box">
                 <div class="info-label">スコア</div>
@@ -442,13 +252,13 @@
             
             <div class="side-info">
                 <div class="next-box">
-                    <div class="next-label">NEXT</div>
+                    <div class="info-label">NEXT</div>
                     <canvas id="nextCanvas" class="next-preview" width="60" height="60"></canvas>
                 </div>
                 
                 <div class="info-box">
                     <div class="info-label">時間</div>
-                    <div class="info-value info-small" id="playTime">0:00</div>
+                    <div class="info-value" style="font-size: 1rem;" id="playTime">0:00</div>
                 </div>
             </div>
         </div>
@@ -462,7 +272,7 @@
             <div></div>
         </div>
         
-        <div style="text-align: center; margin-top: var(--spacing-3);">
+        <div style="text-align: center;">
             <a href="games-selection.html" class="back-button">ミニゲーム選択ページへ戻る</a>
         </div>
     </div>
@@ -473,10 +283,11 @@
             <p>最終スコア: <span id="finalScore">0</span></p>
             <p>レベル: <span id="finalLevel">1</span></p>
             <p>プレイ時間: <span id="finalTime">0:00</span></p>
-            <button class="btn btn-start" onclick="location.reload()">もう一度プレイ</button>
+            <button class="btn btn-start" style="margin-top: 1rem;" onclick="location.reload()">もう一度プレイ</button>
         </div>
     </div>
 
+    <!-- JavaScriptは元のロジックをそのまま使用します -->
     <script>
         const CONFIG = {
             COLS: 10,
@@ -488,82 +299,17 @@
             TIME_SPEED_DECREASE: 30
         };
 
-        // 完全オリジナルで簡単な形状
         const SHAPES = [
-            {
-                pattern: [
-                    [1],
-                    [1],
-                    [1]
-                ],
-                color: '#FF6B9D'
-            },
-            {
-                pattern: [
-                    [1, 1, 1]
-                ],
-                color: '#4ECDC4'
-            },
-            {
-                pattern: [
-                    [1, 1],
-                    [0, 1]
-                ],
-                color: '#FFE66D'
-            },
-            {
-                pattern: [
-                    [0, 1, 0],
-                    [1, 1, 1],
-                    [0, 1, 0]
-                ],
-                color: '#A8E6CF'
-            },
-            {
-                pattern: [
-                    [1, 0],
-                    [1, 0],
-                    [1, 1]
-                ],
-                color: '#FF8B94'
-            },
-            {
-                pattern: [
-                    [1, 1, 0],
-                    [0, 1, 1],
-                    [0, 0, 1]
-                ],
-                color: '#B4A7D6'
-            },
-            {
-                pattern: [
-                    [1],
-                    [1]
-                ],
-                color: '#FFD3B6'
-            },
-            {
-                pattern: [
-                    [1, 0, 1],
-                    [1, 1, 1]
-                ],
-                color: '#98DDCA'
-            },
-            {
-                pattern: [
-                    [1, 0, 1],
-                    [0, 1, 0],
-                    [0, 1, 0]
-                ],
-                color: '#D4A5A5'
-            },
-            {
-                pattern: [
-                    [1, 1, 1],
-                    [1, 1, 1]
-                ],
-                color: '#9FA8DA'
-            }
+            { pattern: [[1],[1],[1]], color: '#FF6B9D' },
+            { pattern: [[1, 1, 1]], color: '#4ECDC4' },
+            { pattern: [[1, 1],[0, 1]], color: '#FFE66D' },
+            { pattern: [[0, 1, 0],[1, 1, 1],[0, 1, 0]], color: '#A8E6CF' },
+            { pattern: [[1, 0],[1, 0],[1, 1]], color: '#FF8B94' },
+            { pattern: [[1, 1, 0],[0, 1, 1],[0, 0, 1]], color: '#B4A7D6' },
+            { pattern: [[1],[1]], color: '#FFD3B6' },
+            { pattern: [[1, 0, 1],[1, 1, 1]], color: '#98DDCA' },
+            { pattern: [[1, 0, 1],[0, 1, 0],[0, 1, 0]], color: '#D4A5A5' },
+            { pattern: [[1, 1, 1],[1, 1, 1]], color: '#9FA8DA' }
         ];
 
         class Game {
@@ -572,11 +318,8 @@
                 this.ctx = this.canvas.getContext('2d');
                 this.nextCanvas = document.getElementById('nextCanvas');
                 this.nextCtx = this.nextCanvas.getContext('2d');
-                
-                // レスポンシブ対応
                 this.updateCanvasSize();
                 window.addEventListener('resize', () => this.updateCanvasSize());
-                
                 this.board = this.createBoard();
                 this.score = 0;
                 this.level = 1;
@@ -588,13 +331,10 @@
                 this.lastTime = 0;
                 this.dropCounter = 0;
                 this.dropInterval = CONFIG.INITIAL_SPEED;
-                
                 this.playTimeSeconds = 0;
                 this.playTimeInterval = null;
                 this.speedUpInterval = null;
-                
                 this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                
                 this.initControls();
                 this.generateNextPiece();
                 this.generateNextPiece();
@@ -604,27 +344,19 @@
                 const isMobile = window.innerWidth <= 768;
                 const blockSize = isMobile ? 14 : 20;
                 CONFIG.BLOCK_SIZE = blockSize;
-                
                 this.canvas.width = CONFIG.COLS * blockSize;
                 this.canvas.height = CONFIG.ROWS * blockSize;
-                
-                if (this.board) {
-                    this.draw();
-                }
+                if (this.board) this.draw();
             }
 
             createBoard() {
-                return Array.from({ length: CONFIG.ROWS }, () => 
-                    Array(CONFIG.COLS).fill(0)
-                );
+                return Array.from({ length: CONFIG.ROWS }, () => Array(CONFIG.COLS).fill(0));
             }
 
             initControls() {
                 document.addEventListener('keydown', (e) => this.handleKeyPress(e));
-                
                 document.getElementById('startBtn').addEventListener('click', () => this.start());
                 document.getElementById('resetBtn').addEventListener('click', () => this.reset());
-                
                 document.getElementById('leftBtn').addEventListener('click', () => this.move(-1));
                 document.getElementById('rightBtn').addEventListener('click', () => this.move(1));
                 document.getElementById('rotateBtn').addEventListener('click', () => this.rotate());
@@ -634,30 +366,12 @@
 
             handleKeyPress(e) {
                 if (this.isPaused || this.gameOver) return;
-
                 switch(e.key) {
-                    case 'ArrowLeft':
-                        e.preventDefault();
-                        this.move(-1);
-                        break;
-                    case 'ArrowRight':
-                        e.preventDefault();
-                        this.move(1);
-                        break;
-                    case 'ArrowDown':
-                        e.preventDefault();
-                        this.moveDown();
-                        break;
-                    case 'ArrowUp':
-                    case 'z':
-                    case 'Z':
-                        e.preventDefault();
-                        this.rotate();
-                        break;
-                    case ' ':
-                        e.preventDefault();
-                        this.hardDrop();
-                        break;
+                    case 'ArrowLeft': e.preventDefault(); this.move(-1); break;
+                    case 'ArrowRight': e.preventDefault(); this.move(1); break;
+                    case 'ArrowDown': e.preventDefault(); this.moveDown(); break;
+                    case 'ArrowUp': case 'z': case 'Z': e.preventDefault(); this.rotate(); break;
+                    case ' ': e.preventDefault(); this.hardDrop(); break;
                 }
             }
 
@@ -666,74 +380,47 @@
                     this.playTimeSeconds++;
                     this.updatePlayTime();
                 }, 1000);
-                
                 this.speedUpInterval = setInterval(() => {
                     this.dropInterval = Math.max(100, this.dropInterval - CONFIG.TIME_SPEED_DECREASE);
                 }, 30000);
             }
 
             stopPlayTimer() {
-                if (this.playTimeInterval) {
-                    clearInterval(this.playTimeInterval);
-                    this.playTimeInterval = null;
-                }
-                if (this.speedUpInterval) {
-                    clearInterval(this.speedUpInterval);
-                    this.speedUpInterval = null;
-                }
+                if (this.playTimeInterval) { clearInterval(this.playTimeInterval); this.playTimeInterval = null; }
+                if (this.speedUpInterval) { clearInterval(this.speedUpInterval); this.speedUpInterval = null; }
             }
 
             updatePlayTime() {
                 const minutes = Math.floor(this.playTimeSeconds / 60);
                 const seconds = this.playTimeSeconds % 60;
-                document.getElementById('playTime').textContent = 
-                    `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                document.getElementById('playTime').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
             }
 
             generateNextPiece() {
                 this.currentPiece = this.nextPiece;
                 const shapeIndex = Math.floor(Math.random() * SHAPES.length);
                 const shape = SHAPES[shapeIndex];
-                
                 this.nextPiece = {
                     pattern: shape.pattern,
                     color: shape.color,
                     x: Math.floor(CONFIG.COLS / 2) - Math.floor(shape.pattern[0].length / 2),
                     y: 0
                 };
-
                 this.drawNextPiece();
-
-                if (this.currentPiece && this.checkCollision(this.currentPiece)) {
-                    this.endGame();
-                }
+                if (this.currentPiece && this.checkCollision(this.currentPiece)) this.endGame();
             }
 
             drawNextPiece() {
                 this.nextCtx.clearRect(0, 0, this.nextCanvas.width, this.nextCanvas.height);
                 if (!this.nextPiece) return;
-
                 const blockSize = 12;
                 const offsetX = (this.nextCanvas.width - this.nextPiece.pattern[0].length * blockSize) / 2;
                 const offsetY = (this.nextCanvas.height - this.nextPiece.pattern.length * blockSize) / 2;
-
                 this.nextPiece.pattern.forEach((row, y) => {
                     row.forEach((value, x) => {
                         if (value) {
                             this.nextCtx.fillStyle = this.nextPiece.color;
-                            this.nextCtx.fillRect(
-                                offsetX + x * blockSize,
-                                offsetY + y * blockSize,
-                                blockSize - 1,
-                                blockSize - 1
-                            );
-                            this.nextCtx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
-                            this.nextCtx.strokeRect(
-                                offsetX + x * blockSize,
-                                offsetY + y * blockSize,
-                                blockSize - 1,
-                                blockSize - 1
-                            );
+                            this.nextCtx.fillRect(offsetX + x * blockSize, offsetY + y * blockSize, blockSize - 1, blockSize - 1);
                         }
                     });
                 });
@@ -745,12 +432,7 @@
                         if (piece.pattern[y][x]) {
                             const newX = piece.x + x + offsetX;
                             const newY = piece.y + y + offsetY;
-
-                            if (newX < 0 || newX >= CONFIG.COLS || 
-                                newY >= CONFIG.ROWS ||
-                                (newY >= 0 && this.board[newY][newX])) {
-                                return true;
-                            }
+                            if (newX < 0 || newX >= CONFIG.COLS || newY >= CONFIG.ROWS || (newY >= 0 && this.board[newY][newX])) return true;
                         }
                     }
                 }
@@ -785,13 +467,9 @@
             }
 
             rotate() {
-                const rotated = this.currentPiece.pattern[0].map((_, i) =>
-                    this.currentPiece.pattern.map(row => row[i]).reverse()
-                );
-
+                const rotated = this.currentPiece.pattern[0].map((_, i) => this.currentPiece.pattern.map(row => row[i]).reverse());
                 const previousPattern = this.currentPiece.pattern;
                 this.currentPiece.pattern = rotated;
-
                 if (this.checkCollision(this.currentPiece)) {
                     let kicked = false;
                     for (let offset of [-1, 1, -2, 2]) {
@@ -817,25 +495,19 @@
                         if (value) {
                             const boardY = this.currentPiece.y + y;
                             const boardX = this.currentPiece.x + x;
-                            if (boardY >= 0 && boardY < CONFIG.ROWS && 
-                                boardX >= 0 && boardX < CONFIG.COLS) {
+                            if (boardY >= 0 && boardY < CONFIG.ROWS && boardX >= 0 && boardX < CONFIG.COLS) {
                                 this.board[boardY][boardX] = this.currentPiece.color;
                             }
                         }
                     });
                 });
-
                 const linesCleared = this.clearLines();
-                if (linesCleared > 0) {
-                    this.playSound(440, 0.2, 'sine');
-                }
-
+                if (linesCleared > 0) this.playSound(440, 0.2, 'sine');
                 this.generateNextPiece();
             }
 
             clearLines() {
                 let linesCleared = 0;
-                
                 for (let y = CONFIG.ROWS - 1; y >= 0; y--) {
                     if (this.board[y].every(cell => cell !== 0)) {
                         this.board.splice(y, 1);
@@ -844,22 +516,17 @@
                         y++;
                     }
                 }
-
                 if (linesCleared > 0) {
                     this.lines += linesCleared;
-                    
                     const scoreMap = [0, 100, 250, 450, 700];
                     this.score += scoreMap[Math.min(linesCleared, 4)] * this.level;
-                    
                     const newLevel = Math.floor(this.lines / CONFIG.LEVEL_UP_LINES) + 1;
                     if (newLevel > this.level) {
                         this.level = newLevel;
                         this.dropInterval = Math.max(100, CONFIG.INITIAL_SPEED - (this.level - 1) * CONFIG.SPEED_DECREASE);
                     }
-                    
                     this.updateScore();
                 }
-
                 return linesCleared;
             }
 
@@ -870,42 +537,22 @@
             }
 
             draw() {
-                this.ctx.fillStyle = '#1a1a2e';
+                this.ctx.fillStyle = '#111827';
                 this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-
                 this.ctx.strokeStyle = 'rgba(0, 160, 193, 0.1)';
                 for (let y = 0; y < CONFIG.ROWS; y++) {
                     for (let x = 0; x < CONFIG.COLS; x++) {
-                        this.ctx.strokeRect(
-                            x * CONFIG.BLOCK_SIZE,
-                            y * CONFIG.BLOCK_SIZE,
-                            CONFIG.BLOCK_SIZE,
-                            CONFIG.BLOCK_SIZE
-                        );
+                        this.ctx.strokeRect(x * CONFIG.BLOCK_SIZE, y * CONFIG.BLOCK_SIZE, CONFIG.BLOCK_SIZE, CONFIG.BLOCK_SIZE);
                     }
                 }
-
                 this.board.forEach((row, y) => {
                     row.forEach((color, x) => {
                         if (color) {
                             this.ctx.fillStyle = color;
-                            this.ctx.fillRect(
-                                x * CONFIG.BLOCK_SIZE,
-                                y * CONFIG.BLOCK_SIZE,
-                                CONFIG.BLOCK_SIZE - 1,
-                                CONFIG.BLOCK_SIZE - 1
-                            );
-                            this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
-                            this.ctx.strokeRect(
-                                x * CONFIG.BLOCK_SIZE,
-                                y * CONFIG.BLOCK_SIZE,
-                                CONFIG.BLOCK_SIZE - 1,
-                                CONFIG.BLOCK_SIZE - 1
-                            );
+                            this.ctx.fillRect(x * CONFIG.BLOCK_SIZE, y * CONFIG.BLOCK_SIZE, CONFIG.BLOCK_SIZE - 1, CONFIG.BLOCK_SIZE - 1);
                         }
                     });
                 });
-
                 if (this.currentPiece) {
                     this.currentPiece.pattern.forEach((row, y) => {
                         row.forEach((value, x) => {
@@ -914,77 +561,32 @@
                                 const drawX = this.currentPiece.x + x;
                                 if (drawY >= 0) {
                                     this.ctx.fillStyle = this.currentPiece.color;
-                                    this.ctx.fillRect(
-                                        drawX * CONFIG.BLOCK_SIZE,
-                                        drawY * CONFIG.BLOCK_SIZE,
-                                        CONFIG.BLOCK_SIZE - 1,
-                                        CONFIG.BLOCK_SIZE - 1
-                                    );
-                                    this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
-                                    this.ctx.strokeRect(
-                                        drawX * CONFIG.BLOCK_SIZE,
-                                        drawY * CONFIG.BLOCK_SIZE,
-                                        CONFIG.BLOCK_SIZE - 1,
-                                        CONFIG.BLOCK_SIZE - 1
-                                    );
+                                    this.ctx.fillRect(drawX * CONFIG.BLOCK_SIZE, drawY * CONFIG.BLOCK_SIZE, CONFIG.BLOCK_SIZE - 1, CONFIG.BLOCK_SIZE - 1);
                                 }
                             }
                         });
                     });
-
-                    let ghostY = this.currentPiece.y;
-                    while (!this.checkCollision({ ...this.currentPiece, y: ghostY }, 0, 1)) {
-                        ghostY++;
-                    }
-                    
-                    this.ctx.globalAlpha = 0.2;
-                    this.currentPiece.pattern.forEach((row, y) => {
-                        row.forEach((value, x) => {
-                            if (value) {
-                                const drawY = ghostY + y;
-                                const drawX = this.currentPiece.x + x;
-                                if (drawY >= 0) {
-                                    this.ctx.fillStyle = this.currentPiece.color;
-                                    this.ctx.fillRect(
-                                        drawX * CONFIG.BLOCK_SIZE,
-                                        drawY * CONFIG.BLOCK_SIZE,
-                                        CONFIG.BLOCK_SIZE - 1,
-                                        CONFIG.BLOCK_SIZE - 1
-                                    );
-                                }
-                            }
-                        });
-                    });
-                    this.ctx.globalAlpha = 1.0;
                 }
             }
 
             update(time = 0) {
                 if (this.isPaused || this.gameOver) return;
-
                 const deltaTime = time - this.lastTime;
                 this.lastTime = time;
                 this.dropCounter += deltaTime;
-
                 if (this.dropCounter > this.dropInterval) {
                     this.moveDown();
                     this.dropCounter = 0;
                 }
-
                 this.draw();
                 requestAnimationFrame((t) => this.update(t));
             }
 
             start() {
                 if (!this.isPaused) return;
-                
                 this.isPaused = false;
                 document.getElementById('startBtn').disabled = true;
-                
-                if (!this.currentPiece) {
-                    this.generateNextPiece();
-                }
-                
+                if (!this.currentPiece) this.generateNextPiece();
                 this.startPlayTimer();
                 this.lastTime = performance.now();
                 this.update(this.lastTime);
@@ -993,7 +595,6 @@
 
             reset() {
                 this.stopPlayTimer();
-                
                 this.board = this.createBoard();
                 this.score = 0;
                 this.level = 1;
@@ -1005,13 +606,11 @@
                 this.dropCounter = 0;
                 this.dropInterval = CONFIG.INITIAL_SPEED;
                 this.playTimeSeconds = 0;
-                
                 this.updateScore();
                 this.updatePlayTime();
                 this.generateNextPiece();
                 this.generateNextPiece();
                 this.draw();
-                
                 document.getElementById('startBtn').disabled = false;
                 document.getElementById('gameOverOverlay').style.display = 'none';
                 this.playSound(330, 0.1, 'square');
@@ -1021,15 +620,11 @@
                 this.gameOver = true;
                 this.isPaused = true;
                 this.stopPlayTimer();
-                
                 document.getElementById('finalScore').textContent = this.score;
                 document.getElementById('finalLevel').textContent = this.level;
-                
                 const minutes = Math.floor(this.playTimeSeconds / 60);
                 const seconds = this.playTimeSeconds % 60;
-                document.getElementById('finalTime').textContent = 
-                    `${minutes}:${seconds.toString().padStart(2, '0')}`;
-                
+                document.getElementById('finalTime').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
                 document.getElementById('gameOverOverlay').style.display = 'flex';
                 this.playSound(220, 0.3, 'sawtooth');
             }
@@ -1038,16 +633,12 @@
                 try {
                     const oscillator = this.audioContext.createOscillator();
                     const gainNode = this.audioContext.createGain();
-                    
                     oscillator.connect(gainNode);
                     gainNode.connect(this.audioContext.destination);
-                    
                     oscillator.frequency.value = frequency;
                     oscillator.type = type;
-                    
                     gainNode.gain.setValueAtTime(0.1, this.audioContext.currentTime);
                     gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + duration);
-                    
                     oscillator.start(this.audioContext.currentTime);
                     oscillator.stop(this.audioContext.currentTime + duration);
                 } catch (e) {}

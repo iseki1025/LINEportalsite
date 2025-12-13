@@ -5,178 +5,173 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>反射神経ゲーム</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
+
+        :root {
+            --font-primary: 'Inter', 'Noto Sans JP', sans-serif;
+            --gray-50: #f9fafb; --gray-100: #f3f4f6; --gray-200: #e5e7eb; --gray-500: #6b7280; --gray-700: #374151; --gray-800: #1f2937; --gray-900: #111827;
+            
+            --theme-color-primary: #00586A;
+            --theme-color-game: #ec4899;
+            --theme-success: #059669;
+            --theme-warning: #ea580c;
+            
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --radius-lg: 1rem; --radius-xl: 1.5rem;
         }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: var(--font-primary);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px 0;
+            /* ポータル背景 */
+            background: linear-gradient(180deg, #f0f8ff 0%, #ffffff 100%);
+            padding: 20px;
+            color: var(--gray-900);
         }
 
         .container {
             text-align: center;
             background: white;
             padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            max-width: 500px;
-            width: 90%;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-xl);
+            max-width: 600px;
+            width: 100%;
+            border: 1px solid var(--gray-200);
         }
 
         h1 {
-            color: #333;
+            color: var(--theme-color-game);
             margin-bottom: 20px;
-            font-size: 28px;
+            font-size: 1.8rem;
+            font-weight: 900;
         }
 
         #gameArea {
             width: 100%;
             height: 300px;
-            border-radius: 15px;
+            border-radius: var(--radius-lg);
             display: flex;
             justify-content: center;
             align-items: center;
             font-size: 24px;
-            font-weight: bold;
+            font-weight: 700;
             color: white;
             cursor: pointer;
             transition: all 0.3s ease;
             margin: 20px 0;
             user-select: none;
+            box-shadow: var(--shadow);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
 
-        #gameArea.waiting {
-            background: #e74c3c;
-        }
+        #gameArea:active { transform: scale(0.98); }
 
-        #gameArea.ready {
-            background: #2ecc71;
-        }
-
-        #gameArea.idle {
-            background: #3498db;
-        }
+        /* 状態に応じた色 */
+        #gameArea.waiting { background: #ef4444; } /* 赤 */
+        #gameArea.ready { background: var(--theme-success); } /* 緑 */
+        #gameArea.idle { background: var(--theme-color-primary); } /* 青(テーマカラー) */
 
         .stats {
-            background: #f8f9fa;
+            background: var(--gray-50);
             padding: 20px;
-            border-radius: 10px;
+            border-radius: var(--radius-lg);
             margin-top: 20px;
+            border: 1px solid var(--gray-200);
+            text-align: left;
         }
 
         .stat-item {
-            margin: 10px 0;
-            font-size: 18px;
-            color: #555;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--gray-200);
+            font-size: 1rem;
+            color: var(--gray-700);
         }
+        .stat-item:last-child { border-bottom: none; }
 
         .stat-value {
-            font-weight: bold;
-            color: #667eea;
-            font-size: 24px;
+            font-weight: 900;
+            color: var(--theme-color-primary);
+            font-size: 1.25rem;
         }
 
-        /* 推定年齢を目立たせるスタイル */
         .age-highlight {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-size: 32px;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            color: var(--theme-color-game);
+            font-size: 1.5rem;
         }
 
         .instructions {
-            background: #fff3cd;
+            background: #fff7ed; /* 薄いオレンジ */
             padding: 15px;
-            border-radius: 10px;
+            border-radius: var(--radius-lg);
             margin-bottom: 20px;
-            border-left: 4px solid #ffc107;
+            border-left: 5px solid var(--theme-warning);
+            text-align: left;
         }
 
         .instructions p {
-            color: #856404;
-            font-size: 14px;
+            color: #9a3412;
+            font-size: 0.95rem;
             line-height: 1.6;
         }
 
-        button {
-            background: #667eea;
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            font-size: 16px;
-            border-radius: 25px;
+        /* リセットボタン */
+        .reset-btn {
+            background: white;
+            color: var(--gray-500);
+            border: 2px solid var(--gray-200);
+            padding: 10px 20px;
+            font-size: 14px;
+            border-radius: var(--radius-lg);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s;
             margin-top: 15px;
+            font-weight: 700;
+        }
+        .reset-btn:hover {
+            background: var(--gray-50);
+            color: var(--gray-700);
+            border-color: var(--gray-300);
         }
 
-        button:hover {
-            background: #5568d3;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        button:active {
-            transform: translateY(0);
-        }
-
+        /* 戻るボタン */
         .back-button {
-            display: inline-block;
-            margin-top: 20px;
-            background: #757575;
+            display: inline-flex;
+            align-items: center;
+            margin-top: 30px;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
             color: white;
             text-decoration: none;
-            padding: 12px 30px;
             font-size: 16px;
-            border-radius: 25px;
-            transition: all 0.3s ease;
+            font-weight: 700;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            transition: all 0.2s ease;
         }
-
-        .back-button:hover {
-            background: #616161;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
+        .back-button::before { content: "←"; margin-right: 8px; font-weight: 900; }
+        .back-button:hover { transform: translateY(-2px); box-shadow: var(--shadow-xl); }
 
         .age-badge {
-            display: inline-block;
-            padding: 5px 15px;
+            padding: 4px 12px;
             border-radius: 20px;
-            font-size: 14px;
-            margin-left: 10px;
+            font-size: 12px;
+            font-weight: 700;
             color: white;
         }
-
-        .age-excellent {
-            background: #2ecc71;
-        }
-
-        .age-good {
-            background: #3498db;
-        }
-
-        .age-average {
-            background: #f39c12;
-        }
-
-        .age-needs-improvement {
-            background: #e74c3c;
-        }
+        .age-excellent { background: var(--theme-success); }
+        .age-good { background: #3b82f6; }
+        .age-average { background: var(--theme-warning); }
+        .age-needs-improvement { background: #ef4444; }
 
     </style>
 </head>
@@ -185,9 +180,8 @@
         <h1>⚡ 反射神経ゲーム</h1>
         
         <div class="instructions">
-            <p>赤い画面が<strong>緑色</strong>に変わったら、できるだけ早くクリック！<br>
-            緑になる前にクリックするとフライングです。<br>
-            反応速度から反射神経年齢を推定します！</p>
+            <p>画面が<strong>赤色</strong>から<strong>緑色</strong>に変わったら、できるだけ早くクリック！<br>
+            反応速度から、あなたの「反射神経年齢」を推定します。</p>
         </div>
 
         <div id="gameArea" class="idle">
@@ -196,29 +190,38 @@
 
         <div class="stats">
             <div class="stat-item">
-                今回の記録: <span class="stat-value" id="currentTime">-</span>
+                <span>今回の記録</span>
+                <span class="stat-value" id="currentTime">-</span>
             </div>
             <div class="stat-item">
-                推定反射神経年齢: <span class="stat-value age-highlight" id="estimatedAge">-</span>
-                <span id="ageBadge" class="age-badge" style="display:none;"></span>
+                <span>推定反射神経年齢</span>
+                <div>
+                    <span class="stat-value age-highlight" id="estimatedAge">-</span>
+                    <span id="ageBadge" class="age-badge" style="display:none;"></span>
+                </div>
             </div>
             <div class="stat-item">
-                プレイ回数: <span class="stat-value" id="playCount">0</span>
+                <span>プレイ回数</span>
+                <span class="stat-value" id="playCount">0</span>
             </div>
             <div class="stat-item">
-                平均反応時間: <span class="stat-value" id="avgTime">-</span>
+                <span>平均反応時間</span>
+                <span class="stat-value" id="avgTime">-</span>
             </div>
             <div class="stat-item">
-                最速記録: <span class="stat-value" id="bestTime">-</span>
+                <span>最速記録</span>
+                <span class="stat-value" id="bestTime">-</span>
             </div>
         </div>
 
-        <button onclick="resetStats()">記録をリセット</button>
+        <button class="reset-btn" onclick="resetStats()">記録をリセット</button>
 
+        <br>
         <a href="games-selection.html" class="back-button">ミニゲーム選択ページへ戻る</a>
     </div>
 
     <script>
+        // ... (以前のJavaScriptロジックはそのまま維持) ...
         let gameState = 'idle';
         let startTime = 0;
         let timeoutId = null;
@@ -239,13 +242,11 @@
             if (gameState === 'idle') {
                 startGame();
             } else if (gameState === 'waiting') {
-                // フライング
                 clearTimeout(timeoutId);
                 gameState = 'idle';
                 gameArea.className = 'idle';
                 gameArea.textContent = '早すぎます！もう一度クリック';
             } else if (gameState === 'ready') {
-                // 反応時間を計測
                 const reactionTime = Date.now() - startTime;
                 recordReaction(reactionTime);
                 gameState = 'idle';
@@ -258,8 +259,6 @@
             gameState = 'waiting';
             gameArea.className = 'waiting';
             gameArea.textContent = '待って...';
-            
-            // 2〜5秒のランダムな待機時間
             const waitTime = 2000 + Math.random() * 3000;
             
             timeoutId = setTimeout(() => {
@@ -271,48 +270,28 @@
         }
 
         function estimateAge(reactionTime) {
-            // 反応時間から年齢を推定
-            // 一般的な反応時間と年齢の相関に基づく
             let age;
             let badge = '';
             let badgeClass = '';
 
             if (reactionTime < 180) {
-                age = '10代前半';
-                badge = '超人級！';
-                badgeClass = 'age-excellent';
+                age = '10代前半'; badge = '超人級！'; badgeClass = 'age-excellent';
             } else if (reactionTime < 200) {
-                age = '10代後半';
-                badge = '素晴らしい！';
-                badgeClass = 'age-excellent';
+                age = '10代後半'; badge = '素晴らしい！'; badgeClass = 'age-excellent';
             } else if (reactionTime < 230) {
-                age = '20代前半';
-                badge = '優秀！';
-                badgeClass = 'age-excellent';
+                age = '20代前半'; badge = '優秀！'; badgeClass = 'age-excellent';
             } else if (reactionTime < 250) {
-                age = '20代後半';
-                badge = 'とても良い！';
-                badgeClass = 'age-good';
+                age = '20代後半'; badge = 'とても良い！'; badgeClass = 'age-good';
             } else if (reactionTime < 280) {
-                age = '30代';
-                badge = '良好！';
-                badgeClass = 'age-good';
+                age = '30代'; badge = '良好！'; badgeClass = 'age-good';
             } else if (reactionTime < 320) {
-                age = '40代';
-                badge = '平均的';
-                badgeClass = 'age-average';
+                age = '40代'; badge = '平均的'; badgeClass = 'age-average';
             } else if (reactionTime < 370) {
-                age = '50代';
-                badge = 'まずまず';
-                badgeClass = 'age-average';
+                age = '50代'; badge = 'まずまず'; badgeClass = 'age-average';
             } else if (reactionTime < 450) {
-                age = '60代';
-                badge = '要改善';
-                badgeClass = 'age-needs-improvement';
+                age = '60代'; badge = '要改善'; badgeClass = 'age-needs-improvement';
             } else {
-                age = '70代以上';
-                badge = '練習が必要';
-                badgeClass = 'age-needs-improvement';
+                age = '70代以上'; badge = '練習が必要'; badgeClass = 'age-needs-improvement';
             }
 
             return { age, badge, badgeClass };
@@ -323,18 +302,15 @@
             currentTimeEl.textContent = time + ' ms';
             playCountEl.textContent = reactions.length;
 
-            // 推定年齢を表示
             const ageData = estimateAge(time);
             estimatedAgeEl.textContent = ageData.age + ' 相当';
             ageBadgeEl.textContent = ageData.badge;
             ageBadgeEl.className = 'age-badge ' + ageData.badgeClass;
             ageBadgeEl.style.display = 'inline-block';
 
-            // 平均を計算
             const avg = reactions.reduce((a, b) => a + b, 0) / reactions.length;
             avgTimeEl.textContent = Math.round(avg) + ' ms';
 
-            // 最速記録を更新
             if (time < bestRecord) {
                 bestRecord = time;
                 bestTimeEl.textContent = time + ' ms 🏆';
