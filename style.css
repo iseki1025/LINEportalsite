@@ -193,18 +193,54 @@ li { margin-bottom: 0.5rem; }
     border-color: transparent;
 }
 
-/* カード内画像エリア */
+/* カード内画像エリア（箱） */
 .img-container, .prevention-card-img-wrapper, .portal-button-image {
-    width: 100%; height: 180px;
-    background: #f3f4f6; position: relative; overflow: hidden;
-    flex-shrink: 0; border-bottom: 1px solid #f3f4f6;
+    width: 100%; 
+    height: 180px; /* ここで高さを180pxに固定！ */
+    background: #f3f4f6; 
+    position: relative; 
+    overflow: hidden;
+    flex-shrink: 0; 
+    border-bottom: 1px solid #f3f4f6;
 }
-.exercise-icon, .check-icon, .portal-button-image, .prevention-card img {
-    width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s;
-}
-.exercise-item:hover .exercise-icon, .check-item:hover .check-icon { transform: scale(1.05); }
 
-/* カード内テキストエリア */
+/* カード内の画像（中身） */
+.exercise-icon, 
+.check-icon, 
+.prevention-card img, 
+.portal-button-image img { /* ← ★これを追加！（箱の中のimgを対象にする） */
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+    transition: transform 0.3s;
+}
+
+/* 画像と説明欄の境界をぼかす設定（グラデーション） */
+.img-container::after,
+.prevention-card-img-wrapper::after,
+.portal-button-image::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px; /* ぼかしの範囲（お好みで調整可） */
+    
+    /* 透明 → 白 へのグラデーション */
+    background: linear-gradient(to bottom, rgba(255,255,255,0), #ffffff);
+    
+    pointer-events: none; /* クリックを邪魔しないように */
+    z-index: 1; /* 画像の上に重ねる */
+}
+
+/* 境界線（border-bottom）があると邪魔なので消す */
+.img-container, 
+.prevention-card-img-wrapper, 
+.portal-button-image {
+    border-bottom: none !important;
+}
+
+/* カード内テキストエリア（変更なし） */
 .card-body, .exercise-text, .check-text, .prevention-card-body, .portal-button-content {
     padding: 1.5rem; flex-grow: 1; text-align: left;
 }
