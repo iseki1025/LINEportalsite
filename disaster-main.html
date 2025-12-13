@@ -20,122 +20,309 @@
             </div>
             <div class="collapsible-content">
                 <div class="status-container">
+                    <!-- ステータスは災害時にJSなどで書き換える想定の初期値 -->
                     <div class="status-item"><h3>本院</h3><p class="status-ok">透析可</p></div>
                     <div class="status-item"><h3>なかもず分院</h3><p class="status-ng">透析不可</p></div>
                     <div class="status-item"><h3>三国ケ丘分院</h3><p class="status-ok">透析可</p></div>
                 </div>
+                <p style="text-align:center; margin-top:1rem; font-size:0.9rem; color:#666;">※この情報は災害時などに随時更新されます。</p>
             </div>
         </section>
 
+        <!-- タブナビゲーション -->
         <nav class="page-nav">
-            <!-- JSでタブ切り替えする場合の簡易実装 -->
             <button class="nav-button active" onclick="switchTab('info')">基本情報</button>
             <button class="nav-button" onclick="switchTab('checklist')">備蓄リスト</button>
             <button class="nav-button" onclick="switchTab('evacuation')">避難手段</button>
             <button class="nav-button" onclick="switchTab('shelter')">ハザード<br>マップ</button>
+            <button class="nav-button" onclick="switchTab('faq')">災害Q&A</button>
         </nav>
         
         <main id="content-area">
-            <!-- 基本情報 -->
+            
+            <!-- ① 基本情報 -->
             <section id="info" class="content-section active">
+                <h2>災害への備え:基本情報</h2>
+                <div class="intro-text">
+                    <p>災害はいつ起こるかわかりません。日頃から適切な準備をしておくことで、いざという時に自分や家族の命を守ることができます。</p>
+                </div>
+                
                 <h3>防災の基本5つのポイント</h3>
+                
                 <div class="prevention-grid">
+                    <!-- 1. ハザードマップ -->
                     <div class="prevention-card">
                         <div class="prevention-card-img-wrapper">
-                            <!-- パス修正: files/disaster/ -->
-                            <img src="files/disaster/Check the hazard map.png" alt="ハザードマップ">
+                            <img src="files/disaster/Check the hazard map.png" alt="ハザードマップの確認">
                         </div>
                         <div class="prevention-card-body">
                             <h3>ハザードマップの確認</h3>
-                            <p>避難場所や経路を家族で共有しましょう。</p>
+                            <p>お住まいの地域でどのような災害のリスクがあるかを確認し、避難場所や避難経路を家族で共有しておきましょう。</p>
                         </div>
                     </div>
+
+                    <!-- 2. 非常用持ち出し袋 -->
                     <div class="prevention-card">
                         <div class="prevention-card-img-wrapper">
-                            <img src="files/disaster/Prepare an emergency bag.png" alt="非常持ち出し袋">
+                            <img src="files/disaster/Prepare an emergency bag.png" alt="非常用持ち出し袋の準備">
                         </div>
                         <div class="prevention-card-body">
-                            <h3>非常用持ち出し袋</h3>
-                            <p>最低限必要なものをリュックに。</p>
+                            <h3>非常用持ち出し袋の準備</h3>
+                            <p>避難時に最低限必要なものをリュックなどにまとめておきましょう。水、食料、常備薬、ラジオなどが基本です。</p>
                         </div>
                     </div>
+
+                    <!-- 3. 家庭での備蓄 -->
                     <div class="prevention-card">
                         <div class="prevention-card-img-wrapper">
-                            <img src="files/disaster/Home stockpiles.png" alt="備蓄">
+                            <img src="files/disaster/Home stockpiles.png" alt="家庭での備蓄">
                         </div>
                         <div class="prevention-card-body">
                             <h3>家庭での備蓄</h3>
-                            <p>水と食料を最低3日分備蓄しましょう。</p>
+                            <p>断水や停電に備え、最低3日分、できれば1週間分の水と食料を備蓄しておきましょう。</p>
                         </div>
                     </div>
+
+                    <!-- 4. 家具の固定 -->
                     <div class="prevention-card">
                         <div class="prevention-card-img-wrapper">
-                            <img src="files/disaster/fixing furniture.png" alt="家具固定">
+                            <img src="files/disaster/fixing furniture.png" alt="家具の固定">
                         </div>
                         <div class="prevention-card-body">
                             <h3>家具の固定</h3>
-                            <p>転倒防止グッズで家具を固定しましょう。</p>
+                            <p>地震による家具の転倒を防ぐため、タンスや本棚などを壁に固定しましょう。</p>
+                        </div>
+                    </div>
+
+                    <!-- 5. 安否確認 -->
+                    <div class="prevention-card">
+                        <div class="prevention-card-img-wrapper">
+                            <img src="files/disaster/Sharing methods for confirming safety.png" alt="安否確認方法の共有">
+                        </div>
+                        <div class="prevention-card-body">
+                            <h3>安否確認方法の共有</h3>
+                            <p>災害時には電話が繋がりにくくなります。災害用伝言ダイヤル(171)やSNSなど、家族で安否確認の方法を決めておきましょう。</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- PDF表示 -->
+                <!-- 防災ガイドブック（PDF） -->
                 <div class="pdf-collapsible">
-                    <div class="pdf-collapsible-header" onclick="this.parentElement.classList.toggle('is-open'); loadPdf();">
-                        <span>📖 防災ハンドブックを見る</span>
+                    <div class="pdf-collapsible-header" onclick="togglePdf()">
+                        <span>📖 梶本クリニック 防災ハンドブックを見る</span>
                         <span>▼</span>
                     </div>
                     <div class="pdf-collapsible-content">
                         <div class="pdf-collapsible-body">
-                            <p style="text-align:center; margin-bottom:1rem;">
-                                <!-- スマホ用リンク -->
-                                <a href="files/pdf/disaster-guide-book.pdf" target="_blank" class="back-to-portal-button" style="background:#007bff;">PDFを開く (スマホ用)</a>
-                            </p>
+                            <p style="margin-bottom:1rem;">災害時にすべきこと、起こる前の備えについて詳しくまとめています。</p>
+                            
+                            <!-- スマホ用リンク -->
+                            <div class="pdf-mobile-notice">
+                                <strong>📱 スマートフォンでご覧の方へ</strong><br>
+                                下のボタンから別ページでPDFを開くことをおすすめします。
+                            </div>
+                            <div class="pdf-link-mobile-wrapper">
+                                <a href="files/pdf/disaster-guide-book.pdf" target="_blank" class="back-to-portal-button" style="background:#007bff; border:none;">防災ハンドブックを開く (PDF)</a>
+                            </div>
+                            
                             <!-- PC用埋め込み -->
+                            <div class="pdf-loading-container" id="pdfLoadingContainer">
+                                <div class="pdf-spinner"></div>
+                                <p>防災ハンドブックを読み込んでいます...</p>
+                            </div>
                             <embed id="pdfEmbed" src="" type="application/pdf" class="pdf-embed-desktop">
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- 他のセクション (省略なしで書くなら前回の内容を移植) -->
+            <!-- ② 備蓄リスト -->
             <section id="checklist" class="content-section">
-                <h3>透析患者さまの備蓄リスト</h3>
-                <p>（ここにリストが入ります）</p>
+                <h2>透析患者さまのための備蓄リスト</h2>
+                <div class="intro-text">
+                    <p>災害時、透析の間隔が空いてしまう可能性を想定し、ご自身の体を守るための備えをしておきましょう。</p>
+                </div>
+                
+                <h3>透析患者として特に重要なもの</h3>
+                <ul>
+                    <li><strong>身体障害者手帳・保険証・各種受給者証</strong><br>すぐに取り出せるよう、コピーをまとめておくとスムーズに医療を受けられます。</li>
+                    <li><strong>普段飲んでいる薬(最低3日分)・お薬手帳</strong><br>薬が切れると急激に体調を崩すおそれがあります。必ず備えてください。</li>
+                    <li><strong>透析カード</strong><br>他施設で透析を受ける際に、ご自身の透析情報を正確に伝えるために不可欠です。</li>
+                </ul>
+
+                <h3>非常用食料・水(低カリウム・低食塩を意識)</h3>
+                <ul>
+                    <li><strong>飲料水(1人1日500mlが目安)</strong><br>普段より水分制限を意識しましょう。</li>
+                    <li><strong>低カリウム・低食塩の食品</strong><br>体調を悪化させずにカロリーを摂取できるものを選びましょう。(例:ビスケット、クッキー、飴など)</li>
+                    <li><strong>普段飲んでいるカリウムを下げる薬</strong><br>万が一、カリウムの高いものを口にしてしまった場合に備えましょう。</li>
+                </ul>
+
+                <h3>情報収集・生活のための備え</h3>
+                <ul>
+                    <li><strong>小銭(公衆電話用)</strong><br>携帯電話が使えない状況でも、公衆電話はつながりやすい重要なライフラインです。</li>
+                    <li><strong>携帯ラジオ(乾電池式)</strong><br>停電時でも情報を得るための必需品です。AM・FMの両方が聴けるものが役立ちます。</li>
+                    <li><strong>乾電池・モバイルバッテリー</strong><br>ラジオやスマートフォンの電源を確保するために重要です。</li>
+                </ul>
             </section>
-            
+
+            <!-- ③ 避難手段 -->
             <section id="evacuation" class="content-section">
-                <h3>避難手段</h3>
-                <p>（ここにイーバックチェアなどの説明が入ります）</p>
+                <h2>おひとりでは避難が難しい方へ</h2>
+                <p style="margin-bottom:2rem;">災害時、当院では様々な避難手段を用意しています。各設備の使用方法を事前に確認しておきましょう。</p>
+
+                <!-- イーバックチェア -->
+                <div class="evacuation-item">
+                    <div class="evacuation-item-header" onclick="this.parentElement.classList.toggle('is-open')">
+                        <span>イーバックチェア（階段避難車）</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="evacuation-item-content">
+                        <div class="evacuation-item-body">
+                            <p><strong>概要:</strong> 車椅子の方や歩行が困難な方を、階段を使って安全に避難させるための専用チェアです。キャタピラ式の構造により、介助者1〜2名で階段を降りることができます。</p>
+                            <p><strong>設置場所:</strong> 各階の避難経路入口付近</p>
+                            <div class="video-wrapper">
+                                <!-- 動画があればここにsrcを指定 -->
+                                <div style="color:white; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);">動画準備中</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- UDエスケープ -->
+                <div class="evacuation-item">
+                    <div class="evacuation-item-header" onclick="this.parentElement.classList.toggle('is-open')">
+                        <span>UDエスケープ（三国ヶ丘のみ）</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="evacuation-item-content">
+                        <div class="evacuation-item-body">
+                            <p><strong>概要:</strong> ベランダから地上へ素早く避難するための乗り物です。エレベーターのような構造で、階段が使えない緊急時に使用します。</p>
+                            <p><strong>設置場所:</strong> 2階のベランダ北端（非常口表示あり）</p>
+                            <div class="video-wrapper">
+                                <div style="color:white; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);">動画準備中</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 外部の滑り台 -->
+                <div class="evacuation-item">
+                    <div class="evacuation-item-header" onclick="this.parentElement.classList.toggle('is-open')">
+                        <span>外部避難用滑り台（本院のみ）</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="evacuation-item-content">
+                        <div class="evacuation-item-body">
+                            <p><strong>概要:</strong> 建物外部に設置された金属製の避難用滑り台です。火災などで建物内の避難経路が使えない場合に使用します。</p>
+                            <p><strong>設置場所:</strong> 建物南側2階・3階・4階・5階</p>
+                            <div class="video-wrapper">
+                                <div style="color:white; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);">動画準備中</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <strong>⚠ 注意事項</strong><br>
+                    これらの避難手段は、職員の指示に従ってご使用ください。定期的に避難訓練を実施していますので、ぜひご参加ください。
+                </div>
+            </section>
+
+            <!-- ④ ハザードマップ -->
+            <section id="shelter" class="content-section">
+                <h2>お近くの避難場所を確認しましょう</h2>
+                <div class="intro-text">
+                    <p>お住まいの市区町村が公開しているハザードマップで、指定された避難場所や安全な避難経路を事前に確認しておくことが非常に重要です。</p>
+                </div>
+                
+                <div class="quiz-section" style="margin-top:2rem;">
+                    <h3 style="margin-bottom: 1.5rem; color: #333;">各市の防災マップ</h3>
+                    <div style="display:flex; flex-direction:column; gap:1rem; align-items:center;">
+                        <a href="https://www.city.osaka.lg.jp/kikikanrishitsu/page/0000139402.html" target="_blank" class="back-to-portal-button" style="margin:0; width:250px;">大阪市防災マップ</a>
+                        <a href="https://www.city.sakai.lg.jp/kurashi/bosai/kangaeru/pamphlet/bosai/bousai-map2703.html" target="_blank" class="back-to-portal-button" style="margin:0; width:250px;">堺市防災マップ</a>
+                        <a href="https://www.city.matsubara.lg.jp/docs/page2464.html" target="_blank" class="back-to-portal-button" style="margin:0; width:250px;">松原市防災マップ</a>
+                    </div>
+                </div>
+
+                <div class="quiz-section" style="margin-top:2rem;">
+                    <h3 style="margin-bottom: 1.5rem; color: #333;">全国のハザードマップ</h3>
+                    <a href="https://disaportal.gsi.go.jp/" target="_blank" class="back-to-portal-button" style="margin:0; width:300px; background:#D90000;">ハザードマップポータルサイト</a>
+                    <p style="margin-top: 1rem; font-size: 0.9em;">(※国土交通省のサイトが新しいウィンドウで開きます)</p>
+                </div>
+            </section>
+
+            <!-- ⑤ 災害Q&A -->
+            <section id="faq" class="content-section qa-search-section" data-csv-path="files/data/qa-data.csv" data-category="災害">
+                <h2>災害対策についてのQ&A</h2>
+                <div class="qa-search-container">
+                    <input type="search" class="qa-search-input" placeholder="キーワード (例: 備蓄, 避難所)" autocomplete="off">
+                </div>
+                
+                <!-- よく検索されるワード -->
+                <div class="qa-popular-keywords">
+                    <h3>よく検索されるワード</h3>
+                    <div class="keyword-buttons">
+                        <button class="keyword-button" onclick="setKeyword('備蓄')">備蓄</button>
+                        <button class="keyword-button" onclick="setKeyword('避難')">避難</button>
+                        <button class="keyword-button" onclick="setKeyword('連絡')">連絡</button>
+                        <button class="keyword-button" onclick="setKeyword('薬')">薬</button>
+                    </div>
+                </div>
+
+                <div class="qa-results-container">
+                    <!-- 検索結果はここに表示されます -->
+                </div>
             </section>
             
-            <section id="shelter" class="content-section">
-                <h3>ハザードマップ</h3>
-                <p>（リンク集などが入ります）</p>
-            </section>
         </main>
         
         <a href="index.html" class="back-to-portal-button">トップへ戻る</a>
+        
         <footer>
             <p><small>&copy; 2025 医療法人 好輝会 梶本クリニック</small></p>
         </footer>
     </div>
 
+    <!-- ライブラリとスクリプト -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <script src="js/qa/qa-loader.js"></script>
     <script>
+        // タブ切り替え
         function switchTab(id){
             document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-button').forEach(b => b.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            // ボタンのアクティブ化簡易ロジック
-            event.target.classList.add('active');
+            
+            const buttons = document.querySelectorAll('.nav-button');
+            for(let btn of buttons){
+                 if(btn.getAttribute('onclick').includes(id)) btn.classList.add('active');
+            }
         }
 
+        // PDF読み込み
         let pdfLoaded = false;
-        function loadPdf(){
-            if(!pdfLoaded){
-                // パス修正: files/pdf/
-                document.getElementById('pdfEmbed').src = "files/pdf/disaster-guide-book.pdf";
-                pdfLoaded = true;
+        function togglePdf() {
+            const container = document.querySelector('.pdf-collapsible');
+            container.classList.toggle('is-open');
+            
+            if(container.classList.contains('is-open') && !pdfLoaded){
+                setTimeout(() => {
+                    document.getElementById('pdfEmbed').src = "files/pdf/disaster-guide-book.pdf#toolbar=0";
+                    pdfLoaded = true;
+                    setTimeout(() => {
+                        document.getElementById('pdfLoadingContainer').style.display = 'none';
+                        document.getElementById('pdfEmbed').style.display = 'block';
+                    }, 1500);
+                }, 100);
+            }
+        }
+
+        // Q&Aキーワード検索
+        function setKeyword(word) {
+            const input = document.querySelector('.content-section.active .qa-search-input');
+            if(input) {
+                input.value = word;
+                input.dispatchEvent(new Event('input', {bubbles:true}));
             }
         }
     </script>
