@@ -25,8 +25,13 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            /* ポータルサイトの背景 */
-            background: linear-gradient(180deg, #f0f8ff 0%, #ffffff 100%);
+            /* 背景画像の設定 */
+            background-image: url('../../files/background-main.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            
             font-family: var(--font-primary);
             color: var(--gray-900);
             overflow-x: hidden;
@@ -39,10 +44,11 @@
             max-width: 650px;
             width: 100%;
             padding: 30px;
-            background: white;
+            background: rgba(255, 255, 255, 0.95); /* 背景が見えるように少し透過 */
             border-radius: var(--radius-xl);
             box-shadow: var(--shadow-xl);
             border: 1px solid var(--gray-200);
+            backdrop-filter: blur(5px);
         }
 
         h1 {
@@ -196,11 +202,11 @@
             <div id="instructions">マウスまたは指で左右に動いてボールを避けよう！</div>
         </div>
 
+        <!-- 修正箇所 -->
         <a href="../../games-selection.html" class="back-button">ミニゲーム選択へ戻る</a>
     </div>
 
     <script>
-        // ... (以前のJavaScriptロジックはそのまま維持) ...
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         const scoreDisplay = document.getElementById('score');
@@ -242,13 +248,19 @@
 
         function getEstimatedAgeFromReactionTime(reactionTimeMs) {
             if (reactionTimeMs >= 800) return '80歳以上';
-            if (reactionTimeMs >= 600) return '70-80歳';
-            if (reactionTimeMs >= 450) return '60-70歳';
-            if (reactionTimeMs >= 350) return '50-60歳';
-            if (reactionTimeMs >= 280) return '40-50歳';
-            if (reactionTimeMs >= 230) return '30-40歳';
-            if (reactionTimeMs >= 190) return '20-30歳';
-            if (reactionTimeMs >= 160) return '10代';
+            if (reactionTimeMs >= 750) return '75-80歳';
+            if (reactionTimeMs >= 700) return '70-75歳';
+            if (reactionTimeMs >= 650) return '65-70歳';
+            if (reactionTimeMs >= 600) return '60-65歳';
+            if (reactionTimeMs >= 550) return '55-60歳';
+            if (reactionTimeMs >= 500) return '50-55歳';
+            if (reactionTimeMs >= 450) return '45-50歳';
+            if (reactionTimeMs >= 400) return '40-45歳';
+            if (reactionTimeMs >= 350) return '35-40歳';
+            if (reactionTimeMs >= 300) return '30-35歳';
+            if (reactionTimeMs >= 280) return '25-30歳';
+            if (reactionTimeMs >= 230) return '20-25歳';
+            if (reactionTimeMs >= 190) return '10-20歳';
             if (reactionTimeMs >= 130) return 'アスリート級';
             if (reactionTimeMs >= 100) return 'プロゲーマー級';
             return 'F1レーサー級';

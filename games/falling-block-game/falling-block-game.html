@@ -28,8 +28,13 @@
 
         body {
             font-family: var(--font-primary);
-            /* ポータル背景 */
-            background: linear-gradient(180deg, #f0f8ff 0%, #ffffff 100%);
+            /* 背景画像の設定 */
+            background-image: url('../../files/background-main.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -40,7 +45,8 @@
         }
 
         .game-container {
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
             border-radius: var(--radius-xl);
             padding: var(--spacing-6);
             box-shadow: var(--shadow-xl);
@@ -272,6 +278,7 @@
             <div></div>
         </div>
         
+        <!-- 修正箇所 -->
         <div style="text-align: center;">
             <a href="../../games-selection.html" class="back-button">ミニゲーム選択へ戻る</a>
         </div>
@@ -287,7 +294,6 @@
         </div>
     </div>
 
-    <!-- JavaScriptは元のロジックをそのまま使用します -->
     <script>
         const CONFIG = {
             COLS: 10,
