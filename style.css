@@ -155,6 +155,7 @@ li { margin-bottom: 0.5rem; }
 /* =========================================
    5. 統合レイアウト：グリッド & カード
    ========================================= */
+
 /* グリッドレイアウト統合 */
 .grid-layout, 
 .exercise-grid, 
@@ -170,52 +171,53 @@ li { margin-bottom: 0.5rem; }
 /* ポータルトップなど余白が必要な場合 */
 .portal-nav { padding: 2rem; }
 
-/* カードデザイン統合 */
+/* カードデザイン統合（共通の箱スタイル） */
 .card,
 .exercise-item,
 .check-item,
 .prevention-card,
 .portal-button {
-    display: flex; flex-direction: column;
+    display: flex; 
+    flex-direction: column;
     background: var(--white);
     border: 1px solid var(--gray-border);
     border-radius: var(--radius-card);
     overflow: hidden;
     box-shadow: var(--shadow-card);
     transition: transform 0.3s, box-shadow 0.3s;
-    text-decoration: none; color: var(--text-color);
+    text-decoration: none; 
+    color: var(--text-color);
     cursor: pointer;
+    /* 高さ自動調整（文字数に応じて伸びる） */
+    height: auto;
+    min-height: 100%;
 }
 
-.card:hover, .exercise-item:hover, .check-item:hover, .prevention-card:hover, .portal-button:hover {
+/* カードホバー時の挙動（浮き上がり） */
+.card:hover, 
+.exercise-item:hover, 
+.check-item:hover, 
+.prevention-card:hover, 
+.portal-button:hover {
     transform: translateY(-5px);
     box-shadow: var(--shadow-hover);
     border-color: transparent;
 }
 
 /* カード内画像エリア（箱） */
-.img-container, .prevention-card-img-wrapper, .portal-button-image {
+.img-container, 
+.prevention-card-img-wrapper, 
+.portal-button-image {
     width: 100%; 
-    height: 180px; /* ここで高さを180pxに固定！ */
+    height: 180px; /* ここで画像の高さを固定 */
     background: #f3f4f6; 
     position: relative; 
     overflow: hidden;
-    flex-shrink: 0; 
-    border-bottom: 1px solid #f3f4f6;
+    flex-shrink: 0; /* フレックスボックス内で縮まないように固定 */
+    border-bottom: none; /* グラデーションのために境界線を消す */
 }
 
-/* カード内の画像（中身） */
-.exercise-icon, 
-.check-icon, 
-.prevention-card img, 
-.portal-button-image img { /* ← ★これを追加！（箱の中のimgを対象にする） */
-    width: 100%; 
-    height: 100%; 
-    object-fit: cover; 
-    transition: transform 0.3s;
-}
-
-/* 画像と説明欄の境界をぼかす設定（グラデーション） */
+/* 画像と説明欄の境界をぼかすグラデーション */
 .img-container::after,
 .prevention-card-img-wrapper::after,
 .portal-button-image::after {
@@ -224,45 +226,96 @@ li { margin-bottom: 0.5rem; }
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 60px; /* ぼかしの範囲（お好みで調整可） */
-    
-    /* 透明 → 白 へのグラデーション */
+    height: 60px; /* ぼかしの範囲 */
     background: linear-gradient(to bottom, rgba(255,255,255,0), #ffffff);
-    
-    pointer-events: none; /* クリックを邪魔しないように */
-    z-index: 1; /* 画像の上に重ねる */
+    pointer-events: none;
+    z-index: 1;
 }
 
-/* 境界線（border-bottom）があると邪魔なので消す */
-.img-container, 
-.prevention-card-img-wrapper, 
-.portal-button-image {
-    border-bottom: none !important;
+/* カード内の画像（中身） */
+.exercise-icon, 
+.check-icon, 
+.prevention-card img, 
+.portal-button-image img {
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+    transition: transform 0.3s;
+    display: block;
 }
 
-/* カード内テキストエリア（変更なし） */
-.card-body, .exercise-text, .check-text, .prevention-card-body, .portal-button-content {
-    padding: 1.5rem; flex-grow: 1; text-align: left;
+/* 画像ホバー時のズームアニメーション */
+.exercise-item:hover .exercise-icon, 
+.check-item:hover .check-icon, 
+.prevention-card:hover img,
+.portal-button:hover .portal-button-image img { 
+    transform: scale(1.05); 
 }
 
-/* カード内見出し */
-.exercise-item h4, .check-item h4, .prevention-card h3, .button-title {
-    margin: 0 0 0.5rem 0; font-size: 1.2rem; font-weight: 700; text-align: center;
+/* カード内テキストエリア */
+.card-body, 
+.exercise-text, 
+.check-text, 
+.prevention-card-body, 
+.portal-button-content {
+    padding: 1.5rem; 
+    flex-grow: 1; 
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }
-.button-title { font-family: var(--font-header); font-size: 1.4rem; font-weight: 900; }
 
-/* カードテーマ色適用 */
-.theme-friend .exercise-item h4, .portal-button.theme-friend .button-title { color: var(--theme-friend); }
-.theme-shunt .check-item h4, .portal-button.theme-shunt .button-title { color: var(--theme-shunt); }
-.prevention-card h3, .portal-button.theme-disaster .button-title { color: var(--theme-disaster); }
+/* カード内見出し（タイトル） */
+.exercise-item h4, 
+.check-item h4, 
+.prevention-card h3, 
+.button-title {
+    margin: 0 0 0.5rem 0; 
+    font-size: 1.2rem; 
+    font-weight: 700; 
+    text-align: center;
+    line-height: 1.4;
+}
+/* ポータルボタンのタイトル専用フォント */
+.button-title { 
+    font-family: var(--font-header); 
+    font-size: 1.4rem; 
+    font-weight: 900; 
+}
+
+/* カード内説明文（portal-button用） */
+.button-desc {
+    display: block;
+    font-size: 0.95rem;
+    color: #4b5563;
+    line-height: 1.6;
+    margin-top: 0.5rem;
+    font-weight: normal;
+}
+
+/* カードテーマ色適用（タイトル色） */
+.theme-friend .exercise-item h4, 
+.portal-button.theme-friend .button-title { color: var(--theme-friend); }
+
+.theme-shunt .check-item h4, 
+.portal-button.theme-shunt .button-title { color: var(--theme-shunt); }
+
+.prevention-card h3, 
+.portal-button.theme-disaster .button-title { color: var(--theme-disaster); }
+
 .portal-button.theme-nutrition .button-title { color: var(--theme-nutrition); }
 .portal-button.theme-footcare .button-title { color: var(--theme-foot); }
 .portal-button.theme-qa .button-title { color: var(--theme-qa); }
 .portal-button.theme-game .button-title { color: var(--theme-game); }
+.portal-button.theme-exercise .button-title { color: var(--theme-friend); } /* 運動は紫系 */
 
 /* テキストのみのボタン（トップページ用） */
 .portal-button:not(.with-image) {
-    padding: 2rem; justify-content: center; text-align: center; border-left: 6px solid transparent;
+    padding: 2rem; 
+    justify-content: center; 
+    text-align: center; 
+    border-left: 6px solid transparent;
 }
 .portal-button.theme-disaster:not(.with-image) { border-left-color: var(--theme-disaster); }
 .portal-button.theme-friend:not(.with-image) { border-left-color: var(--theme-friend); }
