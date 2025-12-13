@@ -1,14 +1,15 @@
-/* Google Fonts - Inter & Noto Sans JP */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
+/* === Google Fonts (おしゃれな明朝体 'Shippori Mincho' を追加) === */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;900&family=Shippori+Mincho:wght@500;600;700;800&display=swap');
 
-/* === CSS変数 (PDFデザインの雰囲気を反映) === */
+/* === CSS変数 (基本設定はそのまま) === */
 :root {
     --font-primary: 'Inter', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+    /* ヘッダー用のおしゃれなフォント変数を追加 */
+    --font-header: 'Shippori Mincho', 'Noto Serif JP', serif;
     
-    /* カラーパレット (元のグレー系は維持) */
+    /* カラーパレット等は既存のまま維持 */
     --gray-50: #f9fafb; --gray-100: #f3f4f6; --gray-200: #e5e7eb; --gray-300: #d1d5db; --gray-400: #9ca3af; --gray-500: #6b7280; --gray-600: #4b5563; --gray-700: #374151; --gray-800: #1f2937; --gray-900: #111827;
     
-    /* テーマカラー */
     --theme-color-primary: #00586A;
     --theme-color-primary-light: #00A0C1;
     --theme-color-disaster: #D90000;
@@ -16,13 +17,10 @@
     --theme-color-purple: #7c3aed;
     --theme-color-orange: #ea580c;
 
-    /* スペーシング */
     --spacing-1: 0.25rem; --spacing-2: 0.5rem; --spacing-3: 0.75rem; --spacing-4: 1rem; --spacing-5: 1.25rem; --spacing-6: 1.5rem; --spacing-8: 2rem; --spacing-10: 2.5rem; --spacing-12: 3rem; --spacing-16: 4rem;
     
-    /* シャドウ */
     --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05); --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1); --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
     
-    /* ボーダーラジアス */
     --radius-sm: 0.375rem; --radius: 0.5rem; --radius-md: 0.75rem; --radius-lg: 1rem; --radius-xl: 1.5rem; --radius-2xl: 2rem;
 }
 
@@ -34,9 +32,11 @@ body {
     font-family: var(--font-primary);
     line-height: 1.6;
     color: var(--gray-900);
-    /* 修正: アイコン画像をやめ、目に優しい清潔感のあるグラデーションに変更 */
-    background: linear-gradient(180deg, #f0f8ff 0%, #ffffff 100%);
-    background-attachment: fixed;
+    
+    /* 修正: 指定の背景画像に変更 */
+    background: url('files/background-main.png') no-repeat center center fixed;
+    background-size: cover;
+    
     min-height: 100vh;
     font-size: 16px;
     -webkit-font-smoothing: antialiased;
@@ -45,48 +45,80 @@ body {
 .container {
     max-width: 1200px;
     margin: var(--spacing-8) auto;
-    background: white;
+    /* 背景画像が透けないようにコンテナの白背景をしっかり確保 */
+    background: rgba(255, 255, 255, 0.95);
     border-radius: var(--radius-2xl);
     overflow: hidden;
     box-shadow: var(--shadow-xl);
+    /* すりガラス効果をコンテナ自体にも少し入れるとおしゃれ */
+    backdrop-filter: blur(10px);
 }
 
-/* === ヘッダー === */
+/* === ヘッダー (ぼかし効果 & おしゃれな文字) === */
 .portal-header, header {
     text-align: center;
-    padding: var(--spacing-12) var(--spacing-6);
-    /* 修正: 背景画像の上に半透明の青系フィルターを重ねて文字を見やすくする */
-    background-image: linear-gradient(rgba(0, 88, 106, 0.6), rgba(0, 160, 193, 0.3)), url('files/background-header.png');
-    background-size: cover;
-    background-position: center center;
-    /* 修正: 文字色を白に統一 */
+    padding: var(--spacing-16) var(--spacing-6); /* 余白を少し広げて優雅に */
     color: #ffffff;
     position: relative;
     overflow: hidden;
+    /* 元のbackgroundプロパティは削除し、以下の疑似要素で制御します */
+    background: transparent;
+    z-index: 1; /* コンテンツを手前に */
+}
+
+/* 背景画像をぼかすための疑似要素 */
+.portal-header::before, header::before {
+    content: '';
+    position: absolute;
+    top: -20px; left: -20px; right: -20px; bottom: -20px; /* ぼかしの端が見えないように広げる */
+    background-image: url('files/background-header.png');
+    background-size: cover;
+    background-position: center center;
+    
+    /* 修正: ここで「ぼかし」と「明度調整」を行う */
+    filter: blur(15px) brightness(0.75); 
+    
+    z-index: -1; /* 文字の背面に配置 */
 }
 
 header {
     padding-bottom: var(--spacing-8);
 }
 
-.portal-header h1, .portal-header p, header h1 {
-    /* 修正: 白文字が浮き出るように濃い影を設定 */
-    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
+/* ヘッダーのテキストスタイル変更 */
+.portal-header h1, header h1 {
+    /* 修正: おしゃれな明朝体に変更 */
+    font-family: var(--font-header);
+    font-weight: 800;
+    
+    /* 修正: 文字間隔を広げて洗練された印象に */
+    letter-spacing: 0.1em;
+    
+    /* 修正: 影を「濃い線」ではなく「ふんわりとした浮き出し」に変更して可読性と美しさを両立 */
+    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+    
+    margin-bottom: var(--spacing-4);
 }
 
-header h1 {
-    font-weight: 900;
+.portal-header p {
+    font-family: var(--font-primary);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+    opacity: 0.95;
 }
 
-/* 修正: ヘッダー内のタイトルは視認性優先で白(#fff)で統一するよう !important を付与 */
+/* 修正: テーマカラーごとのh1も白文字・明朝体で統一 */
 .theme-nutrition header h1,
 .theme-disaster header h1,
 .theme-shunt header h1,
 .theme-friend header h1,
 .theme-qa header h1 { 
-    color: #ffffff !important; 
+    color: #ffffff !important;
+    font-family: var(--font-header) !important;
 }
 
+/* === ここから下は以前のスタイルを維持 === */
 
 /* === 透析ステータス === */
 #dialysis-status {
@@ -236,7 +268,6 @@ header h1 {
     transform: translateX(4px);
 }
 
-
 /* === お友達特典ページ内のボタン用テーマカラー === */
 
 /* 運動療法ボタン */
@@ -356,7 +387,7 @@ header h1 {
 h2 {
     font-size: clamp(1.5rem, 3vw, 2rem);
     font-weight: 900;
-    margin-top: 0; /* 最初のh2の上マージンをリセット */
+    margin-top: 0;
     margin-bottom: var(--spacing-6);
     color: var(--gray-800);
 }
