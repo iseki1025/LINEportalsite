@@ -96,6 +96,7 @@
             padding: 1.5rem;
             width: 100%;
             box-sizing: border-box;
+            text-align: left; /* 手順リストのために左寄せ推奨（必要に応じてcenterに戻してください） */
         }
         
         .exercise-item h4 {
@@ -103,6 +104,7 @@
             color: #2c5282;
             font-size: 1.2rem;
             font-weight: 600;
+            text-align: center;
         }
         
         .exercise-item p {
@@ -110,6 +112,16 @@
             font-size: 0.95rem;
             color: #555;
             line-height: 1.6;
+        }
+
+        /* 手順の強調用 */
+        .exercise-note {
+            display: block;
+            font-size: 0.85rem;
+            color: #2c5282;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            text-align: center;
         }
         
         /* 注意事項ボックス */
@@ -282,6 +294,46 @@
                 <div class="intro-text">
                     <p>透析患者さんにとって、適切な運動は体力を維持し、合併症を予防するために非常に重要です。筋力や柔軟性を保つことで、日常生活の質(QOL)の向上にも繋がります。</p>
                 </div>
+
+                <!-- 新規追加：座ってできる運動 -->
+                <h3>座ってできる運動</h3>
+                <p>椅子に座ったまま、無理なく行える運動です。</p>
+                <div class="exercise-grid">
+                    <div class="exercise-item" data-video="https://drive.google.com/file/d/1cIf72nCFqFuQ3Vw5TDe-2KnOFgxfOW7X/view?usp=sharing">
+                        <div class="img-container">
+                            <img src="files/guu-paa.png" alt="手指のグーパー運動" class="exercise-icon">
+                            <div class="play-overlay"></div>
+                        </div>
+                        <div class="exercise-text">
+                            <h4>手指のグーパー運動</h4>
+                            <span class="exercise-note">~握力維持、血流促進、認知機能低下予防~<br>10〜15回を1セット</span>
+                            <p>
+                                1. 椅子に座り、背筋を伸ばします<br>
+                                2. 両手をまっすぐ前に伸ばして、手を握りましょう<br>
+                                3. ぐっと握ったら大きく開きましょう<br>
+                                4. 交互に繰り返しリズムよく行いましょう
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="exercise-item" data-video="https://drive.google.com/file/d/1uGux7Y_GsCEV9L7dds14DBTnu7UPWHoR/view?usp=sharing">
+                        <div class="img-container">
+                            <img src="files/kainai-kaigai.png" alt="前腕回内・回外運動" class="exercise-icon">
+                            <div class="play-overlay"></div>
+                        </div>
+                        <div class="exercise-text">
+                            <h4>前腕回内・回外運動</h4>
+                            <span class="exercise-note">~握力維持、ADL向上~<br>内、外10〜15回ずつを1セット</span>
+                            <p>
+                                1. 椅子に座り、背筋を伸ばします<br>
+                                2. 両肘を直角に曲げましょう<br>
+                                3. 肘から下の腕を内側に回しましょう(手のひらを下に向ける動き)<br>
+                                4. 動かせるところまで回したら、外側に回しましょう(手のひらを上に向ける動き)<br>
+                                5. この動作を繰り返しましょう
+                            </p>
+                        </div>
+                    </div>
+                </div>
                 
                 <h3>透析中の運動(オンダイアライシス運動)</h3>
                 <p>透析治療中の時間を利用して、ベッド上で行える軽い運動です。写真をクリックすると動画解説が見られます。</p>
@@ -299,16 +351,7 @@
                         </div>
                     </div>
                     
-                    <div class="exercise-item" data-video="files/movies/dumbbell_exercise.mp4">
-                        <div class="img-container">
-                            <img src="files/dumbbell_exercise_icon.png" alt="軽いおもりの上げ下げ" class="exercise-icon">
-                            <div class="play-overlay"></div>
-                        </div>
-                        <div class="exercise-text">
-                            <h4>軽いおもりの上げ下げ</h4>
-                            <p>専用の軽いおもりを使って、腕や足の筋力を維持します。</p>
-                        </div>
-                    </div>
+                    <!-- 「軽いおもりの上げ下げ」はここから削除されました -->
                     
                     <div class="exercise-item" data-video="files/movies/ergometer.mp4">
                         <div class="img-container">
@@ -326,6 +369,18 @@
                 <p>体調の良い日には、無理のない範囲で体を動かす習慣をつけましょう。</p>
                 
                 <div class="exercise-grid">
+                    <!-- 「軽いおもりの上げ下げ」をここに移動しました -->
+                    <div class="exercise-item" data-video="files/movies/dumbbell_exercise.mp4">
+                        <div class="img-container">
+                            <img src="files/dumbbell_exercise_icon.png" alt="軽いおもりの上げ下げ" class="exercise-icon">
+                            <div class="play-overlay"></div>
+                        </div>
+                        <div class="exercise-text">
+                            <h4>軽いおもりの上げ下げ</h4>
+                            <p>専用の軽いおもりを使って、腕や足の筋力を維持します。</p>
+                        </div>
+                    </div>
+
                     <div class="exercise-item" data-video="files/movies/walking.mp4">
                         <div class="img-container">
                             <img src="files/walking_icon.png" alt="ウォーキング" class="exercise-icon">
