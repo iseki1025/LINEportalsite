@@ -201,34 +201,42 @@ li { margin-bottom: 0.5rem; }
     display: flex;
     justify-content: center;
     background: var(--white);
-    padding: 1rem 1rem 0; /* 横の余白を少し減らす */
+    padding: 1rem 0.5rem 0; /* 横パディングを減らす */
     border-bottom: 1px solid var(--gray-border);
-    /* スクロール設定は残しつつ、基本は収まるように調整 */
-    overflow-x: auto; 
-    flex-wrap: nowrap;
+    /* 重要: 縦スクロールを消す */
+    overflow-y: hidden; 
+    overflow-x: auto;
+    /* スクロールバー自体を隠す（見た目を綺麗に） */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+}
+.page-nav::-webkit-scrollbar { 
+    display: none; /* Chrome/Safari */
 }
 
 .nav-button {
-    background: #f3f4f6;
-    color: #6b7280;
+    /* 高さや幅の計算によるズレを防ぐ */
+    flex: 1;
+    min-width: 100px;
+    max-width: 200px;
+    height: auto;
+    min-height: 3.5rem; /* 高さを揃える */
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    margin: 0 2px; /* ボタン同士の隙間を狭く */
+    padding: 0.5rem;
+    
+    font-size: 0.95rem;
+    line-height: 1.3;
+    white-space: normal; /* 改行許可 */
+    
     border: 1px solid var(--gray-border);
     border-bottom: none;
     border-radius: 1rem 1rem 0 0;
-    padding: 1rem 0.5rem; /* パディングを左右少し狭める */
-    margin-right: 4px;
-    font-weight: bold;
-    cursor: pointer;
-    
-    /* 修正箇所: 幅の自動調整 */
-    min-width: auto; /* 固定幅を解除 */
-    flex: 1;         /* 全てのタブを均等な幅に引き伸ばす */
-    text-align: center;
-    line-height: 1.4;
-    white-space: normal;
-    
-    /* 文字が小さくなりすぎないように最小幅は確保しつつ、基本は均等割 */
-    min-width: 90px; 
-    max-width: 200px;
+    background: #f3f4f6;
 }
 
 .nav-button:hover { background: #e5e7eb; }
@@ -496,159 +504,363 @@ li { margin-bottom: 0.5rem; }
 /* ==========================================================================
    7. クイズ & Q&A
    ========================================================================== */
+
+/* --- クイズセクション (トップ/誘導用) --- */
 .quiz-section {
-    text-align: center; padding: 3rem 1.5rem;
+    text-align: center;
+    padding: 3rem 1.5rem;
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    border-radius: 1rem; margin: 2rem 0; box-shadow: var(--shadow-card);
+    border-radius: 1rem;
+    margin: 2rem 0;
+    box-shadow: var(--shadow-card);
 }
 
 .quiz-button {
-    display: inline-block; padding: 1rem 3rem;
-    color: var(--white); text-decoration: none; border-radius: 0.5rem;
-    font-size: 1.2rem; font-weight: bold; border: none; cursor: pointer;
-    box-shadow: var(--shadow-card); transition: transform 0.2s;
+    display: inline-block;
+    padding: 1rem 3rem;
+    color: var(--white);
+    text-decoration: none;
+    border-radius: 0.5rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    box-shadow: var(--shadow-card);
+    transition: transform 0.2s;
     background: linear-gradient(135deg, var(--theme-friend), #4f46e5);
 }
 .quiz-button:hover { transform: translateY(-2px); }
+
+/* テーマ別クイズボタン色 */
 .theme-nutrition .quiz-button { background: linear-gradient(135deg, var(--theme-nutrition), #0e7490); }
 .theme-shunt .quiz-button { background: linear-gradient(135deg, var(--theme-shunt), #047857); }
+.theme-qa .quiz-button { background: linear-gradient(135deg, var(--theme-qa), #c2410c); }
 
-/* クイズ進行・選択肢 */
-.quiz-progress-container { width: 100%; height: 10px; background: #e5e7eb; border-radius: 5px; margin-bottom: 2rem; }
-.quiz-progress-fill { height: 100%; background: var(--theme-friend); width: 0%; transition: width 0.3s; }
+
+/* --- クイズページ詳細 (進行バー・選択肢・解説) --- */
+.quiz-progress-container {
+    width: 100%;
+    height: 10px;
+    background: #e5e7eb;
+    border-radius: 5px;
+    margin-bottom: 2rem;
+}
+.quiz-progress-fill {
+    height: 100%;
+    background: var(--theme-friend);
+    width: 0%;
+    transition: width 0.3s;
+}
 .theme-nutrition .quiz-progress-fill { background: var(--theme-nutrition); }
 .theme-shunt .quiz-progress-fill { background: var(--theme-shunt); }
 
-.quiz-question-text { font-size: 1.25rem; font-weight: 700; margin-bottom: 1.5rem; }
-.quiz-question-number { font-weight: bold; margin-bottom: 0.5rem; color: var(--theme-friend); }
+.quiz-question-text {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+.quiz-question-number {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: var(--theme-friend);
+}
 .theme-nutrition .quiz-question-number { color: var(--theme-nutrition); }
 .theme-shunt .quiz-question-number { color: var(--theme-shunt); }
 
+/* 選択肢 */
 .quiz-option {
-    padding: 1rem; background: #fff; border: 2px solid #e5e7eb; border-radius: 1rem;
-    cursor: pointer; margin-bottom: 1rem; text-align: left; font-weight: bold; transition: all 0.2s;
+    padding: 1rem 1.5rem;
+    background: #fff;
+    border: 2px solid #e5e7eb;
+    border-radius: 1rem;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    text-align: left;
+    font-weight: bold;
+    transition: all 0.2s;
 }
-.quiz-option:hover { border-color: #d1d5db; transform: translateX(5px); }
+.quiz-option:hover {
+    border-color: #d1d5db;
+    transform: translateX(5px);
+    background: #f9fafb;
+}
 .quiz-option.correct { background: #dcfce7; border-color: #22c55e; color: #166534; }
 .quiz-option.incorrect { background: #fee2e2; border-color: #ef4444; color: #991b1b; }
-.quiz-option.disabled { pointer-events: none; }
+.quiz-option.disabled { pointer-events: none; opacity: 0.7; }
 
+/* 解説エリア */
 .quiz-explanation {
-    margin-top: 1.5rem; padding: 1.5rem; background: #f0f9ff; border-radius: 0.8rem;
-    border-left: 5px solid #333; display: none; animation: fadeIn 0.5s;
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    background: #f0f9ff;
+    border-radius: 0.8rem;
+    border-left: 5px solid #333; /* デフォルト */
+    display: none;
+    animation: fadeIn 0.5s;
+    text-align: left;
 }
 .quiz-explanation.show { display: block; }
+.explanation-title { font-weight: 900; margin-bottom: 0.5rem; display: block; }
+
+.theme-nutrition .quiz-explanation { border-left-color: var(--theme-nutrition); background: #ecfeff; }
+.theme-shunt .quiz-explanation { border-left-color: var(--theme-shunt); background: #ecfdf5; }
+
+/* 次へボタン */
 .quiz-next-btn {
-    display: block; margin: 2rem auto 0; padding: 1rem 3rem; border: none; border-radius: 0.5rem;
-    color: white; font-weight: bold; font-size: 1.1rem; cursor: pointer; background: var(--theme-friend);
+    display: block;
+    margin: 2rem auto 0;
+    padding: 1rem 3rem;
+    border: none;
+    border-radius: 0.5rem;
+    color: white;
+    font-weight: bold;
+    font-size: 1.1rem;
+    cursor: pointer;
+    background: var(--theme-friend);
+    transition: transform 0.2s;
 }
+.quiz-next-btn:hover { transform: translateY(-2px); }
 .theme-nutrition .quiz-next-btn { background: var(--theme-nutrition); }
 .theme-shunt .quiz-next-btn { background: var(--theme-shunt); }
 
-/* 結果画面 */
-.quiz-result-container { text-align: center; display: none; animation: fadeIn 0.5s; }
+/* クイズ結果画面 */
+.quiz-result-container {
+    text-align: center;
+    display: none;
+    animation: fadeIn 0.5s;
+}
 .quiz-result-container.show { display: block; }
 .result-score { font-size: 3rem; font-weight: 900; margin: 1rem 0; }
+.theme-nutrition .result-score { color: var(--theme-nutrition); }
+.theme-shunt .result-score { color: var(--theme-shunt); }
 .result-emoji { font-size: 4rem; margin-bottom: 1rem; }
 
-/* Q&A検索 */
-.qa-search-container { padding: 1.5rem; background: #fff; text-align: center; border-radius: 1rem; margin-bottom: 2rem; }
-.qa-search-input { width: 90%; max-width: 600px; padding: 1rem; font-size: 1.1rem; border: 2px solid var(--gray-border); border-radius: 2rem; }
-.qa-popular-keywords { margin-top: 2rem; text-align: center; padding: 1.5rem; background: #f8f8f8; border-radius: 0.5rem; }
-.keyword-buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; }
+
+/* --- Q&A 検索機能 --- */
+.qa-search-container {
+    padding: 2rem;
+    background: #fff;
+    text-align: center;
+    border-radius: 1rem;
+    margin-bottom: 2rem;
+    border: 1px solid var(--gray-border);
+}
+.qa-search-input {
+    width: 90%;
+    max-width: 600px;
+    padding: 1rem 1.5rem;
+    font-size: 1.2rem;
+    border: 2px solid var(--gray-border);
+    border-radius: 2rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+.qa-search-input:focus { border-color: var(--theme-qa); }
+
+/* 人気ワードボタン */
+.qa-popular-keywords {
+    margin-top: 2rem;
+    text-align: center;
+    padding: 1.5rem;
+    background: #f8f8f8;
+    border-radius: 0.5rem;
+    border: 1px solid #eee;
+}
+.qa-popular-keywords h3 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    display: inline-block;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 5px;
+}
+.keyword-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+}
 .keyword-button {
-    background: var(--theme-friend); color: white; border: none; border-radius: 1rem;
-    padding: 0.5rem 1rem; cursor: pointer; transition: transform 0.2s;
+    background: var(--theme-friend); /* デフォルト */
+    color: white;
+    border: none;
+    border-radius: 1rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform 0.2s;
 }
 .keyword-button:hover { transform: translateY(-2px); opacity: 0.9; }
+
 .theme-nutrition .keyword-button { background: var(--theme-nutrition); }
 .theme-shunt .keyword-button { background: var(--theme-shunt); }
+.theme-disaster .keyword-button { background: var(--theme-disaster); }
+.theme-qa .keyword-button { background: var(--theme-qa); }
 
-/* Q&A検索結果アイテム */
+
+/* --- Q&A 検索結果リスト (カード型・左揃え) --- */
 .qa-search-item {
-    text-align: left; /* 左揃えを強制 */
+    background: #fff;
+    border: 2px solid #e5e7eb; /* 枠線をくっきり */
+    border-radius: 12px;
+    margin-bottom: 1.5rem;     /* 間隔を広めに */
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    text-align: left;          /* 強制左揃え */
 }
 
 .qa-search-question {
-    justify-content: space-between; /* 矢印との配置は維持 */
-    text-align: left; /* 文字は左 */
+    padding: 1.5rem;           /* クリックエリアを広く */
+    min-height: 80px;          /* 最低高さを確保 */
+    font-weight: 700;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    cursor: pointer;
+    background: #f9fafb;
+    color: #374151;
+    display: flex;
+    justify-content: space-between; /* 文字と矢印を左右に */
+    align-items: center;
+    text-align: left;
+    transition: background 0.2s;
+}
+.qa-search-question:hover { background: #f3f4f6; }
+
+/* Qアイコン */
+.qa-search-question::before {
+    content: "Q.";
+    font-size: 1.3rem;
+    color: #9ca3af;
+    margin-right: 1rem;
+    flex-shrink: 0;
 }
 
-.qa-search-answer {
-    text-align: left; /* 回答も左 */
+/* 矢印アイコン */
+.qa-search-question::after {
+    content: '▼';
+    font-size: 1.2rem;
+    color: #9ca3af;
+    margin-left: 1rem;
+    flex-shrink: 0;
+    transition: transform 0.3s;
 }
-.qa-search-question::before { content: "Q. "; color: #9ca3af; margin-right: 0.5rem; }
-.qa-search-question::after { content: '▼'; color: #9ca3af; transition: transform 0.3s; }
-.qa-search-answer {
-    display: none; padding: 1.5rem; color: #374151; border-top: 1px solid #e5e7eb; background: #fff;
-}
-.qa-search-answer::before { content: "A. "; font-weight: bold; color: var(--theme-friend); margin-right: 0.5rem; }
 
+/* 回答エリア */
+.qa-search-answer {
+    display: none;
+    padding: 1.5rem;
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #374151;
+    text-align: left;          /* 強制左揃え */
+    border-top: 2px solid #e5e7eb;
+    background: #fff;
+    animation: fadeIn 0.3s ease;
+}
+
+/* Aアイコン */
+.qa-search-answer::before {
+    content: "A. ";
+    font-weight: 900;
+    font-size: 1.2rem;
+    color: var(--theme-friend);
+    margin-right: 0.5rem;
+}
+
+/* --- Q&A アクティブ時（開いた状態） --- */
 .qa-search-item.active .qa-search-answer { display: block; }
 .qa-search-item.active .qa-search-question::after { transform: rotate(180deg); }
-.qa-search-item.active .qa-search-question { background: #eff6ff; color: #1d4ed8; }
 
-/* テーマ別QA色 */
+/* テーマ別アクティブカラー */
+/* 栄養 */
 .theme-nutrition .qa-search-item.active .qa-search-question { background: #ecfeff; color: var(--theme-nutrition); }
 .theme-nutrition .qa-search-answer::before { color: var(--theme-nutrition); }
+/* シャント */
 .theme-shunt .qa-search-item.active .qa-search-question { background: #ecfdf5; color: var(--theme-shunt); }
 .theme-shunt .qa-search-answer::before { color: var(--theme-shunt); }
+/* 災害 */
 .theme-disaster .qa-search-item.active .qa-search-question { background: #fef2f2; color: var(--theme-disaster); }
 .theme-disaster .qa-search-answer::before { color: var(--theme-disaster); }
+/* Q&A */
 .theme-qa .qa-search-item.active .qa-search-question { background: #fff7ed; color: var(--theme-qa); }
 .theme-qa .qa-search-answer::before { color: var(--theme-qa); }
+.theme-qa .qa-search-input:focus { border-color: var(--theme-qa); }
 
 /* ==========================================================================
    8. その他 (ステータス, 緊急連絡, ゲーム)
    ========================================================================== */
-/* 透析ステータス */
 .status-container {
-    display: flex;
+    display: grid;
+    /* 画面幅に応じて列数を自動調整（スマホ1列、PC3列など） */
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 1.5rem;
     justify-content: center;
-    flex-wrap: wrap;
-    margin-top: 1.5rem;
+    margin-top: 1rem;
 }
 
 .status-item {
-    border: 1px solid var(--gray-border);
-    border-radius: 1rem;
-    width: 160px;
-    background: #fff;
-    /* カード感を強調 */
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
-    padding: 0; /* パディングは内部で調整 */
-    overflow: hidden;
-    
-    /* 縦横中央揃え */
     display: flex;
     flex-direction: column;
+    background: #fff;
+    border: 2px solid #d1d5db; /* 枠線をくっきり */
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* 施設名（ヘッダー部分） */
+.status-name {
+    background: #f3f4f6;
+    padding: 1rem;
+    font-size: 1.2rem;
+    font-weight: 900;
+    text-align: center;
+    border-bottom: 2px solid #d1d5db;
+    
+    /* 2行になっても高さが揃うように */
+    height: 80px; 
+    display: flex;
     align-items: center;
     justify-content: center;
+    line-height: 1.3;
 }
 
-.status-item h3 {
-    margin: 0;
-    padding: 1rem 0.5rem;
-    width: 100%;
-    /* 名前エリアの高さを固定して、下のラインを揃える */
-    min-height: 80px; 
-    display: flex;
-    align-items: center; /* 上下中央 */
-    justify-content: center; /* 左右中央 */
+/* ステータス値（OK/NG） */
+.status-value {
+    padding: 1.5rem 0;
+    font-size: 2rem; /* 文字を特大に */
+    font-weight: 900;
     text-align: center;
+    letter-spacing: 0.1em;
+}
+
+/* 透析可（緑背景で安心感を強調） */
+.status-ok {
+    background-color: #d1fae5; /* 薄い緑 */
+    color: #065f46;            /* 濃い緑 */
+}
+
+/* 透析不可（赤背景で警告を強調） */
+.status-ng {
+    background-color: #fee2e2; /* 薄い赤 */
+    color: #991b1b;            /* 濃い赤 */
+}
+
+/* 理由・備考欄 */
+.status-reason {
+    padding: 0.8rem;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #4b5563;
+    min-height: 3rem; /* 空でもスペースを確保して高さを揃える */
+    background: #fff;
+    border-top: 1px solid #e5e7eb;
     
-    border-bottom: 2px solid var(--bg-color); /* 下線 */
-    background: #fcfcfc;
-    font-size: 1.1rem;
-}
-
-.status-item p {
-    padding: 1rem;
-    margin: 0;
-    width: 100%;
-    text-align: center;
-}
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}  
 
 /* 緊急連絡先 */
 .emergency-btn {
