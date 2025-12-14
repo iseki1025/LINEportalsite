@@ -14,17 +14,25 @@
 
         <!-- 透析状況（アコーディオン） -->
         <section id="dialysis-status" class="collapsible-section is-open" style="max-width:900px; margin:0 auto 2rem;">
-            <div class="collapsible-header-wrapper" onclick="this.parentElement.classList.toggle('is-open')">
-                <span class="collapse-hint">▼ タップで開閉</span>
-                <h2 style="text-align:center; width:100%;">現在の透析状況</h2>
+            <!-- 
+                修正点: style属性を追加 
+                display:flex; flex-direction:column; align-items:center; 
+                これにより、文字とヒントが縦に並び、左右中央に配置されます。
+            -->
+            <div class="collapsible-header-wrapper" onclick="this.parentElement.classList.toggle('is-open')" 
+                 style="display:flex; flex-direction:column; align-items:center; justify-content:center; padding:1.5rem;">
+                
+                <h2 style="margin:0; width:auto; border:none; padding:0;">現在の透析状況</h2>
+                <span class="collapse-hint" style="margin-top:0.5rem;">▼ タップで開閉</span>
             </div>
+            
             <div class="collapsible-content">
                 <div class="status-container">
                     <!-- 本院 -->
                     <div class="status-item">
                         <div class="status-name">本院</div>
                         <div class="status-value status-ok">透析可</div>
-                        <div class="status-reason"><!-- 備考・理由があればここに表示 --></div>
+                        <div class="status-reason"><!-- 備考 --></div>
                     </div>
                     <!-- なかもず分院 -->
                     <div class="status-item">
@@ -62,6 +70,36 @@
                 <div class="intro-text">
                     <p>災害はいつ起こるかわかりません。日頃から適切な準備をしておくことで、いざという時に自分や家族の命を守ることができます。</p>
                 </div>
+
+                <!-- ▼▼▼ 修正点: 防災ハンドブック（PDF）をここに移動しました ▼▼▼ -->
+                <div class="pdf-collapsible">
+                    <div class="pdf-collapsible-header" onclick="togglePdf()">
+                        <span>📖 梶本クリニック 防災ハンドブックを見る</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="pdf-collapsible-content">
+                        <div class="pdf-collapsible-body">
+                            <p style="margin-bottom:1rem;">災害時にすべきこと、起こる前の備えについて詳しくまとめています。</p>
+                            
+                            <!-- スマホ用リンク -->
+                            <div class="pdf-mobile-notice">
+                                <strong>📱 スマートフォンでご覧の方へ</strong><br>
+                                下のボタンから別ページでPDFを開くことをおすすめします。
+                            </div>
+                            <div class="pdf-link-mobile-wrapper">
+                                <a href="files/pdf/disaster-guide-book.pdf" target="_blank" class="back-to-portal-button" style="background:#007bff; border:none;">防災ハンドブックを開く (PDF)</a>
+                            </div>
+                            
+                            <!-- PC用埋め込み -->
+                            <div class="pdf-loading-container" id="pdfLoadingContainer">
+                                <div class="pdf-spinner"></div>
+                                <p>防災ハンドブックを読み込んでいます...</p>
+                            </div>
+                            <embed id="pdfEmbed" src="" type="application/pdf" class="pdf-embed-desktop">
+                        </div>
+                    </div>
+                </div>
+                <!-- ▲▲▲ ここまで ▲▲▲ -->
                 
                 <h3>防災の基本5つのポイント</h3>
                 
@@ -122,34 +160,6 @@
                     </div>
                 </div>
 
-                <!-- 防災ガイドブック（PDF） -->
-                <div class="pdf-collapsible">
-                    <div class="pdf-collapsible-header" onclick="togglePdf()">
-                        <span>📖 梶本クリニック 防災ハンドブックを見る</span>
-                        <span>▼</span>
-                    </div>
-                    <div class="pdf-collapsible-content">
-                        <div class="pdf-collapsible-body">
-                            <p style="margin-bottom:1rem;">災害時にすべきこと、起こる前の備えについて詳しくまとめています。</p>
-                            
-                            <!-- スマホ用リンク -->
-                            <div class="pdf-mobile-notice">
-                                <strong>📱 スマートフォンでご覧の方へ</strong><br>
-                                下のボタンから別ページでPDFを開くことをおすすめします。
-                            </div>
-                            <div class="pdf-link-mobile-wrapper">
-                                <a href="files/pdf/disaster-guide-book.pdf" target="_blank" class="back-to-portal-button" style="background:#007bff; border:none;">防災ハンドブックを開く (PDF)</a>
-                            </div>
-                            
-                            <!-- PC用埋め込み -->
-                            <div class="pdf-loading-container" id="pdfLoadingContainer">
-                                <div class="pdf-spinner"></div>
-                                <p>防災ハンドブックを読み込んでいます...</p>
-                            </div>
-                            <embed id="pdfEmbed" src="" type="application/pdf" class="pdf-embed-desktop">
-                        </div>
-                    </div>
-                </div>
             </section>
 
             <!-- ② 備蓄リスト -->
@@ -262,7 +272,7 @@
 
                 <div class="quiz-section" style="margin-top:2rem;">
                     <h3 style="margin-bottom: 1.5rem; color: #333;">全国のハザードマップ</h3>
-                    <a href="https://disaportal.gsi.go.jp/" target="_blank" class="back-to-portal-button" style="margin:0; width:300px; background:#D90000;">ハザードマップ<br>ポータルサイト</a>
+                    <a href="https://disaportal.gsi.go.jp/" target="_blank" class="back-to-portal-button" style="margin:0; width:300px; background:#D90000;">ハザードマップポータルサイト</a>
                     <p style="margin-top: 1rem; font-size: 0.9em;">(※国土交通省のサイトが新しいウィンドウで開きます)</p>
                 </div>
             </section>
