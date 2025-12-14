@@ -4,74 +4,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ShapeDrop - 落ち物パズル</title>
-    <!-- ★修正箇所: パスを "style.css" に変更 -->
     <link rel="stylesheet" href="style.css">
-    <style>
-        body { touch-action: manipulation; }
-    </style>
+    <style>body { touch-action: none; }</style>
 </head>
 <body class="theme-friend game-mode-fullscreen">
     <div class="game-container">
-        <!-- PC用タイトル -->
-        <h1 class="game-title">🎮 ShapeDrop</h1>
         
-        <!-- ステータスエリア -->
-        <div class="game-stats">
-            <div class="stat-box">
-                <div class="stat-label">SCORE</div>
-                <div class="stat-value" id="score">0</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-label">LEVEL</div>
-                <div class="stat-value" id="level">1</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-label">LINES</div>
-                <div class="stat-value" id="lines">0</div>
-            </div>
-        </div>
+        <!-- PC用タイトル（スマホでは消える） -->
+        <h1 class="game-title" style="margin-bottom:1rem;">🎮 ShapeDrop</h1>
         
-        <!-- ゲームメインエリア -->
-        <div class="game-main-area">
-            <div class="game-canvas-wrapper">
-                <canvas id="gameCanvas" class="game-canvas" width="240" height="400"></canvas>
-                
-                <!-- ゲームオーバー画面 -->
+        <!-- 3カラムレイアウト -->
+        <div class="puzzle-layout">
+            
+            <!-- 【左】操作ボタン（PCのみ） -->
+            <div class="side-panel-left">
+                <button class="game-btn btn-primary" id="startBtn" style="height:60px;">スタート</button>
+                <button class="game-btn btn-secondary" onclick="location.reload()" style="height:60px;">リセット</button>
+                <a href="friend-game-main.html" class="back-to-portal-button" style="margin:0; width:100%; font-size:0.9rem;">戻る</a>
+            </div>
+
+            <!-- 【中】ゲーム画面 -->
+            <div class="canvas-area">
+                <canvas id="gameCanvas" class="game-canvas"></canvas>
+                <!-- ゲームオーバー表示 -->
                 <div id="gameOver" class="game-over-overlay">
                     <h2>GAME OVER</h2>
                     <p>Score: <span id="finalScore" style="font-weight:bold;">0</span></p>
                     <button class="game-btn btn-primary" onclick="location.reload()" style="margin-top:1rem;">もう一度</button>
-                    <!-- スマホ用戻るボタン -->
                     <a href="friend-game-main.html" class="game-btn btn-secondary" style="margin-top:0.5rem; display:inline-block; text-decoration:none;">やめる</a>
                 </div>
             </div>
 
-            <!-- スマホ用NEXT表示 -->
-            <div class="next-piece-area mobile-only-item">
-                <div class="next-label">NEXT</div>
-                <canvas id="nextCanvas" width="60" height="60"></canvas>
+            <!-- 【右】ステータス（スマホ・PC共通） -->
+            <div class="side-panel-right">
+                <div class="puzzle-stat-box">
+                    <div class="puzzle-stat-label">NEXT</div>
+                    <canvas id="nextCanvas" width="60" height="60"></canvas>
+                </div>
+                <div class="puzzle-stat-box">
+                    <div class="puzzle-stat-label">SCORE</div>
+                    <div class="puzzle-stat-value" id="score">0</div>
+                </div>
+                <div class="puzzle-stat-box">
+                    <div class="puzzle-stat-label">LEVEL</div>
+                    <div class="puzzle-stat-value" id="level">1</div>
+                </div>
+                <div class="puzzle-stat-box">
+                    <div class="puzzle-stat-label">LINES</div>
+                    <div class="puzzle-stat-value" id="lines">0</div>
+                </div>
+                
+                <!-- スマホ用終了ボタン -->
+                <button class="mobile-quit-btn" onclick="if(confirm('ゲームを終了しますか？')) location.href='friend-game-main.html'">終了する</button>
             </div>
         </div>
 
-        <!-- PC用操作ボタン -->
-        <div class="game-controls">
-            <button class="game-btn btn-primary" id="startBtn">スタート</button>
-            <button class="game-btn btn-secondary" onclick="location.reload()">リセット</button>
-        </div>
-        
-        <!-- モバイル用パッド -->
+        <!-- モバイル用パッド（下部固定） -->
         <div class="mobile-pad">
             <button class="pad-btn" id="rotateBtn">🔄</button>
-            <button class="pad-btn" id="dropBtn">⬇⬇</button>
-            <button class="pad-btn mobile-reset-btn" onclick="if(confirm('やめますか？')) location.href='friend-game-main.html'">終了</button>
+            <button class="pad-btn" id="dropBtn" style="background:#fce7f3; color:#db2777; border-color:#fbcfe8;">⬇⬇</button>
+            <button class="pad-btn" onclick="location.reload()" style="font-size:1rem;">再</button>
             
             <button class="pad-btn" id="leftBtn">◀</button>
             <button class="pad-btn" id="downBtn">▼</button>
             <button class="pad-btn" id="rightBtn">▶</button>
         </div>
-        
-        <!-- PC用戻るボタン -->
-        <a href="friend-game-main.html" class="back-to-portal-button" style="margin-top:2rem;">ミニゲーム選択へ戻る</a>
     </div>
 
     <script>
@@ -85,30 +82,46 @@
         const gameOverDiv = document.getElementById('gameOver');
         const finalScoreEl = document.getElementById('finalScore');
 
-        // ゲーム設定
         const COLS = 10;
         const ROWS = 20;
         let BLOCK_SIZE = 24; 
 
+        // リサイズ処理（PCとスマホで計算を変える）
         function resizeGame() {
             const isMobile = window.innerWidth <= 768;
+            
             if (isMobile) {
-                const availableHeight = window.innerHeight * 0.55;
-                const availableWidth = window.innerWidth * 0.8;
+                // スマホ：画面高さの60%を上限に、幅65%の中に収める
+                const availableHeight = window.innerHeight * 0.60;
+                const availableWidth = window.innerWidth * 0.65;
+                
                 const sizeByHeight = Math.floor(availableHeight / ROWS);
                 const sizeByWidth = Math.floor(availableWidth / COLS);
+                
                 BLOCK_SIZE = Math.min(sizeByHeight, sizeByWidth);
             } else {
-                BLOCK_SIZE = 24;
+                // PC：画面高さの80%を上限にする
+                const availableHeight = window.innerHeight * 0.80;
+                BLOCK_SIZE = Math.floor(availableHeight / ROWS);
+                // 大きくなりすぎないように制限
+                if(BLOCK_SIZE > 30) BLOCK_SIZE = 30;
             }
+
             canvas.width = COLS * BLOCK_SIZE;
             canvas.height = ROWS * BLOCK_SIZE;
+            
+            // キャンバスエリアのサイズも合わせる（レイアウト崩れ防止）
+            const canvasArea = document.querySelector('.canvas-area');
+            canvasArea.style.width = canvas.width + 'px';
+            canvasArea.style.height = canvas.height + 'px';
+
             if(typeof board !== 'undefined') draw();
         }
 
         resizeGame();
         window.addEventListener('resize', resizeGame);
 
+        // --- 以下、ゲームロジック（変更なし） ---
         const SHAPES = [
             [[1, 1, 1, 1]], [[1, 1], [1, 1]], [[0, 1, 0], [1, 1, 1]], 
             [[1, 0, 0], [1, 1, 1]], [[0, 0, 1], [1, 1, 1]], 
@@ -117,19 +130,11 @@
         const COLORS = ['#00f0f0', '#f0f000', '#a000f0', '#0000f0', '#f0a000', '#00f000', '#f00000'];
 
         let board = Array.from({length: ROWS}, () => Array(COLS).fill(0));
-        let score = 0;
-        let lines = 0;
-        let level = 1;
-        let dropInterval = 1000;
-        let lastTime = 0;
-        let dropCounter = 0;
-        let isPaused = true;
-        let isGameOver = false;
+        let score = 0, lines = 0, level = 1;
+        let dropInterval = 1000, lastTime = 0, dropCounter = 0;
+        let isPaused = true, isGameOver = false;
 
-        let player = {
-            matrix: null, x: 0, y: 0, color: '',
-            nextMatrix: null, nextColor: ''
-        };
+        let player = { matrix: null, x: 0, y: 0, color: '', nextMatrix: null, nextColor: '' };
 
         function generateNext() {
             const typeId = Math.floor(Math.random() * SHAPES.length);
@@ -138,27 +143,22 @@
 
         function playerReset() {
             if (!player.nextMatrix) {
-                const p = generateNext();
-                player.matrix = p.matrix; player.color = p.color;
-                const n = generateNext();
-                player.nextMatrix = n.matrix; player.nextColor = n.color;
+                const p = generateNext(); player.matrix = p.matrix; player.color = p.color;
+                const n = generateNext(); player.nextMatrix = n.matrix; player.nextColor = n.color;
             } else {
                 player.matrix = player.nextMatrix; player.color = player.nextColor;
-                const n = generateNext();
-                player.nextMatrix = n.matrix; player.nextColor = n.color;
+                const n = generateNext(); player.nextMatrix = n.matrix; player.nextColor = n.color;
             }
             player.y = 0;
             player.x = (Math.floor(COLS / 2)) - (Math.floor(player.matrix[0].length / 2));
             drawNext();
             if (collide(board, player)) {
-                isGameOver = true;
-                finalScoreEl.textContent = score;
-                gameOverDiv.style.display = 'block';
+                isGameOver = true; finalScoreEl.textContent = score; gameOverDiv.style.display = 'block';
             }
         }
 
         function drawNext() {
-            nextCtx.fillStyle = '#333';
+            nextCtx.fillStyle = '#111827';
             nextCtx.fillRect(0, 0, nextCanvas.width, nextCanvas.height);
             const m = player.nextMatrix;
             const size = 12; 
@@ -199,8 +199,7 @@
         }
 
         function draw() {
-            ctx.fillStyle = '#111827';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#111827'; ctx.fillRect(0, 0, canvas.width, canvas.height);
             board.forEach((row, y) => {
                 row.forEach((value, x) => {
                     if (value !== 0) {
@@ -224,43 +223,29 @@
 
         function rotate(matrix, dir) {
             for (let y = 0; y < matrix.length; ++y) {
-                for (let x = 0; x < y; ++x) {
-                    [matrix[x][y], matrix[y][x]] = [matrix[y][x], matrix[x][y]];
-                }
+                for (let x = 0; x < y; ++x) { [matrix[x][y], matrix[y][x]] = [matrix[y][x], matrix[x][y]]; }
             }
-            if (dir > 0) matrix.forEach(row => row.reverse());
-            else matrix.reverse();
+            if (dir > 0) matrix.forEach(row => row.reverse()); else matrix.reverse();
         }
 
         function playerRotate(dir) {
-            const pos = player.x;
-            let offset = 1;
-            rotate(player.matrix, dir);
+            const pos = player.x; let offset = 1; rotate(player.matrix, dir);
             while (collide(board, player)) {
-                player.x += offset;
-                offset = -(offset + (offset > 0 ? 1 : -1));
-                if (offset > player.matrix[0].length) {
-                    rotate(player.matrix, -dir);
-                    player.x = pos;
-                    return;
-                }
+                player.x += offset; offset = -(offset + (offset > 0 ? 1 : -1));
+                if (offset > player.matrix[0].length) { rotate(player.matrix, -dir); player.x = pos; return; }
             }
         }
 
         function playerDrop() {
             player.y++;
             if (collide(board, player)) {
-                player.y--;
-                merge(board, player);
-                arenaSweep();
-                playerReset();
+                player.y--; merge(board, player); arenaSweep(); playerReset();
             }
             dropCounter = 0;
         }
 
         function playerMove(dir) {
-            player.x += dir;
-            if (collide(board, player)) { player.x -= dir; }
+            player.x += dir; if (collide(board, player)) player.x -= dir;
         }
 
         function arenaSweep() {
@@ -269,26 +254,19 @@
                 for (let x = 0; x < board[y].length; ++x) {
                     if (board[y][x] === 0) continue outer;
                 }
-                const row = board.splice(y, 1)[0].fill(0);
-                board.unshift(row);
-                ++y;
-                rowCount++;
+                const row = board.splice(y, 1)[0].fill(0); board.unshift(row); ++y; rowCount++;
             }
             if (rowCount > 0) {
-                lines += rowCount;
-                score += rowCount * 100 * level;
+                lines += rowCount; score += rowCount * 100 * level;
                 level = Math.floor(lines / 10) + 1;
                 dropInterval = Math.max(100, 1000 - (level - 1) * 100);
-                scoreEl.textContent = score;
-                linesEl.textContent = lines;
-                levelEl.textContent = level;
+                scoreEl.textContent = score; linesEl.textContent = lines; levelEl.textContent = level;
             }
         }
 
         function update(time = 0) {
             if (isPaused || isGameOver) return;
-            const deltaTime = time - lastTime;
-            lastTime = time;
+            const deltaTime = time - lastTime; lastTime = time;
             dropCounter += deltaTime;
             if (dropCounter > dropInterval) playerDrop();
             draw();
@@ -320,18 +298,14 @@
             player.y--; merge(board, player); arenaSweep(); playerReset();
         });
 
-        const startBtn = document.getElementById('startBtn');
-        if(startBtn) {
-            startBtn.addEventListener('click', () => {
-                if (isPaused) {
-                    isPaused = false;
-                    if (!player.matrix) playerReset();
-                    update();
-                    startBtn.style.display = 'none';
-                }
-            });
-        }
-        draw();
+        document.getElementById('startBtn').addEventListener('click', function() {
+            if (isPaused) {
+                isPaused = false;
+                if (!player.matrix) playerReset();
+                update();
+                this.style.display = 'none';
+            }
+        });
     </script>
 </body>
 </html>
