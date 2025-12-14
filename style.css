@@ -937,3 +937,157 @@ li { margin-bottom: 0.5rem; }
     .pdf-mobile-notice, .pdf-link-mobile-wrapper { display: none; }
     .mobile-pad { display: none; }
 }
+
+/* =========================================
+   15. 落ちものパズル専用：スマホ全画面対応
+   ========================================= */
+
+/* スマホ表示時のみ適用 */
+@media (max-width: 768px) {
+    
+    /* 1. ページ全体を固定し、スクロールを禁止 */
+    body.game-mode-fullscreen {
+        overflow: hidden; /* スクロール禁止 */
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        background-color: #1a1a2e; /* 背景を暗くして没入感を出す */
+    }
+
+    /* 2. 不要な要素（ヘッダー、戻るボタン、PC用ボタンなど）を消す */
+    body.game-mode-fullscreen .portal-header,
+    body.game-mode-fullscreen .back-to-portal-button,
+    body.game-mode-fullscreen footer,
+    body.game-mode-fullscreen .game-controls, /* PC用スタートボタン等 */
+    body.game-mode-fullscreen .game-title {
+        display: none !important;
+    }
+
+    /* 3. コンテナを画面いっぱいに広げる */
+    body.game-mode-fullscreen .game-container {
+        width: 100%;
+        height: 100%;
+        max-width: none;
+        margin: 0;
+        padding: 10px;
+        border: none;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+        
+        /* 縦並びのレイアウト */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between; /* 上・中・下を均等配置 */
+    }
+
+    /* 4. 上部ステータスバー（スコアなど） */
+    .game-stats {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 5px;
+        gap: 5px;
+    }
+    .stat-box {
+        padding: 5px 10px;
+        flex: 1;
+        background: rgba(255,255,255,0.9);
+    }
+    .stat-label { font-size: 0.7rem; margin: 0; }
+    .stat-value { font-size: 1rem; }
+
+    /* 5. ゲーム画面（キャンバス）エリア */
+    .game-main-area {
+        flex-grow: 1; /* 余ったスペースを全部使う */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+        margin: 5px 0;
+    }
+
+    /* NEXTブロック表示（キャンバスの右上に重ねるなど調整） */
+    .next-piece-area {
+        position: absolute;
+        top: 0;
+        right: 10px;
+        background: rgba(0,0,0,0.5);
+        padding: 5px;
+        border-radius: 5px;
+        color: white;
+        text-align: center;
+        z-index: 5;
+    }
+    .next-piece-area canvas {
+        width: 40px;
+        height: 40px;
+        background: transparent;
+    }
+    .next-label { font-size: 0.7rem; color: #ccc; }
+
+    .game-canvas-wrapper {
+        margin: 0;
+        height: 100%; /* 親要素の高さに合わせる */
+        display: flex;
+        align-items: center;
+    }
+
+    /* キャンバスのサイズ調整（はみ出さないように） */
+    .game-canvas {
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        max-height: 55vh; /* 画面高さの55%までに制限（ボタン領域確保のため） */
+        border: 2px solid #4b5563;
+    }
+
+    /* 6. モバイルコントローラーエリア */
+    .mobile-pad {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: auto auto;
+        gap: 8px;
+        padding-bottom: 20px; /* 下部の安全領域 */
+        width: 100%;
+        max-width: 350px;
+        margin: 0 auto;
+    }
+
+    /* ボタン配置の最適化 */
+    /* グリッド配置: 
+       [回転] [ 落下 ] [回転]
+       [ 左 ] [ 下へ ] [ 右 ] 
+    */
+    
+    /* 1段目 */
+    #rotateBtn { grid-column: 1 / 2; grid-row: 1; background: #ec4899; color: white; }
+    #dropBtn   { grid-column: 2 / 3; grid-row: 1; background: #ef4444; color: white; height: 60px; }
+    
+    /* 2段目 */
+    #leftBtn  { grid-column: 1 / 2; grid-row: 2; height: 70px; }
+    #downBtn  { grid-column: 2 / 3; grid-row: 2; height: 70px; }
+    #rightBtn { grid-column: 3 / 4; grid-row: 2; height: 70px; }
+
+    /* リセットボタンをひっそりと配置 */
+    .mobile-reset-btn {
+        grid-column: 3 / 4; grid-row: 1;
+        background: #6b7280; color: white; font-size: 0.8rem;
+        display: flex; align-items: center; justify-content: center;
+    }
+
+    .pad-btn {
+        border-radius: 12px;
+        box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+        font-size: 1.5rem;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .pad-btn:active {
+        transform: translateY(4px);
+        box-shadow: none;
+    }
+}

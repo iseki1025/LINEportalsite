@@ -4,60 +4,84 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ShapeDrop - 落ち物パズル</title>
-    <!-- パス修正 -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../style.css">
+    <!-- スマホでの誤操作防止 -->
+    <style>
+        body { touch-action: manipulation; }
+    </style>
 </head>
-<body class="theme-friend">
+<!-- ゲームモードクラスを追加 -->
+<body class="theme-friend game-mode-fullscreen">
     <div class="game-container">
+        <!-- PC用タイトル（スマホでは消える） -->
         <h1 class="game-title">🎮 ShapeDrop</h1>
         
+        <!-- ステータスエリア -->
         <div class="game-stats">
             <div class="stat-box">
-                <div class="stat-label">スコア</div>
+                <div class="stat-label">SCORE</div>
                 <div class="stat-value" id="score">0</div>
             </div>
             <div class="stat-box">
-                <div class="stat-label">レベル</div>
+                <div class="stat-label">LEVEL</div>
                 <div class="stat-value" id="level">1</div>
             </div>
             <div class="stat-box">
-                <div class="stat-label">ライン</div>
+                <div class="stat-label">LINES</div>
                 <div class="stat-value" id="lines">0</div>
             </div>
         </div>
         
-        <div class="game-canvas-wrapper" style="max-width:300px;">
-            <canvas id="gameCanvas" class="game-canvas" width="240" height="400"></canvas>
-            
-            <div id="gameOver" class="game-over-overlay">
-                <h2>ゲームオーバー</h2>
-                <div id="finalScore" style="margin:1rem 0; font-weight:bold;">0</div>
-                <button class="game-btn btn-primary" onclick="location.reload()">再挑戦</button>
+        <!-- ゲームメインエリア -->
+        <div class="game-main-area">
+            <div class="game-canvas-wrapper">
+                <canvas id="gameCanvas" class="game-canvas" width="240" height="400"></canvas>
+                
+                <!-- ゲームオーバー画面 -->
+                <div id="gameOver" class="game-over-overlay">
+                    <h2>GAME OVER</h2>
+                    <p>Score: <span id="finalScore" style="font-weight:bold;">0</span></p>
+                    <button class="game-btn btn-primary" onclick="location.reload()" style="margin-top:1rem;">もう一度</button>
+                    <!-- スマホ用戻るボタン -->
+                    <a href="../../friend-game-main.html" class="game-btn btn-secondary" style="margin-top:0.5rem; display:inline-block; text-decoration:none;">やめる</a>
+                </div>
+            </div>
+
+            <!-- スマホ用NEXT表示（キャンバス横に配置） -->
+            <div class="next-piece-area mobile-only-item">
+                <div class="next-label">NEXT</div>
+                <canvas id="nextCanvas" width="60" height="60"></canvas>
             </div>
         </div>
 
+        <!-- PC用操作ボタン（スマホでは消える） -->
         <div class="game-controls">
             <button class="game-btn btn-primary" id="startBtn">スタート</button>
             <button class="game-btn btn-secondary" onclick="location.reload()">リセット</button>
         </div>
         
-        <!-- モバイル用パッド -->
+        <!-- モバイル用パッド（CSSでレイアウト調整済み） -->
         <div class="mobile-pad">
-            <button class="pad-btn" id="leftBtn">◀</button>
+            <!-- 1段目 -->
             <button class="pad-btn" id="rotateBtn">🔄</button>
-            <button class="pad-btn" id="rightBtn">▶</button>
-            <button class="pad-btn" id="downBtn">▼</button>
             <button class="pad-btn" id="dropBtn">⬇⬇</button>
-            <div></div>
+            <button class="pad-btn mobile-reset-btn" onclick="if(confirm('やめますか？')) location.href='../../friend-game-main.html'">終了</button>
+            
+            <!-- 2段目 -->
+            <button class="pad-btn" id="leftBtn">◀</button>
+            <button class="pad-btn" id="downBtn">▼</button>
+            <button class="pad-btn" id="rightBtn">▶</button>
         </div>
         
-        <!-- 戻るボタン修正 -->
-        <a href="friend-game-main.html" class="back-to-portal-button" style="margin-top:2rem;">ミニゲーム選択へ戻る</a>
+        <!-- PC用戻るボタン（スマホでは消える） -->
+        <a href="../../friend-game-main.html" class="back-to-portal-button" style="margin-top:2rem;">ミニゲーム選択へ戻る</a>
     </div>
 
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
+        const nextCanvas = document.getElementById('nextCanvas');
+        const nextCtx = nextCanvas.getContext('2d');
         const scoreEl = document.getElementById('score');
         const levelEl = document.getElementById('level');
         const linesEl = document.getElementById('lines');
@@ -67,9 +91,35 @@
         // ゲーム設定
         const COLS = 10;
         const ROWS = 20;
-        const BLOCK_SIZE = 24; // 240px / 10
-        canvas.width = COLS * BLOCK_SIZE;
-        canvas.height = ROWS * BLOCK_SIZE;
+        let BLOCK_SIZE = 24; 
+
+        // 画面サイズに合わせてブロックサイズを調整する関数
+        function resizeGame() {
+            const isMobile = window.innerWidth <= 768;
+            if (isMobile) {
+                // 画面の高さの50%くらいをキャンバスに割り当てる計算
+                const availableHeight = window.innerHeight * 0.55;
+                const availableWidth = window.innerWidth * 0.8;
+                
+                // 高さ基準でブロックサイズを計算
+                const sizeByHeight = Math.floor(availableHeight / ROWS);
+                const sizeByWidth = Math.floor(availableWidth / COLS);
+                
+                BLOCK_SIZE = Math.min(sizeByHeight, sizeByWidth);
+            } else {
+                BLOCK_SIZE = 24; // PCは固定
+            }
+
+            canvas.width = COLS * BLOCK_SIZE;
+            canvas.height = ROWS * BLOCK_SIZE;
+            
+            // 再描画
+            if(board) draw();
+        }
+
+        // 初期リサイズ実行
+        resizeGame();
+        window.addEventListener('resize', resizeGame);
 
         // テトリミノの定義
         const SHAPES = [
@@ -97,21 +147,68 @@
             matrix: null,
             x: 0,
             y: 0,
-            color: ''
+            color: '',
+            nextMatrix: null,
+            nextColor: ''
         };
 
-        function playerReset() {
+        // 次のピースを生成
+        function generateNext() {
             const typeId = Math.floor(Math.random() * SHAPES.length);
-            player.matrix = SHAPES[typeId];
-            player.color = COLORS[typeId];
+            return {
+                matrix: SHAPES[typeId],
+                color: COLORS[typeId]
+            };
+        }
+
+        function playerReset() {
+            if (!player.nextMatrix) {
+                // 初回
+                const p = generateNext();
+                player.matrix = p.matrix;
+                player.color = p.color;
+                const n = generateNext();
+                player.nextMatrix = n.matrix;
+                player.nextColor = n.color;
+            } else {
+                // 2回目以降
+                player.matrix = player.nextMatrix;
+                player.color = player.nextColor;
+                const n = generateNext();
+                player.nextMatrix = n.matrix;
+                player.nextColor = n.color;
+            }
+
             player.y = 0;
             player.x = (Math.floor(COLS / 2)) - (Math.floor(player.matrix[0].length / 2));
             
+            drawNext();
+
             if (collide(board, player)) {
                 isGameOver = true;
                 finalScoreEl.textContent = score;
                 gameOverDiv.style.display = 'block';
             }
+        }
+
+        function drawNext() {
+            nextCtx.fillStyle = '#333';
+            nextCtx.fillRect(0, 0, nextCanvas.width, nextCanvas.height);
+            
+            // 簡易的に描画（中央寄せ計算は省略）
+            const m = player.nextMatrix;
+            const size = 12; // 小さく描画
+            const offsetX = (nextCanvas.width - m[0].length * size) / 2;
+            const offsetY = (nextCanvas.height - m.length * size) / 2;
+
+            m.forEach((row, y) => {
+                row.forEach((value, x) => {
+                    if (value !== 0) {
+                        nextCtx.fillStyle = player.nextColor;
+                        nextCtx.fillRect(x * size + offsetX, y * size + offsetY, size - 1, size - 1);
+                    }
+                });
+            });
         }
 
         function collide(board, player) {
@@ -133,8 +230,8 @@
                     if (value !== 0) {
                         ctx.fillStyle = offset.color || player.color;
                         ctx.fillRect((x + offset.x) * BLOCK_SIZE, (y + offset.y) * BLOCK_SIZE, BLOCK_SIZE - 1, BLOCK_SIZE - 1);
-                        // 立体感を出す枠線
                         ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+                        ctx.lineWidth = 1;
                         ctx.strokeRect((x + offset.x) * BLOCK_SIZE, (y + offset.y) * BLOCK_SIZE, BLOCK_SIZE - 1, BLOCK_SIZE - 1);
                     }
                 });
@@ -145,27 +242,28 @@
             ctx.fillStyle = '#111827';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
-            drawMatrix(board, {x: 0, y: 0, color: null}); // 固定されたブロックを描画（色は個別管理していない簡易版なので統一されてしまうが、今回は簡易実装）
-            // ※本来はboardに色情報を保存すべきだが、簡易化のため固定ブロックはグレーにするなどの処理を入れる
-            
-            // 固定ブロックの描画（簡易修正：色はグレー）
+            // 固定ブロック
             board.forEach((row, y) => {
                 row.forEach((value, x) => {
                     if (value !== 0) {
                         ctx.fillStyle = '#6b7280';
                         ctx.fillRect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE-1, BLOCK_SIZE-1);
+                        ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+                        ctx.strokeRect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE-1, BLOCK_SIZE-1);
                     }
                 });
             });
 
-            drawMatrix(player.matrix, player);
+            if (player.matrix) {
+                drawMatrix(player.matrix, player);
+            }
         }
 
         function merge(board, player) {
             player.matrix.forEach((row, y) => {
                 row.forEach((value, x) => {
                     if (value !== 0) {
-                        board[y + player.y][x + player.x] = 1; // 1で固定
+                        board[y + player.y][x + player.x] = 1; 
                     }
                 });
             });
@@ -251,7 +349,7 @@
             requestAnimationFrame(update);
         }
 
-        // コントローラー
+        // コントローラー(PC)
         document.addEventListener('keydown', event => {
             if (isPaused || isGameOver) return;
             if (event.keyCode === 37) playerMove(-1);
@@ -261,24 +359,44 @@
             else if (event.keyCode === 87 || event.keyCode === 38) playerRotate(1);
         });
 
-        // モバイルボタン
-        document.getElementById('leftBtn').onclick = () => playerMove(-1);
-        document.getElementById('rightBtn').onclick = () => playerMove(1);
-        document.getElementById('downBtn').onclick = () => playerDrop();
-        document.getElementById('rotateBtn').onclick = () => playerRotate(1);
-        document.getElementById('dropBtn').onclick = () => {
+        // モバイルボタン (タッチ対応)
+        // タップした瞬間に反応するように touchstart を使用（clickだと遅延がある）
+        function attachBtn(id, action) {
+            const btn = document.getElementById(id);
+            if(!btn) return;
+            // PCクリック
+            btn.addEventListener('mousedown', (e) => { e.preventDefault(); action(); });
+            // スマホタッチ
+            btn.addEventListener('touchstart', (e) => { e.preventDefault(); action(); }, {passive: false});
+        }
+
+        attachBtn('leftBtn', () => playerMove(-1));
+        attachBtn('rightBtn', () => playerMove(1));
+        attachBtn('downBtn', () => playerDrop());
+        attachBtn('rotateBtn', () => playerRotate(1));
+        attachBtn('dropBtn', () => {
             while(!collide(board, player)) { player.y++; }
             player.y--; merge(board, player); arenaSweep(); playerReset();
-        };
-
-        document.getElementById('startBtn').addEventListener('click', () => {
-            if (isPaused) {
-                isPaused = false;
-                if (!player.matrix) playerReset();
-                update();
-                document.getElementById('startBtn').textContent = '再開';
-            }
         });
+
+        // スタートボタン
+        const startBtn = document.getElementById('startBtn');
+        if(startBtn) {
+            startBtn.addEventListener('click', () => {
+                if (isPaused) {
+                    isPaused = false;
+                    if (!player.matrix) playerReset();
+                    update();
+                    startBtn.style.display = 'none'; // スタートしたらボタン消す
+                }
+            });
+        }
+        
+        // スマホでロード時に自動スタートさせない（タップ待ち）
+        // 画面をタップして開始するオーバーレイなどがあると良いが、
+        // 今回はボタンで開始。
+        
+        draw(); // 初期画面描画
     </script>
 </body>
 </html>
