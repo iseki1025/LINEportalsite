@@ -3,83 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ShapeDrop - 落ち物パズル</title>
+    <title>オリジナルパズル</title>
     <link rel="stylesheet" href="style.css">
     <style>
         /* スクロール完全禁止 */
-        html, body { overflow: hidden; touch-action: none; user-select: none; -webkit-user-select: none; }
+        html, body { overflow: hidden; height: 100%; width: 100%; touch-action: none; user-select: none; }
     </style>
 </head>
 <body class="theme-friend game-mode-fullscreen">
     
     <div class="game-container" id="mainContainer">
         
-        <!-- PC用タイトル（スマホでは消える） -->
-        <h1 class="game-title" style="margin-bottom:1rem;">🎮 ShapeDrop</h1>
+        <!-- 【スマホ用】上部ヘッダー (情報表示) -->
+        <div class="mobile-header-stats">
+            <div class="mobile-next-area">
+                <canvas id="mobileNextCanvas" width="40" height="40"></canvas>
+            </div>
+            <div class="mobile-stat-item">SCORE<span id="m-score">0</span></div>
+            <div class="mobile-stat-item">LEVEL<span id="m-level">1</span></div>
+            <!-- 戻るボタン（×） -->
+            <button class="mobile-quit-btn" onclick="quitGame()">×</button>
+        </div>
+
+        <!-- 【PC用】タイトル (スマホでは非表示) -->
+        <h1 class="game-title" style="margin-bottom:1rem; font-size:1.5rem;">🧩 オリジナルパズル</h1>
         
         <!-- メインレイアウト -->
         <div class="puzzle-layout">
             
-            <!-- 【左カラム】PC用操作説明 & ボタン -->
+            <!-- 【PC用】左パネル (ボタン & 説明) -->
             <div class="side-panel-left">
-                <button class="game-btn btn-primary" id="pcStartBtn" style="height:50px;">スタート</button>
-                <button class="game-btn btn-secondary" onclick="resetGame()" style="height:50px;">リセット</button>
+                <button class="game-btn btn-primary" id="pcStartBtn">スタート</button>
+                <button class="game-btn btn-secondary" onclick="resetGame()">リセット</button>
                 
-                <!-- 操作説明 -->
+                <!-- PC用 戻るボタン -->
+                <button class="game-btn" style="background:#4b5563;" onclick="quitGame()">← 戻る</button>
+
                 <div class="key-instruction-box">
                     <div class="key-row"><span class="key-name">← →</span><span>左右移動</span></div>
                     <div class="key-row"><span class="key-name">↑</span><span>回転</span></div>
                     <div class="key-row"><span class="key-name">↓</span><span>高速落下</span></div>
                     <div class="key-row"><span class="key-name">Space</span><span>一気に落下</span></div>
                 </div>
-
-                <a href="friend-game-main.html" class="back-to-portal-button" style="margin:0; width:100%; font-size:0.9rem;">戻る</a>
             </div>
 
-            <!-- モバイル用ラッパー（PCでは普通に表示、スマホでは横並び） -->
-            <div class="mobile-top-area" style="display:contents;">
+            <!-- 【共通】ゲーム画面 -->
+            <div class="canvas-area">
+                <canvas id="gameCanvas"></canvas>
                 
-                <!-- 【中央カラム】ゲーム画面 -->
-                <div class="canvas-area">
-                    <canvas id="gameCanvas"></canvas>
-                    
-                    <!-- ゲームオーバー画面 -->
-                    <div id="gameOver" class="game-over-overlay">
-                        <h2 style="color:#ef4444; margin-bottom:1rem; font-size:2rem;">GAME OVER</h2>
-                        <p style="font-size:1.2rem; margin-bottom:1.5rem;">Score: <span id="finalScore">0</span></p>
-                        <button class="game-btn btn-primary" onclick="resetGame()">もう一度</button>
-                        <button class="game-btn btn-secondary" onclick="quitGame()" style="margin-top:1rem;">終了する</button>
-                    </div>
+                <!-- ゲームオーバー画面 -->
+                <div id="gameOver" class="game-over-overlay">
+                    <h2 style="color:#ef4444; margin-bottom:1rem; font-size:2rem;">GAME OVER</h2>
+                    <p style="font-size:1.2rem; margin-bottom:1.5rem;">Score: <span id="finalScore">0</span></p>
+                    <button class="game-btn btn-primary" onclick="resetGame()">もう一度</button>
+                    <button class="game-btn btn-secondary" onclick="quitGame()" style="margin-top:1rem;">終了する</button>
                 </div>
+            </div>
 
-                <!-- 【右カラム】情報パネル -->
-                <div class="side-panel-right">
-                    <div class="puzzle-stat-box">
-                        <div class="puzzle-stat-label">NEXT</div>
-                        <canvas id="pcNextCanvas" width="60" height="60"></canvas>
-                    </div>
-                    <div class="puzzle-stat-box">
-                        <div class="puzzle-stat-label">SCORE</div>
-                        <div class="puzzle-stat-value" id="score">0</div>
-                    </div>
-                    <div class="puzzle-stat-box">
-                        <div class="puzzle-stat-label">LEVEL</div>
-                        <div class="puzzle-stat-value" id="level">1</div>
-                    </div>
-                    <div class="puzzle-stat-box">
-                        <div class="puzzle-stat-label">LINES</div>
-                        <div class="puzzle-stat-value" id="lines">0</div>
-                    </div>
-                    
-                    <!-- スマホ用終了ボタン -->
-                    <button class="mobile-quit-btn" onclick="if(confirm('終了しますか？')) quitGame()">終了</button>
+            <!-- 【PC用】右パネル (情報) -->
+            <div class="side-panel-right">
+                <div class="puzzle-stat-box">
+                    <div class="puzzle-stat-label">NEXT</div>
+                    <canvas id="pcNextCanvas" width="60" height="60"></canvas>
+                </div>
+                <div class="puzzle-stat-box">
+                    <div class="puzzle-stat-label">SCORE</div>
+                    <div class="puzzle-stat-value" id="pc-score">0</div>
+                </div>
+                <div class="puzzle-stat-box">
+                    <div class="puzzle-stat-label">LEVEL</div>
+                    <div class="puzzle-stat-value" id="pc-level">1</div>
+                </div>
+                <div class="puzzle-stat-box">
+                    <div class="puzzle-stat-label">LINES</div>
+                    <div class="puzzle-stat-value" id="pc-lines">0</div>
                 </div>
             </div>
         </div>
 
-        <!-- 【下部】モバイルコントローラー -->
+        <!-- 【スマホ用】下部コントローラー -->
         <div class="mobile-pad">
-            <button class="pad-btn" id="mobileStartBtn">START</button>
+            <button class="pad-btn mobile-start-btn" id="mobileStartBtn">START</button>
             <button class="pad-btn" id="rotateBtn">↻</button>
             
             <button class="pad-btn" id="leftBtn">◀</button>
@@ -90,7 +94,7 @@
     </div>
 
     <script>
-        // --- 画面サイズ固定 (iOS対策) ---
+        // --- 画面サイズ固定 ---
         function fixViewport() {
             const vh = window.innerHeight;
             document.body.style.height = vh + 'px';
@@ -104,14 +108,17 @@
         // --- ゲーム要素 ---
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
-        const nextCanvas = document.getElementById('pcNextCanvas'); // スマホでもこれを流用
-        const scoreEl = document.getElementById('score');
-        const levelEl = document.getElementById('level');
-        const linesEl = document.getElementById('lines');
+        const pcNextCanvas = document.getElementById('pcNextCanvas');
+        const mobileNextCanvas = document.getElementById('mobileNextCanvas');
         const gameOverDiv = document.getElementById('gameOver');
         const finalScoreEl = document.getElementById('finalScore');
+        
+        // スコア表示用
+        const scoreEls = [document.getElementById('pc-score'), document.getElementById('m-score')];
+        const levelEls = [document.getElementById('pc-level'), document.getElementById('m-level')];
+        const linesEls = [document.getElementById('pc-lines'), document.getElementById('m-lines')];
 
-        // 設定 (12列x20行)
+        // 設定 (著作権対策: 12列)
         const COLS = 12; 
         const ROWS = 20;
         let BLOCK_SIZE = 24; 
@@ -119,32 +126,74 @@
         // リサイズ処理
         function resizeGame() {
             const container = document.querySelector('.canvas-area');
+            if(!container) return;
             const w = container.clientWidth;
             const h = container.clientHeight;
             
-            // 縦横比を維持して最大化
             let size = Math.floor(h / ROWS);
-            if (size * COLS > w) {
-                size = Math.floor(w / COLS);
-            }
+            if (size * COLS > w) size = Math.floor(w / COLS);
             
-            // サイズ確定
-            BLOCK_SIZE = Math.max(10, size); // 最低10px
+            BLOCK_SIZE = Math.max(10, size);
             canvas.width = BLOCK_SIZE * COLS;
             canvas.height = BLOCK_SIZE * ROWS;
             
             if(typeof board !== 'undefined') draw();
         }
         window.addEventListener('resize', resizeGame);
-        setTimeout(resizeGame, 100);
+        setTimeout(resizeGame, 200);
 
-        // --- ブロック定義 (オリジナル色) ---
+        // --- オリジナルブロック定義 (Pentominoes + Custom) ---
+        // テトリス(4個)とは異なる、5個や3個のブロック構成
         const SHAPES = [
-            [[1, 1, 1, 1]], [[1, 1], [1, 1]], [[0, 1, 0], [1, 1, 1]], 
-            [[1, 0, 0], [1, 1, 1]], [[0, 0, 1], [1, 1, 1]], 
-            [[0, 1, 1], [1, 1, 0]], [[1, 1, 0], [0, 1, 1]]
+            // 1. 十字型 (5個)
+            [
+                [0, 1, 0],
+                [1, 1, 1],
+                [0, 1, 0]
+            ],
+            // 2. U字型 (5個)
+            [
+                [1, 0, 1],
+                [1, 1, 1]
+            ],
+            // 3. 階段型 (5個)
+            [
+                [1, 0, 0],
+                [1, 1, 0],
+                [0, 1, 1]
+            ],
+            // 4. 長いL字 (5個)
+            [
+                [1, 0, 0],
+                [1, 0, 0],
+                [1, 1, 1]
+            ],
+            // 5. 3個の棒 (3個)
+            [
+                [1, 1, 1]
+            ],
+            // 6. 小さい角 (3個)
+            [
+                [1, 1],
+                [1, 0]
+            ],
+            // 7. 正方形 (4個 - これは一般的)
+            [
+                [1, 1],
+                [1, 1]
+            ]
         ];
-        const COLORS = ['#06b6d4', '#f59e0b', '#7c3aed', '#3b82f6', '#ec4899', '#10b981', '#ef4444'];
+
+        // 配色 (サイトテーマカラー)
+        const COLORS = [
+            '#ec4899', // ピンク
+            '#06b6d4', // 水色
+            '#10b981', // 緑
+            '#f59e0b', // 黄色
+            '#7c3aed', // 紫
+            '#3b82f6', // 青
+            '#ef4444'  // 赤
+        ];
 
         let board = Array.from({length: ROWS}, () => Array(COLS).fill(0));
         let score = 0, lines = 0, level = 1;
@@ -156,7 +205,7 @@
             nextMatrix: null, nextColor: ''
         };
 
-        // --- ゲームロジック ---
+        // --- ロジック関数 ---
         function generateNext() {
             const id = Math.floor(Math.random() * SHAPES.length);
             return { matrix: SHAPES[id], color: COLORS[id] };
@@ -172,6 +221,7 @@
             }
             player.y = 0;
             player.x = (Math.floor(COLS / 2)) - (Math.floor(player.matrix[0].length / 2));
+            
             drawNext();
             
             if (collide(board, player)) {
@@ -181,24 +231,73 @@
             }
         }
 
-        function drawNext() {
-            const c = nextCanvas.getContext('2d');
-            // 背景クリア (モバイル用に透明背景にするか、CSSに合わせる)
-            const isMobile = window.innerWidth <= 768;
-            c.fillStyle = isMobile ? '#000' : '#1f2937'; 
-            c.fillRect(0, 0, nextCanvas.width, nextCanvas.height);
-            
-            const m = player.nextMatrix;
-            if(!m) return;
-            const size = nextCanvas.width / 6;
-            const offsetX = (nextCanvas.width - m[0].length * size) / 2;
-            const offsetY = (nextCanvas.height - m.length * size) / 2;
-            m.forEach((row, y) => {
-                row.forEach((val, x) => {
-                    if (val) {
-                        c.fillStyle = player.nextColor;
-                        c.fillRect(x * size + offsetX, y * size + offsetY, size - 1, size - 1);
+        // 正しい回転ロジック (行列の転置＋反転)
+        function rotateMatrix(matrix, dir) {
+            // 新しい行列を作成
+            const N = matrix.length;
+            const M = matrix[0].length;
+            // 90度回転後のサイズ (MxN)
+            const newMatrix = Array.from({length: M}, () => Array(N).fill(0));
+
+            for (let y = 0; y < N; y++) {
+                for (let x = 0; x < M; x++) {
+                    if (dir > 0) {
+                        // 右回転
+                        newMatrix[x][N - 1 - y] = matrix[y][x];
+                    } else {
+                        // 左回転
+                        newMatrix[M - 1 - x][y] = matrix[y][x];
                     }
+                }
+            }
+            return newMatrix;
+        }
+
+        function playerRotate(dir) {
+            const pos = player.x;
+            let offset = 1;
+            
+            // 回転後のマトリックスを計算
+            const rotated = rotateMatrix(player.matrix, dir);
+            const original = player.matrix;
+            player.matrix = rotated; // 一旦適用
+
+            // 壁蹴り処理 (左右にずらして入るか試す)
+            while (collide(board, player)) {
+                player.x += offset;
+                offset = -(offset + (offset > 0 ? 1 : -1));
+                if (offset > player.matrix[0].length) {
+                    // 入らなければ元に戻す
+                    player.matrix = original;
+                    player.x = pos;
+                    return;
+                }
+            }
+        }
+
+        // 他の描画・衝突判定ロジック
+        function drawNext() {
+            [pcNextCanvas, mobileNextCanvas].forEach(cnv => {
+                if(!cnv || cnv.offsetParent === null) return;
+                const c = cnv.getContext('2d');
+                c.fillStyle = '#111827'; c.fillRect(0, 0, cnv.width, cnv.height);
+                const m = player.nextMatrix;
+                if(!m) return;
+                
+                // プレビューのサイズ調整
+                const blockSize = 8;
+                const w = m[0].length * blockSize;
+                const h = m.length * blockSize;
+                const offsetX = (cnv.width - w) / 2;
+                const offsetY = (cnv.height - h) / 2;
+
+                m.forEach((row, y) => {
+                    row.forEach((val, x) => {
+                        if (val) {
+                            c.fillStyle = player.nextColor;
+                            c.fillRect(x * blockSize + offsetX, y * blockSize + offsetY, blockSize - 1, blockSize - 1);
+                        }
+                    });
                 });
             });
         }
@@ -214,9 +313,10 @@
         }
 
         function draw() {
-            ctx.fillStyle = '#000'; // 黒背景
+            ctx.fillStyle = '#111827';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
+            // 固定ブロック
             board.forEach((row, y) => {
                 row.forEach((value, x) => {
                     if (value !== 0) {
@@ -228,6 +328,7 @@
                 });
             });
             
+            // プレイヤー
             if (player.matrix) {
                 player.matrix.forEach((row, y) => {
                     row.forEach((value, x) => {
@@ -246,21 +347,6 @@
                     if (value !== 0) board[y + player.y][x + player.x] = 1;
                 });
             });
-        }
-
-        function rotate(matrix, dir) {
-            for (let y = 0; y < matrix.length; ++y) {
-                for (let x = 0; x < y; ++x) { [matrix[x][y], matrix[y][x]] = [matrix[y][x], matrix[x][y]]; }
-            }
-            if (dir > 0) matrix.forEach(row => row.reverse()); else matrix.reverse();
-        }
-
-        function playerRotate(dir) {
-            const pos = player.x; let offset = 1; rotate(player.matrix, dir);
-            while (collide(board, player)) {
-                player.x += offset; offset = -(offset + (offset > 0 ? 1 : -1));
-                if (offset > player.matrix[0].length) { rotate(player.matrix, -dir); player.x = pos; return; }
-            }
         }
 
         function playerDrop() {
@@ -288,11 +374,14 @@
                 score += rowCount * 100 * level;
                 level = Math.floor(lines / 10) + 1;
                 dropInterval = Math.max(100, 1000 - (level - 1) * 100);
-                
-                scoreEl.textContent = score;
-                linesEl.textContent = lines;
-                levelEl.textContent = level;
+                updateUI();
             }
+        }
+
+        function updateUI() {
+            scoreEls.forEach(el => { if(el) el.textContent = score; });
+            linesEls.forEach(el => { if(el) el.textContent = lines; });
+            levelEls.forEach(el => { if(el) el.textContent = level; });
         }
 
         function update(time = 0) {
@@ -309,9 +398,10 @@
                 isPaused = false;
                 if (!player.matrix) playerReset();
                 update();
-                document.getElementById('pcStartBtn').textContent = '再開';
-                document.getElementById('mobileStartBtn').textContent = '中';
-                document.getElementById('mobileStartBtn').disabled = true;
+                const pcBtn = document.getElementById('pcStartBtn');
+                const mBtn = document.getElementById('mobileStartBtn');
+                if(pcBtn) pcBtn.textContent = '再開';
+                if(mBtn) { mBtn.textContent = '中'; mBtn.disabled = true; }
             }
         }
 
@@ -321,13 +411,17 @@
             player.nextMatrix = null;
             isGameOver = false; isPaused = true;
             gameOverDiv.style.display = 'none';
-            scoreEl.textContent = 0; linesEl.textContent = 0; levelEl.textContent = 1;
+            updateUI();
             startGame();
         }
 
-        function quitGame() { location.href = 'friend-game-main.html'; }
+        function quitGame() {
+            if(confirm('ゲームを終了して戻りますか？')) {
+                location.href = 'friend-game-main.html';
+            }
+        }
 
-        // --- 操作系 ---
+        // --- 操作系 (ソフトドロップ対応) ---
         let isSoftDropping = false;
         let softDropTimer = null;
 
@@ -337,7 +431,7 @@
             function loop() {
                 if(!isSoftDropping || isPaused) return;
                 playerDrop(); draw();
-                softDropTimer = setTimeout(loop, 50);
+                softDropTimer = setTimeout(loop, 50); // 50ms間隔
             }
             loop();
         }
@@ -348,13 +442,10 @@
             if(!btn) return;
             const start = (e) => { e.preventDefault(); if(isHold) action.start(); else action(); };
             const end = (e) => { e.preventDefault(); if(isHold) action.stop(); };
-            
             btn.addEventListener('mousedown', start);
             btn.addEventListener('touchstart', start, {passive:false});
             if(isHold) {
-                btn.addEventListener('mouseup', end);
-                btn.addEventListener('mouseleave', end);
-                btn.addEventListener('touchend', end);
+                btn.addEventListener('mouseup', end); btn.addEventListener('mouseleave', end); btn.addEventListener('touchend', end);
             }
         }
 
@@ -373,10 +464,10 @@
         document.addEventListener('keydown', e => {
             if (isPaused || isGameOver) return;
             if (e.keyCode === 37) playerMove(-1);
-            if (e.keyCode === 39) playerMove(1);
-            if (e.keyCode === 40) startSoftDrop();
-            if (e.keyCode === 38) playerRotate(1);
-            if (e.keyCode === 32) {
+            else if (e.keyCode === 39) playerMove(1);
+            else if (e.keyCode === 40) startSoftDrop();
+            else if (event.keyCode === 38) playerRotate(1);
+            else if (e.keyCode === 32) {
                 while(!collide(board, player)) { player.y++; }
                 player.y--; merge(board, player); arenaSweep(); playerReset();
             }
