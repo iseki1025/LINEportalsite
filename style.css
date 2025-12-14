@@ -1,11 +1,15 @@
 @charset "UTF-8";
 
-/* =========================================
-   1. Google Fonts & リセット & 変数
-   ========================================= */
+/* ==========================================================================
+   1. 基本設定 (Fonts, Reset, Variables)
+   ========================================================================== */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;900&family=Mochiy+Pop+One&display=swap');
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
 :root {
     /* フォント */
@@ -27,7 +31,7 @@
     --white: #ffffff;
     --gray-border: #e5e7eb;
     
-    /* レイアウト */
+    /* レイアウト設定 */
     --radius-main: 2rem;
     --radius-card: 1rem;
     --shadow-main: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
@@ -35,9 +39,9 @@
     --shadow-hover: 0 10px 15px -3px rgb(0 0 0 / 0.1);
 }
 
-/* =========================================
-   2. 基本レイアウト (Body, Container)
-   ========================================= */
+/* ==========================================================================
+   2. ページレイアウト (Body, Container, Header, Footer)
+   ========================================================================== */
 body {
     font-family: var(--font-primary);
     line-height: 1.6;
@@ -58,12 +62,15 @@ body {
     backdrop-filter: blur(10px);
 }
 
-/* ゲーム用コンテナの微調整 */
-.game-container { max-width: 700px; padding: 2rem; border: 1px solid var(--gray-border); text-align: center; }
+/* ゲーム用コンテナの調整 */
+.game-container {
+    max-width: 700px;
+    padding: 2rem;
+    border: 1px solid var(--gray-border);
+    text-align: center;
+}
 
-/* =========================================
-   3. ヘッダー & フッター
-   ========================================= */
+/* ヘッダー共通 */
 header, .portal-header {
     text-align: center;
     padding: 4rem 1.5rem 2rem;
@@ -71,12 +78,15 @@ header, .portal-header {
     z-index: 1;
 }
 
-/* ヘッダー背景（共通） */
 header::before, .portal-header::before {
-    content: ''; position: absolute; top: -20px; left: -20px; right: -20px; bottom: -20px;
+    content: '';
+    position: absolute;
+    top: -20px; left: -20px; right: -20px; bottom: -20px;
     background-image: url('files/common/background-header.png');
-    background-size: cover; background-position: center;
-    filter: blur(15px) brightness(0.85); z-index: -1;
+    background-size: cover;
+    background-position: center;
+    filter: blur(15px) brightness(0.85);
+    z-index: -1;
 }
 
 header h1, .portal-header h1 {
@@ -88,16 +98,22 @@ header h1, .portal-header h1 {
     margin-bottom: 1rem;
 }
 
-.portal-header p { font-weight: bold; color: rgba(255,255,255,0.9); }
-
-footer {
-    text-align: center; padding: 2rem;
-    background: #f3f4f6; color: #4b5563; font-size: 0.875rem;
+.portal-header p {
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.9);
 }
 
-/* =========================================
-   4. 共通UIコンポーネント (見出し, ボタン, リスト)
-   ========================================= */
+footer {
+    text-align: center;
+    padding: 2rem;
+    background: #f3f4f6;
+    color: #4b5563;
+    font-size: 0.875rem;
+}
+
+/* ==========================================================================
+   3. 共通UIパーツ (Headings, Buttons, Lists, Info)
+   ========================================================================== */
 h2 {
     font-size: clamp(1.5rem, 3vw, 2rem);
     font-weight: 900;
@@ -107,8 +123,11 @@ h2 {
 }
 
 h3 {
-    font-size: 1.4rem; font-weight: 700; margin: 2rem 0 1rem;
-    border-bottom: 2px solid var(--gray-border); padding-bottom: 0.5rem;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin: 2rem 0 1rem;
+    border-bottom: 2px solid var(--gray-border);
+    padding-bottom: 0.5rem;
 }
 
 /* テーマ別 見出し色 */
@@ -118,22 +137,38 @@ h3 {
 .theme-shunt h3 { color: var(--theme-shunt); border-color: var(--theme-shunt); }
 .theme-qa h3 { color: var(--theme-qa); border-color: var(--theme-qa); }
 
-/* 戻るボタン（全ページ共通） */
+/* 戻るボタン */
 .back-to-portal-button, .back-button, .back-to-main-button, .back-to-nutrition-button {
-    display: inline-flex; align-items: center; justify-content: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
-    color: white; padding: 0.8rem 2rem; margin: 2rem auto;
-    text-decoration: none; border-radius: 0.5rem; font-weight: bold;
-    transition: transform 0.2s, box-shadow 0.2s; border: none; cursor: pointer;
+    color: var(--white);
+    padding: 0.8rem 2rem;
+    margin: 2rem auto;
+    text-decoration: none;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: none;
+    cursor: pointer;
     box-shadow: var(--shadow-card);
 }
-.back-to-portal-button:hover, .back-button:hover {
-    transform: translateY(-2px); box-shadow: var(--shadow-hover);
+.back-to-portal-button:hover, .back-button:hover, .back-to-main-button:hover, .back-to-nutrition-button:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
 }
-.back-to-portal-button::before, .back-button::before { content: "←"; margin-right: 0.5rem; }
+.back-to-portal-button::before, .back-button::before, .back-to-main-button::before, .back-to-nutrition-button::before {
+    content: "←";
+    margin-right: 0.5rem;
+}
 
 /* イントロテキスト */
-.intro-text { padding: 2rem 1.5rem; background: #f9fafb; text-align: center; }
+.intro-text {
+    padding: 2rem 1.5rem;
+    background: #f9fafb;
+    text-align: center;
+}
 
 /* リスト */
 ul { margin: 1rem 0 1rem 1.5rem; }
@@ -143,20 +178,81 @@ li { margin-bottom: 0.5rem; }
 .ng-list { list-style: none; padding-left: 0; margin-top: 1rem; }
 .ng-list li { position: relative; padding-left: 1.8em; margin-bottom: 0.8rem; font-weight: 500; }
 .ng-list li::before {
-    content: '×'; position: absolute; left: 0; top: 0; color: #e74c3c; font-weight: bold; font-size: 1.5em; line-height: 1.2;
+    content: '×';
+    position: absolute; left: 0; top: 0;
+    color: #e74c3c;
+    font-weight: bold; font-size: 1.5em; line-height: 1.2;
 }
 
 /* 案内ボックス（青） */
 .info-box {
-    margin-top: 20px; padding: 20px; background-color: #e7f3ff;
-    border-left: 5px solid #007bff; border-radius: 8px; color: #004085;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #e7f3ff;
+    border-left: 5px solid #007bff;
+    border-radius: 8px;
+    color: #004085;
 }
 
-/* =========================================
-   5. 統合レイアウト：グリッド & カード
-   ========================================= */
+/* ==========================================================================
+   4. ナビゲーション (Tabs) & コンテンツエリア
+   ========================================================================== */
+.page-nav {
+    display: flex;
+    justify-content: center;
+    background: var(--white);
+    padding: 1rem 1.5rem 0;
+    border-bottom: 1px solid var(--gray-border);
+    overflow-x: auto;
+}
 
-/* グリッドレイアウト統合 */
+.nav-button {
+    background: #f3f4f6;
+    color: #6b7280;
+    border: 1px solid var(--gray-border);
+    border-bottom: none;
+    border-radius: 1rem 1rem 0 0;
+    padding: 1rem 1.5rem;
+    margin-right: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    min-width: 120px;
+    text-align: center;
+    line-height: 1.4;
+    white-space: normal;
+}
+
+.nav-button:hover { background: #e5e7eb; }
+
+.nav-button.active {
+    background: #f9fafb;
+    color: var(--text-color);
+    border-top: 4px solid #333;
+    transform: scale(1.05) translateY(1px);
+    z-index: 2;
+}
+
+/* テーマ別タブ色 */
+.theme-friend .nav-button.active { border-top-color: var(--theme-friend); color: var(--theme-friend); }
+.theme-disaster .nav-button.active { border-top-color: var(--theme-disaster); color: var(--theme-disaster); }
+.theme-nutrition .nav-button.active { border-top-color: var(--theme-nutrition); color: var(--theme-nutrition); }
+.theme-shunt .nav-button.active { border-top-color: var(--theme-shunt); color: var(--theme-shunt); }
+
+#content-area {
+    padding: 2.5rem 1.5rem;
+    background: #f9fafb;
+    border-radius: 0 0 var(--radius-main) var(--radius-main);
+    min-height: 400px;
+}
+
+.content-section { display: none; animation: fadeIn 0.4s; }
+.content-section.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ==========================================================================
+   5. 統合グリッド & カードデザイン
+   ========================================================================== */
+/* グリッドコンテナ */
 .grid-layout, 
 .exercise-grid, 
 .check-grid, 
@@ -168,16 +264,15 @@ li { margin-bottom: 0.5rem; }
     margin: 2rem 0;
     padding: 0;
 }
-/* ポータルトップなど余白が必要な場合 */
 .portal-nav { padding: 2rem; }
 
-/* カードデザイン統合（共通の箱スタイル） */
+/* カード本体 */
 .card,
 .exercise-item,
 .check-item,
 .prevention-card,
 .portal-button {
-    display: flex; 
+    display: flex;
     flex-direction: column;
     background: var(--white);
     border: 1px solid var(--gray-border);
@@ -185,71 +280,62 @@ li { margin-bottom: 0.5rem; }
     overflow: hidden;
     box-shadow: var(--shadow-card);
     transition: transform 0.3s, box-shadow 0.3s;
-    text-decoration: none; 
+    text-decoration: none;
     color: var(--text-color);
     cursor: pointer;
-    /* 高さ自動調整（文字数に応じて伸びる） */
     height: auto;
     min-height: 100%;
 }
 
-/* カードホバー時の挙動（浮き上がり） */
-.card:hover, 
-.exercise-item:hover, 
-.check-item:hover, 
-.prevention-card:hover, 
-.portal-button:hover {
+.card:hover, .exercise-item:hover, .check-item:hover, .prevention-card:hover, .portal-button:hover {
     transform: translateY(-5px);
     box-shadow: var(--shadow-hover);
     border-color: transparent;
 }
 
-/* カード内画像エリア（箱） */
+/* カード内画像コンテナ (箱) */
 .img-container, 
 .prevention-card-img-wrapper, 
 .portal-button-image {
-    width: 100%; 
-    height: 180px; /* ここで画像の高さを固定 */
-    background: #f3f4f6; 
-    position: relative; 
+    width: 100%;
+    height: 180px; /* 高さ固定 */
+    background: #f3f4f6;
+    position: relative;
     overflow: hidden;
-    flex-shrink: 0; /* フレックスボックス内で縮まないように固定 */
-    border-bottom: none; /* グラデーションのために境界線を消す */
+    flex-shrink: 0;
+    border-bottom: none;
 }
 
-/* 画像と説明欄の境界をぼかすグラデーション */
+/* 画像とテキストの境界ぼかし */
 .img-container::after,
 .prevention-card-img-wrapper::after,
 .portal-button-image::after {
     content: '';
     position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 60px; /* ぼかしの範囲 */
+    bottom: 0; left: 0; width: 100%; height: 60px;
     background: linear-gradient(to bottom, rgba(255,255,255,0), #ffffff);
     pointer-events: none;
     z-index: 1;
 }
 
-/* カード内の画像（中身） */
+/* カード内の画像 (中身) */
 .exercise-icon, 
 .check-icon, 
 .prevention-card img, 
 .portal-button-image img {
-    width: 100%; 
-    height: 100%; 
-    object-fit: cover; 
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     transition: transform 0.3s;
     display: block;
 }
 
-/* 画像ホバー時のズームアニメーション */
+/* ホバー時の画像ズーム */
 .exercise-item:hover .exercise-icon, 
 .check-item:hover .check-icon, 
 .prevention-card:hover img,
-.portal-button:hover .portal-button-image img { 
-    transform: scale(1.05); 
+.portal-button:hover .portal-button-image img {
+    transform: scale(1.05);
 }
 
 /* カード内テキストエリア */
@@ -258,33 +344,32 @@ li { margin-bottom: 0.5rem; }
 .check-text, 
 .prevention-card-body, 
 .portal-button-content {
-    padding: 1.5rem; 
-    flex-grow: 1; 
+    padding: 1.5rem;
+    flex-grow: 1;
     text-align: left;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
 }
 
-/* カード内見出し（タイトル） */
+/* カード内見出し */
 .exercise-item h4, 
 .check-item h4, 
 .prevention-card h3, 
 .button-title {
-    margin: 0 0 0.5rem 0; 
-    font-size: 1.2rem; 
-    font-weight: 700; 
+    margin: 0 0 0.5rem 0;
+    font-size: 1.2rem;
+    font-weight: 700;
     text-align: center;
     line-height: 1.4;
 }
-/* ポータルボタンのタイトル専用フォント */
-.button-title { 
-    font-family: var(--font-header); 
-    font-size: 1.4rem; 
-    font-weight: 900; 
+.button-title {
+    font-family: var(--font-header);
+    font-size: 1.4rem;
+    font-weight: 900;
 }
 
-/* カード内説明文（portal-button用） */
+/* カード内説明文 */
 .button-desc {
     display: block;
     font-size: 0.95rem;
@@ -294,137 +379,126 @@ li { margin-bottom: 0.5rem; }
     font-weight: normal;
 }
 
-/* カードテーマ色適用（タイトル色） */
-.theme-friend .exercise-item h4, 
-.portal-button.theme-friend .button-title { color: var(--theme-friend); }
-
-.theme-shunt .check-item h4, 
-.portal-button.theme-shunt .button-title { color: var(--theme-shunt); }
-
-.prevention-card h3, 
-.portal-button.theme-disaster .button-title { color: var(--theme-disaster); }
-
+/* カードテーマ色 */
+.theme-friend .exercise-item h4, .portal-button.theme-friend .button-title { color: var(--theme-friend); }
+.theme-shunt .check-item h4, .portal-button.theme-shunt .button-title { color: var(--theme-shunt); }
+.prevention-card h3, .portal-button.theme-disaster .button-title { color: var(--theme-disaster); }
 .portal-button.theme-nutrition .button-title { color: var(--theme-nutrition); }
 .portal-button.theme-footcare .button-title { color: var(--theme-foot); }
 .portal-button.theme-qa .button-title { color: var(--theme-qa); }
 .portal-button.theme-game .button-title { color: var(--theme-game); }
-.portal-button.theme-exercise .button-title { color: var(--theme-friend); } /* 運動は紫系 */
+.portal-button.theme-exercise .button-title { color: var(--theme-friend); }
 
-/* テキストのみのボタン（トップページ用） */
+/* テキストのみボタン (トップページ用) */
 .portal-button:not(.with-image) {
-    padding: 2rem; 
-    justify-content: center; 
-    text-align: center; 
+    padding: 2rem;
+    justify-content: center;
+    text-align: center;
     border-left: 6px solid transparent;
 }
 .portal-button.theme-disaster:not(.with-image) { border-left-color: var(--theme-disaster); }
 .portal-button.theme-friend:not(.with-image) { border-left-color: var(--theme-friend); }
 .portal-button.theme-qa:not(.with-image) { border-left-color: var(--theme-qa); }
 
-/* =========================================
-   6. 統合コンポーネント：アコーディオン & モーダル
-   ========================================= */
-/* アコーディオン (折りたたみ) */
+/* 再生マークオーバーレイ */
+.play-overlay {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 50px; height: 50px; background: rgba(0,0,0,0.6); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; pointer-events: none;
+    z-index: 2;
+}
+.play-overlay::after {
+    content: ''; border-left: 14px solid #fff; border-top: 9px solid transparent; border-bottom: 9px solid transparent; margin-left: 4px;
+}
+.card:hover .play-overlay, .exercise-item:hover .play-overlay { background: rgba(124, 58, 237, 0.9); }
+
+/* ==========================================================================
+   6. アコーディオン & PDF & モーダル
+   ========================================================================== */
+/* アコーディオン */
 .accordion, .collapsible-section, .pdf-collapsible, .evacuation-item {
-    background: #fff; border: 1px solid var(--gray-border);
-    border-radius: 0.5rem; overflow: hidden; margin-bottom: 1.5rem;
+    background: var(--white);
+    border: 1px solid var(--gray-border);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
 }
 .accordion-header, .collapsible-header-wrapper, .pdf-collapsible-header, .evacuation-item-header {
-    padding: 1rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: bold;
-    background: #f9fafb; transition: background 0.2s;
+    padding: 1rem;
+    cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center;
+    font-weight: bold; background: #f9fafb;
+    transition: background 0.2s;
 }
-.accordion-header:hover { background: #f3f4f6; }
+.accordion-header:hover, .pdf-collapsible-header:hover { background: #f3f4f6; }
+
 .accordion-content, .collapsible-content, .pdf-collapsible-content, .evacuation-item-content {
-    max-height: 0; overflow: hidden; transition: max-height 0.4s ease;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
 }
 .is-open .collapsible-content, .is-open .pdf-collapsible-content, .is-open .evacuation-item-content {
-    max-height: 2000px; /* 十分な高さ */
+    max-height: 2000px;
 }
 .pdf-collapsible-body, .evacuation-item-body { padding: 1.5rem; }
 
 /* PDFローディング */
 .pdf-loading-container {
-    min-height: 300px; display: flex; align-items: center; justify-content: center; flex-direction: column; background: #f9fafb; color: #6b7280;
+    min-height: 300px; display: flex; align-items: center; justify-content: center; flex-direction: column;
+    background: #f9fafb; color: #6b7280;
 }
 .pdf-spinner {
-    border: 4px solid #f3f3f3; border-top: 4px solid #007bff; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 1rem;
+    border: 4px solid #f3f3f3; border-top: 4px solid #007bff; border-radius: 50%;
+    width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 1rem;
 }
 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 .pdf-embed-desktop { width: 100%; height: 600px; display: none; border: none; }
 
 /* モーダル (全画面オーバーレイ) */
 .modal-overlay, .modal, .game-over-overlay {
-    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    display: none;
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background: rgba(0,0,0,0.7); z-index: 2000;
     justify-content: center; align-items: center;
     backdrop-filter: blur(3px);
 }
-.modal-overlay.active { display: flex; animation: fadeIn 0.3s; }
-.modal[style*="display: block"] { display: flex !important; }
+.modal-overlay.active, .modal[style*="display: block"] { display: flex !important; animation: fadeIn 0.3s; }
 
 /* モーダルの中身 */
 .modal-content, .game-over-box {
-    background: white; padding: 2rem; border-radius: 1rem;
+    background: var(--white); padding: 2rem; border-radius: 1rem;
     width: 90%; max-width: 500px; text-align: center; position: relative;
     box-shadow: 0 10px 25px rgba(0,0,0,0.2);
 }
-/* 動画モーダル用（黒背景） */
-.modal-content.dark-mode, .video-wrapper {
-    background-color: #000; padding: 0; max-width: 800px; overflow: hidden;
-}
-.video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; border-radius: 8px; }
+.modal-content.dark-mode { background-color: #000; padding: 0; max-width: 800px; overflow: hidden; }
+
+/* 動画ラッパー */
+.video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; border-radius: 8px; background: #000; }
 .video-wrapper video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 
 /* 閉じるボタン */
 .close-modal, .close-modal-btn {
-    position: absolute; top: 10px; right: 15px; color: #aaa; font-size: 30px; cursor: pointer; line-height: 1; background: none; border: none;
+    position: absolute; top: 10px; right: 15px;
+    color: #aaa; font-size: 30px; cursor: pointer;
+    background: none; border: none; line-height: 1;
 }
 .close-modal { top: -40px; right: 0; color: white; }
 
-/* =========================================
-   7. タブナビゲーション & コンテンツエリア
-   ========================================= */
-.page-nav {
-    display: flex; justify-content: center; background: #fff;
-    padding: 1rem 1.5rem 0; border-bottom: 1px solid var(--gray-border); overflow-x: auto;
-}
-.nav-button {
-    background: #f3f4f6; color: #6b7280; border: 1px solid var(--gray-border); border-bottom: none;
-    border-radius: 1rem 1rem 0 0; padding: 1rem 1.5rem; margin-right: 4px;
-    font-weight: bold; cursor: pointer; min-width: 120px; text-align: center;
-    line-height: 1.4; white-space: normal;
-}
-.nav-button:hover { background: #e5e7eb; }
-.nav-button.active {
-    background: #f9fafb; color: var(--text-color); border-top: 4px solid #333;
-    transform: scale(1.05) translateY(1px); z-index: 2;
-}
-
-/* テーマ別タブ色 */
-.theme-friend .nav-button.active { border-top-color: var(--theme-friend); color: var(--theme-friend); }
-.theme-disaster .nav-button.active { border-top-color: var(--theme-disaster); color: var(--theme-disaster); }
-.theme-nutrition .nav-button.active { border-top-color: var(--theme-nutrition); color: var(--theme-nutrition); }
-.theme-shunt .nav-button.active { border-top-color: var(--theme-shunt); color: var(--theme-shunt); }
-
-#content-area {
-    padding: 2.5rem 1.5rem; background: #f9fafb;
-    border-radius: 0 0 var(--radius-main) var(--radius-main); min-height: 400px;
-}
-.content-section { display: none; animation: fadeIn 0.4s; }
-.content-section.active { display: block; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-/* =========================================
-   8. クイズ・Q&A 専用スタイル
-   ========================================= */
+/* ==========================================================================
+   7. クイズ & Q&A
+   ========================================================================== */
 .quiz-section {
-    text-align: center; padding: 3rem 1.5rem; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    text-align: center; padding: 3rem 1.5rem;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     border-radius: 1rem; margin: 2rem 0; box-shadow: var(--shadow-card);
 }
+
 .quiz-button {
-    display: inline-block; padding: 1rem 3rem; color: white; text-decoration: none; border-radius: 0.5rem;
-    font-size: 1.2rem; font-weight: bold; transition: transform 0.2s; box-shadow: var(--shadow-card);
-    background: linear-gradient(135deg, var(--theme-friend), #4f46e5); border: none; cursor: pointer;
+    display: inline-block; padding: 1rem 3rem;
+    color: var(--white); text-decoration: none; border-radius: 0.5rem;
+    font-size: 1.2rem; font-weight: bold; border: none; cursor: pointer;
+    box-shadow: var(--shadow-card); transition: transform 0.2s;
+    background: linear-gradient(135deg, var(--theme-friend), #4f46e5);
 }
 .quiz-button:hover { transform: translateY(-2px); }
 .theme-nutrition .quiz-button { background: linear-gradient(135deg, var(--theme-nutrition), #0e7490); }
@@ -436,6 +510,11 @@ li { margin-bottom: 0.5rem; }
 .theme-nutrition .quiz-progress-fill { background: var(--theme-nutrition); }
 .theme-shunt .quiz-progress-fill { background: var(--theme-shunt); }
 
+.quiz-question-text { font-size: 1.25rem; font-weight: 700; margin-bottom: 1.5rem; }
+.quiz-question-number { font-weight: bold; margin-bottom: 0.5rem; color: var(--theme-friend); }
+.theme-nutrition .quiz-question-number { color: var(--theme-nutrition); }
+.theme-shunt .quiz-question-number { color: var(--theme-shunt); }
+
 .quiz-option {
     padding: 1rem; background: #fff; border: 2px solid #e5e7eb; border-radius: 1rem;
     cursor: pointer; margin-bottom: 1rem; text-align: left; font-weight: bold; transition: all 0.2s;
@@ -443,83 +522,149 @@ li { margin-bottom: 0.5rem; }
 .quiz-option:hover { border-color: #d1d5db; transform: translateX(5px); }
 .quiz-option.correct { background: #dcfce7; border-color: #22c55e; color: #166534; }
 .quiz-option.incorrect { background: #fee2e2; border-color: #ef4444; color: #991b1b; }
+.quiz-option.disabled { pointer-events: none; }
+
 .quiz-explanation {
     margin-top: 1.5rem; padding: 1.5rem; background: #f0f9ff; border-radius: 0.8rem;
-    border-left: 5px solid #333; display: none;
+    border-left: 5px solid #333; display: none; animation: fadeIn 0.5s;
 }
-.quiz-explanation.show { display: block; animation: fadeIn 0.5s; }
+.quiz-explanation.show { display: block; }
+.quiz-next-btn {
+    display: block; margin: 2rem auto 0; padding: 1rem 3rem; border: none; border-radius: 0.5rem;
+    color: white; font-weight: bold; font-size: 1.1rem; cursor: pointer; background: var(--theme-friend);
+}
+.theme-nutrition .quiz-next-btn { background: var(--theme-nutrition); }
+.theme-shunt .quiz-next-btn { background: var(--theme-shunt); }
+
+/* 結果画面 */
+.quiz-result-container { text-align: center; display: none; animation: fadeIn 0.5s; }
+.quiz-result-container.show { display: block; }
+.result-score { font-size: 3rem; font-weight: 900; margin: 1rem 0; }
+.result-emoji { font-size: 4rem; margin-bottom: 1rem; }
 
 /* Q&A検索 */
 .qa-search-container { padding: 1.5rem; background: #fff; text-align: center; border-radius: 1rem; margin-bottom: 2rem; }
 .qa-search-input { width: 90%; max-width: 600px; padding: 1rem; font-size: 1.1rem; border: 2px solid var(--gray-border); border-radius: 2rem; }
 .qa-popular-keywords { margin-top: 2rem; text-align: center; padding: 1.5rem; background: #f8f8f8; border-radius: 0.5rem; }
+.keyword-buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; }
 .keyword-button {
-    background: var(--theme-friend); color: white; border: none; border-radius: 1rem; padding: 0.5rem 1rem;
-    margin: 0.25rem; cursor: pointer; transition: transform 0.2s;
+    background: var(--theme-friend); color: white; border: none; border-radius: 1rem;
+    padding: 0.5rem 1rem; cursor: pointer; transition: transform 0.2s;
 }
 .keyword-button:hover { transform: translateY(-2px); opacity: 0.9; }
 .theme-nutrition .keyword-button { background: var(--theme-nutrition); }
 .theme-shunt .keyword-button { background: var(--theme-shunt); }
 
-/* =========================================
-   9. その他（ステータス、緊急連絡、ゲーム）
-   ========================================= */
+/* Q&A検索結果アイテム */
+.qa-search-item {
+    background: #fff; border: 1px solid #e5e7eb; border-radius: 0.8rem; margin-bottom: 1rem; overflow: hidden;
+}
+.qa-search-question {
+    padding: 1.2rem 1.5rem; font-weight: 700; cursor: pointer; background: #f9fafb;
+    display: flex; justify-content: space-between; align-items: center;
+}
+.qa-search-question::before { content: "Q. "; color: #9ca3af; margin-right: 0.5rem; }
+.qa-search-question::after { content: '▼'; color: #9ca3af; transition: transform 0.3s; }
+.qa-search-answer {
+    display: none; padding: 1.5rem; color: #374151; border-top: 1px solid #e5e7eb; background: #fff;
+}
+.qa-search-answer::before { content: "A. "; font-weight: bold; color: var(--theme-friend); margin-right: 0.5rem; }
+
+.qa-search-item.active .qa-search-answer { display: block; }
+.qa-search-item.active .qa-search-question::after { transform: rotate(180deg); }
+.qa-search-item.active .qa-search-question { background: #eff6ff; color: #1d4ed8; }
+
+/* テーマ別QA色 */
+.theme-nutrition .qa-search-item.active .qa-search-question { background: #ecfeff; color: var(--theme-nutrition); }
+.theme-nutrition .qa-search-answer::before { color: var(--theme-nutrition); }
+.theme-shunt .qa-search-item.active .qa-search-question { background: #ecfdf5; color: var(--theme-shunt); }
+.theme-shunt .qa-search-answer::before { color: var(--theme-shunt); }
+.theme-disaster .qa-search-item.active .qa-search-question { background: #fef2f2; color: var(--theme-disaster); }
+.theme-disaster .qa-search-answer::before { color: var(--theme-disaster); }
+.theme-qa .qa-search-item.active .qa-search-question { background: #fff7ed; color: var(--theme-qa); }
+.theme-qa .qa-search-answer::before { color: var(--theme-qa); }
+
+/* ==========================================================================
+   8. その他 (ステータス, 緊急連絡, ゲーム)
+   ========================================================================== */
 /* 透析ステータス */
 .status-container { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
 .status-item { border: 1px solid var(--gray-border); padding: 1rem; border-radius: 0.5rem; width: 160px; text-align: center; background: #fff; }
 .status-ok { color: var(--theme-shunt); font-weight: bold; font-size: 1.2rem; }
 .status-ng { color: var(--theme-disaster); font-weight: bold; font-size: 1.2rem; }
 
-/* 緊急連絡先ボタン */
+/* 緊急連絡先 */
 .emergency-btn {
     display: block; width: 100%; max-width: 350px; margin: 2rem auto; padding: 1rem;
-    background: #e74c3c; color: white; border: none; border-radius: 2rem; font-size: 1.2rem; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(231,76,60,0.4);
+    background: #e74c3c; color: white; border: none; border-radius: 2rem;
+    font-size: 1.2rem; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(231,76,60,0.4);
 }
 .emergency-btn:hover { transform: translateY(-2px); background: #c0392b; }
 .contact-link {
-    display: flex; align-items: center; justify-content: space-between; padding: 1rem; background: #f8f9fa; border: 2px solid #e9ecef; border-radius: 0.8rem; text-decoration: none; color: #333; margin-bottom: 1rem;
+    display: flex; align-items: center; justify-content: space-between; padding: 1rem;
+    background: #f8f9fa; border: 2px solid #e9ecef; border-radius: 0.8rem;
+    text-decoration: none; color: #333; margin-bottom: 1rem;
 }
 
-/* ゲーム画面共通パーツ */
+/* ゲーム画面共通 */
+.game-title { color: #ec4899; font-size: 1.8rem; font-weight: 900; margin-bottom: 1.5rem; font-family: var(--font-header); }
+.game-canvas-wrapper { position: relative; display: inline-block; margin: 0 auto 1.5rem; width: 100%; max-width: 600px; }
+.game-canvas { background: #1a1a2e; border-radius: 1rem; width: 100%; height: auto; touch-action: none; display: block; }
+.game-over-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 3px solid #ec4899; }
+
 .game-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
 .stat-box { background: #f9fafb; padding: 1rem; border-radius: 0.8rem; border: 1px solid var(--gray-border); }
+.stat-label { font-size: 0.8rem; color: #6b7280; font-weight: 700; }
 .stat-value { font-size: 1.25rem; font-weight: 900; color: var(--theme-friend); }
-.game-canvas { background: #1a1a2e; border-radius: 1rem; max-width: 100%; display: block; margin: 0 auto; }
+
+/* ゲーム操作ボタン */
+.game-controls { display: flex; gap: 0.5rem; justify-content: center; margin-bottom: 1rem; flex-wrap: wrap; }
+.game-btn {
+    padding: 0.8rem 1.5rem; border: none; border-radius: 0.8rem; font-weight: 700; color: white;
+    cursor: pointer; box-shadow: 0 4px 0 rgba(0,0,0,0.2); font-size: 1rem;
+}
+.game-btn:active { transform: translateY(4px); box-shadow: none; }
+.btn-primary { background: linear-gradient(135deg, #ec4899, #be185d); }
+.btn-secondary { background: linear-gradient(135deg, #6b7280, #4b5563); }
+
+/* モバイルパッド */
+.mobile-pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; margin: 1rem auto; max-width: 300px; }
+.pad-btn {
+    padding: 1rem; font-size: 1.5rem; background: #f3f4f6; color: #374151; border: 2px solid #e5e7eb;
+    border-radius: 0.8rem; cursor: pointer; touch-action: manipulation; box-shadow: 0 4px 0 #d1d5db;
+}
+.pad-btn:active { transform: translateY(4px); box-shadow: none; }
+
+/* 反射神経ゲーム */
 .reaction-area {
     width: 100%; height: 300px; border-radius: 1rem; display: flex; justify-content: center; align-items: center;
-    font-size: 1.5rem; font-weight: 700; color: white; cursor: pointer; user-select: none;
+    font-size: 1.5rem; font-weight: 700; color: white; cursor: pointer; user-select: none; margin-bottom: 1.5rem;
 }
 .reaction-area.idle { background: var(--theme-friend); }
 .reaction-area.waiting { background: #ef4444; }
 .reaction-area.ready { background: #059669; }
 
-/* 再生マーク(運動用) */
-.play-overlay {
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    width: 50px; height: 50px; background: rgba(0,0,0,0.6); border-radius: 50%;
-    display: flex; align-items: center; justify-content: center; pointer-events: none;
-}
-.play-overlay::after {
-    content: ''; border-left: 14px solid #fff; border-top: 9px solid transparent; border-bottom: 9px solid transparent; margin-left: 4px;
-}
-.card:hover .play-overlay { background: rgba(124, 58, 237, 0.9); }
-
 /* 注意事項 */
 .caution-box {
-    display: flex; gap: 1.5rem; background: #fff; padding: 2rem; border-radius: 1rem; border-left: 6px solid #fbbf24; margin: 2rem 0; align-items: start;
+    display: flex; gap: 1.5rem; background: var(--white); padding: 2rem;
+    border-radius: 1rem; border-left: 6px solid #fbbf24; margin: 2rem 0; align-items: start;
 }
 .caution-icon-img { width: 80px; height: 80px; object-fit: cover; border-radius: 12px; }
 
-/* スマホ対応 */
+/* ==========================================================================
+   9. レスポンシブ対応 (Mobile)
+   ========================================================================== */
 @media (max-width: 768px) {
-    .container { margin: 1rem; border-radius: 1rem; }
+    .container, .game-container { margin: 1rem; border-radius: 1rem; padding: 1rem; }
     .page-nav { justify-content: start; }
     .grid-layout, .exercise-grid, .check-grid, .prevention-grid, .portal-nav { grid-template-columns: 1fr; gap: 1.5rem; }
     .caution-box { flex-direction: column; align-items: center; text-align: center; }
     .pdf-embed-desktop { display: none; }
     .pdf-mobile-notice { display: block; margin-bottom: 1rem; color: #007bff; font-size: 0.9rem; }
+    .mobile-pad { display: grid; }
 }
 @media (min-width: 769px) {
     .pdf-embed-desktop { display: block; }
     .pdf-mobile-notice, .pdf-link-mobile-wrapper { display: none; }
+    .mobile-pad { display: none; }
 }

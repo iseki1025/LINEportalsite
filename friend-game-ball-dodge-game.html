@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ボール避けゲーム</title>
-    <link rel="stylesheet" href="../../style.css">
+    <!-- パス修正: 同階層のstyle.css -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body class="theme-friend">
     <div class="game-container">
@@ -15,7 +16,7 @@
             
             <div id="gameOver" class="game-over-overlay">
                 <h2>ゲームオーバー！</h2>
-                <div id="finalScore" style="margin: 1rem 0; font-weight:bold;"></div>
+                <div id="finalScore" style="margin: 1rem 0; font-weight:bold; font-size:1.2rem;"></div>
                 <button id="restartBtn" class="game-btn btn-primary">もう一度プレイ</button>
             </div>
         </div>
@@ -37,8 +38,8 @@
         
         <p style="font-size:0.9rem; color:#6b7280; margin-bottom:1.5rem;">マウスまたは指で左右に動いてボールを避けよう！</p>
 
-        <!-- 戻るボタン -->
-        <a href="../../friend-game-main.html" class="back-to-portal-button">ミニゲーム選択へ戻る</a>
+        <!-- 戻るボタン修正: friend-game-main.html -->
+        <a href="friend-game-main.html" class="back-to-portal-button">ミニゲーム選択へ戻る</a>
     </div>
 
     <script>
@@ -51,11 +52,13 @@
         const finalScoreDisplay = document.getElementById('finalScore');
         const restartBtn = document.getElementById('restartBtn');
 
+        // キャンバスサイズ調整
         function resizeCanvas() {
-            const maxWidth = Math.min(600, window.innerWidth - 60);
-            const aspectRatio = 1.0;
+            const containerWidth = document.querySelector('.game-container').clientWidth;
+            // パディング分を引く
+            const maxWidth = Math.min(600, containerWidth - 40);
             canvas.width = maxWidth;
-            canvas.height = maxWidth * aspectRatio;
+            canvas.height = maxWidth; // 正方形
         }
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
@@ -64,13 +67,12 @@
         let startTime;
         let currentTime = 0;
         let level = 1;
-        let baseSpeed = canvas.height / 400;
+        let baseSpeed = 2; // 初期速度調整
         let currentSpeed = baseSpeed;
 
-        const player = { x: canvas.width / 2, y: canvas.height - canvas.height / 8, radius: canvas.width / 30, color: '#00ff00' };
+        const player = { x: canvas.width / 2, y: canvas.height - 50, radius: 15, color: '#00ff00' };
         let balls = [];
-        let ballRadius = canvas.width / 40;
-        let baseBallRadius = canvas.width / 40;
+        let ballRadius = 10;
         let ballSpawnRate = 1000;
         let lastBallSpawn = 0;
         let mouseX = canvas.width / 2;
@@ -83,19 +85,18 @@
             return 'アスリート級';
         }
 
-        // 簡易版反応計算
-        function calculateReaction() {
-            return Math.max(0, 1000 - (level * 50)); 
-        }
-
         canvas.addEventListener('mousemove', e => {
             const rect = canvas.getBoundingClientRect();
             mouseX = e.clientX - rect.left;
+            // スケール補正
+            mouseX = mouseX * (canvas.width / rect.width);
         });
+        
         canvas.addEventListener('touchmove', e => {
             e.preventDefault();
             const rect = canvas.getBoundingClientRect();
             mouseX = e.touches[0].clientX - rect.left;
+            mouseX = mouseX * (canvas.width / rect.width);
         }, {passive: false});
 
         canvas.addEventListener('click', () => { if (!gameRunning) startGame(); });
@@ -107,8 +108,16 @@
             currentTime = 0;
             level = 1;
             balls = [];
+            currentSpeed = canvas.height / 200; // 画面サイズに応じた速度
             ballSpawnRate = 1000;
             estimatedAgeDisplay.textContent = '--';
+            
+            // プレイヤー位置リセット
+            player.x = canvas.width / 2;
+            player.y = canvas.height - (canvas.height / 8);
+            player.radius = canvas.width / 30;
+            ballRadius = canvas.width / 40;
+
             gameLoop();
         }
 
@@ -125,18 +134,20 @@
             currentTime = (Date.now() - startTime) / 1000;
             scoreDisplay.textContent = currentTime.toFixed(1) + '秒';
             
-            // レベルアップ
             const newLevel = Math.floor(currentTime / 5) + 1;
             if (newLevel > level) {
                 level = newLevel;
-                currentSpeed = baseSpeed + (level - 1) * 0.5;
-                ballSpawnRate = Math.max(300, 1000 - (level - 1) * 100);
+                currentSpeed += 0.5;
+                ballSpawnRate = Math.max(200, 1000 - (level - 1) * 80);
                 difficultyDisplay.textContent = level;
             }
 
-            player.x += (mouseX - player.x) * 0.2; // 滑らか移動
+            // プレイヤー移動
+            player.x += (mouseX - player.x) * 0.2;
+            // 画面外にはみ出さない
+            if(player.x < player.radius) player.x = player.radius;
+            if(player.x > canvas.width - player.radius) player.x = canvas.width - player.radius;
             
-            // ボール生成と移動
             if (Date.now() - lastBallSpawn > ballSpawnRate) {
                 spawnBall();
                 lastBallSpawn = Date.now();
@@ -144,24 +155,24 @@
 
             for (let i = balls.length - 1; i >= 0; i--) {
                 balls[i].y += currentSpeed;
-                // 当たり判定
+                
                 const dx = player.x - balls[i].x;
                 const dy = player.y - balls[i].y;
-                if (Math.sqrt(dx*dx + dy*dy) < player.radius + balls[i].radius) {
+                const distance = Math.sqrt(dx*dx + dy*dy);
+
+                if (distance < player.radius + balls[i].radius) {
                     gameOver(); return;
                 }
-                if (balls[i].y > canvas.height) balls.splice(i, 1);
+                if (balls[i].y - balls[i].radius > canvas.height) balls.splice(i, 1);
             }
         }
 
         function draw() {
             ctx.fillStyle = '#1a1a2e'; ctx.fillRect(0, 0, canvas.width, canvas.height);
             
-            // プレイヤー
             ctx.beginPath(); ctx.arc(player.x, player.y, player.radius, 0, Math.PI*2);
             ctx.fillStyle = player.color; ctx.fill();
             
-            // ボール
             balls.forEach(b => {
                 ctx.beginPath(); ctx.arc(b.x, b.y, b.radius, 0, Math.PI*2);
                 ctx.fillStyle = b.color; ctx.fill();
@@ -181,9 +192,8 @@
             requestAnimationFrame(gameLoop);
         }
 
-        // 初期描画
         draw();
-        ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.font = '20px sans-serif';
+        ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.font = `${canvas.width/15}px sans-serif`;
         ctx.fillText('タップしてスタート', canvas.width/2, canvas.height/2);
     </script>
 </body>

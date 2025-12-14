@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>反射神経ゲーム</title>
-    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body class="theme-friend">
     <div class="game-container">
@@ -14,6 +14,7 @@
             画面が<strong>赤色</strong>から<strong>緑色</strong>に変わったら、できるだけ早くクリック！
         </div>
 
+        <!-- 修正: style.cssの .reaction-area を使用 -->
         <div id="gameArea" class="reaction-area idle">
             クリックしてスタート
         </div>
@@ -32,7 +33,8 @@
         <button class="game-btn btn-secondary" onclick="resetStats()">記録をリセット</button>
 
         <br>
-        <a href="../../friend-game-main.html" class="back-to-portal-button" style="margin-top:2rem;">ミニゲーム選択へ戻る</a>
+        <!-- 戻るボタン修正 -->
+        <a href="friend-game-main.html" class="back-to-portal-button" style="margin-top:2rem;">ミニゲーム選択へ戻る</a>
     </div>
 
     <script>
@@ -45,6 +47,8 @@
         const ageDisplay = document.getElementById('estimatedAge');
 
         gameArea.addEventListener('click', handleClick);
+        // スマホのタップ遅延対策
+        gameArea.addEventListener('touchstart', (e) => { e.preventDefault(); handleClick(); });
 
         function handleClick() {
             if (gameState === 'idle') {
@@ -80,7 +84,9 @@
         function getAge(time) {
             if (time < 200) return '神業！';
             if (time < 250) return '20代級';
-            if (time < 350) return '40代級';
+            if (time < 300) return '30代級';
+            if (time < 400) return '40代級';
+            if (time < 500) return '60代級';
             return '要練習';
         }
 
