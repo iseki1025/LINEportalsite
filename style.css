@@ -939,178 +939,187 @@ li { margin-bottom: 0.5rem; }
 }
 
 /* =========================================
-   15. 落ちものパズル専用：レスポンシブ完全対応
+   15. 落ちものパズル専用：PC3カラム / スマホ2カラム+下部
    ========================================= */
 
-/* --- 共通: PCレイアウト (3カラム) --- */
+/* --- 画面全体設定 --- */
+html.game-mode-lock, body.game-mode-fullscreen {
+    height: 100%; width: 100%;
+    overflow: hidden; position: fixed;
+    background: #111827; /* 背景色 */
+    touch-action: none; overscroll-behavior: none;
+}
+
+/* 不要な要素を非表示 */
+body.game-mode-fullscreen .portal-header,
+body.game-mode-fullscreen footer,
+body.game-mode-fullscreen .back-to-portal-button,
+body.game-mode-fullscreen .game-title {
+    display: none !important;
+}
+
+/* メインコンテナ */
+body.game-mode-fullscreen .game-container {
+    width: 100%; height: 100%; max-width: none;
+    margin: 0; padding: 0; border: none;
+    background: transparent; box-shadow: none;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+}
+
+/* --- PCレイアウト (3カラム) --- */
 .puzzle-layout {
     display: flex;
     justify-content: center;
-    align-items: flex-start;
-    gap: 1.5rem;
+    align-items: flex-start; /* 上揃え */
+    gap: 2rem;
+    padding: 2rem;
     height: 100%;
     width: 100%;
-    padding-top: 1rem;
+    max-width: 1000px;
 }
 
-.side-panel-left, .side-panel-right {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    min-width: 120px;
+/* PC: 左カラム（操作説明・ボタン） */
+.side-panel-left {
+    display: flex; flex-direction: column; gap: 1rem;
+    width: 220px; flex-shrink: 0;
 }
 
+/* 操作説明ボックス */
+.key-instruction-box {
+    background: #1f2937; color: #fff;
+    padding: 1rem; border-radius: 8px; border: 1px solid #374151;
+    font-size: 0.85rem; text-align: left;
+}
+.key-row { display: flex; justify-content: space-between; margin-bottom: 0.5rem; border-bottom: 1px solid #374151; padding-bottom: 0.2rem; }
+.key-name { font-weight: bold; color: #60a5fa; }
+
+/* PC: 中央カラム（キャンバス） */
 .canvas-area {
     position: relative;
-    border: 4px solid #374151;
-    border-radius: 4px;
-    background: #111827;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-    /* PCでは高さを固定 */
-    height: 480px; 
-    width: 240px; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    border: 4px solid #374151; border-radius: 4px;
+    background: #000;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    /* PCでの固定サイズ */
+    width: 288px; height: 480px; 
+}
+.game-canvas { width: 100%; height: 100%; object-fit: contain; display: block; }
+
+/* PC: 右カラム（情報） */
+.side-panel-right {
+    display: flex; flex-direction: column; gap: 1rem;
+    width: 120px; flex-shrink: 0;
 }
 
 .puzzle-stat-box {
-    background: #f3f4f6;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    padding: 0.8rem;
-    text-align: center;
+    background: #1f2937; border: 1px solid #374151;
+    border-radius: 8px; padding: 0.8rem; text-align: center; color: #fff;
 }
-.puzzle-stat-label { font-size: 0.75rem; color: #6b7280; font-weight: 700; }
-.puzzle-stat-value { font-size: 1.2rem; font-weight: 900; color: var(--theme-friend); }
+.puzzle-stat-label { font-size: 0.7rem; color: #9ca3af; font-weight: 700; margin-bottom: 0.2rem; }
+.puzzle-stat-value { font-size: 1.2rem; font-weight: 900; color: #ec4899; }
+#nextCanvas, #pcNextCanvas { background: #000; border-radius: 4px; margin: 0 auto; display: block; }
 
-#nextCanvas { background: #111827; border-radius: 4px; margin: 0 auto; display: block; }
-
-/* PC用のゲームオーバー画面 */
+/* ゲームオーバーオーバーレイ */
 .game-over-overlay {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.8); z-index: 10;
-    display: none; flex-direction: column; justify-content: center; align-items: center;
-    color: white;
+    background: rgba(0,0,0,0.85); z-index: 20;
+    display: none; flex-direction: column; justify-content: center; align-items: center; color: white;
 }
 
-/* --- モバイル専用: 全画面アプリモード (768px以下) --- */
+/* --- モバイル専用レイアウト (768px以下) --- */
 @media (max-width: 768px) {
-    /* 1. 画面全体を固定 (スクロール禁止・アドレスバー対策) */
-    body.game-mode-fullscreen {
-        position: fixed;
-        width: 100%;
-        height: 100dvh; /* Dynamic Viewport Height */
-        margin: 0; padding: 0;
-        background: #1a1a2e; /* 背景を暗く */
+    /* PC用の左パネルは非表示 */
+    .side-panel-left { display: none; }
+
+    /* 全体レイアウト：上部(ゲーム+情報) と 下部(パッド) に分割 */
+    .puzzle-layout {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: stretch;
+        padding: 10px;
+        gap: 0;
+        flex-grow: 1; /* 残りの高さを埋める */
         overflow: hidden;
     }
 
-    /* 2. 不要な要素を非表示 */
-    body.game-mode-fullscreen .portal-header,
-    body.game-mode-fullscreen footer,
-    body.game-mode-fullscreen .back-to-portal-button,
-    body.game-mode-fullscreen .game-title,
-    .side-panel-left {
-        display: none !important;
-    }
-
-    /* 3. メインコンテナのレイアウト変更 */
-    body.game-mode-fullscreen .game-container {
-        width: 100%;
-        height: 100%;
-        max-width: none;
-        margin: 0; padding: 0;
-        border: none; border-radius: 0;
-        background: transparent;
-        box-shadow: none;
-        
-        /* 縦方向のFlexboxで配置 */
+    /* 上部エリア（2カラム：左ゲーム、右情報） */
+    .mobile-top-area {
         display: flex;
-        flex-direction: column;
-    }
-
-    /* 4. 上部ステータスバー (横並び) */
-    .mobile-header-stats {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 5px 10px;
-        background: #2d3748;
-        color: white;
-        height: 60px; /* 固定高さ */
-        flex-shrink: 0;
-    }
-    .mobile-stat-item { text-align: center; font-size: 0.8rem; }
-    .mobile-stat-item span { display: block; font-weight: bold; font-size: 1.1rem; color: #ec4899; }
-    
-    /* NEXT表示をヘッダー内に */
-    .mobile-next-area { 
-        background: #111827; border: 1px solid #4b5563; padding: 2px; border-radius: 4px; 
-    }
-
-    /* 5. ゲーム画面エリア (残りスペースを占有) */
-    .puzzle-layout {
-        flex-grow: 1; /* 余ったスペースを全部使う */
-        width: 100%;
-        margin: 0; padding: 10px;
+        flex-direction: row;
         justify-content: center;
-        align-items: center;
-        overflow: hidden; /* はみ出し防止 */
+        align-items: flex-start;
+        gap: 10px;
+        height: 100%; /* 親の高さに合わせる */
+        overflow: hidden;
     }
 
-    .side-panel-right { display: none; } /* PC用右パネルは隠す */
-
-    /* キャンバスのサイズ調整 */
+    /* 左：ゲーム画面 (可能な限り大きく) */
     .canvas-area {
         width: auto;
-        height: 100%; /* 親要素(puzzle-layout)の高さに合わせる */
-        aspect-ratio: 10 / 20; /* テトリスの比率を維持 */
-        max-width: 100%;
-        background: #111827;
-        border: 2px solid #4b5563;
-    }
-    .game-canvas {
-        width: 100%; height: 100%; object-fit: contain;
+        height: 100%; 
+        aspect-ratio: 12 / 20; /* 列数に合わせた比率 */
+        max-width: 70%; /* 画面幅の70%まで */
+        flex-shrink: 0;
     }
 
-    /* 6. モバイルコントローラー (下部固定) */
+    /* 右：情報パネル */
+    .side-panel-right {
+        width: auto;
+        flex-grow: 1;
+        min-width: 80px;
+        gap: 5px;
+        justify-content: flex-start;
+    }
+    
+    /* モバイル用の情報ボックス微調整 */
+    .puzzle-stat-box { padding: 5px; background: transparent; border: none; text-align: left; }
+    .puzzle-stat-label { font-size: 0.7rem; color: #9ca3af; }
+    .puzzle-stat-value { font-size: 1.2rem; }
+    #mobileNextCanvas { width: 50px; height: 50px; background: #000; border: 1px solid #374151; }
+
+    /* モバイル用終了ボタン */
+    .mobile-quit-btn {
+        margin-top: auto; /* 一番下に寄せる */
+        background: #4b5563; color: white; border: none;
+        padding: 8px; border-radius: 4px; font-size: 0.8rem;
+    }
+
+    /* --- 下部コントローラー (固定) --- */
     .mobile-pad {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr; /* 4列 */
-        grid-template-rows: 60px 60px; /* 2行 */
-        gap: 8px;
+        height: auto;
+        min-height: 180px; /* 操作しやすい高さを確保 */
+        background: #1f2937;
         padding: 10px;
-        padding-bottom: max(10px, env(safe-area-inset-bottom)); /* iPhone下のバー対策 */
-        background: #2d3748;
+        padding-bottom: max(20px, env(safe-area-inset-bottom));
+        
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: 60px 70px;
+        gap: 8px;
         width: 100%;
         flex-shrink: 0;
+        border-top: 1px solid #374151;
     }
 
     /* ボタン配置 */
-    /* 左回転 */
-    #rotateBtn { grid-column: 4; grid-row: 1; background: #ec4899; color: white; }
-    /* ハードドロップ */
-    #dropBtn   { grid-column: 4; grid-row: 2; background: #ef4444; color: white; }
-    /* 移動キー */
+    #mobileStartBtn { grid-column: 1 / 3; grid-row: 1; background: #059669; color: white; font-weight: bold; }
+    #rotateBtn      { grid-column: 3 / 5; grid-row: 1; background: #ec4899; color: white; font-size: 1.5rem; }
+    
     #leftBtn  { grid-column: 1; grid-row: 2; }
-    #downBtn  { grid-column: 2; grid-row: 2; }
+    #downBtn  { grid-column: 2; grid-row: 2; } /* ソフトドロップ */
     #rightBtn { grid-column: 3; grid-row: 2; }
-    /* 機能キー */
-    .mobile-start-btn { grid-column: 1 / 3; grid-row: 1; background: #059669; color: white; font-weight: bold; }
-    .mobile-quit-btn  { grid-column: 3; grid-row: 1; background: #6b7280; color: white; font-size: 0.8rem; }
+    #dropBtn { grid-column: 4; grid-row: 2; background: #ef4444; color: white; font-size: 1.5rem; }
 
     .pad-btn {
         border: none; border-radius: 8px;
-        background: #edf2f7; color: #2d3748;
+        background: #374151; color: #fff;
         font-size: 1.5rem; font-weight: bold;
-        box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+        box-shadow: 0 4px 0 rgba(0,0,0,0.5);
         display: flex; align-items: center; justify-content: center;
     }
-    .pad-btn:active { transform: translateY(2px); box-shadow: none; }
+    .pad-btn:active { transform: translateY(3px); box-shadow: none; background: #4b5563; }
 }
 
-/* PCではモバイル要素を隠す */
 @media (min-width: 769px) {
-    .mobile-pad, .mobile-header-stats { display: none; }
+    .mobile-pad { display: none; }
 }
