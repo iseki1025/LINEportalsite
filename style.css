@@ -939,184 +939,178 @@ li { margin-bottom: 0.5rem; }
 }
 
 /* =========================================
-   15. 落ちものパズル専用：3カラムレイアウト
+   15. 落ちものパズル専用：レスポンシブ完全対応
    ========================================= */
 
-/* --- 共通レイアウト (PC/Mobile共通のベース) --- */
+/* --- 共通: PCレイアウト (3カラム) --- */
 .puzzle-layout {
     display: flex;
     justify-content: center;
-    align-items: center; /* 垂直方向中央 */
+    align-items: flex-start;
     gap: 1.5rem;
     height: 100%;
     width: 100%;
+    padding-top: 1rem;
 }
 
-/* 左カラム（操作ボタン） */
-.side-panel-left {
+.side-panel-left, .side-panel-right {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    min-width: 100px;
+    min-width: 120px;
 }
 
-/* 中央カラム（ゲーム画面） */
 .canvas-area {
     position: relative;
     border: 4px solid #374151;
-    border-radius: 8px;
+    border-radius: 4px;
     background: #111827;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-}
-
-/* 右カラム（ステータス） */
-.side-panel-right {
+    /* PCでは高さを固定 */
+    height: 480px; 
+    width: 240px; 
     display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    min-width: 100px;
+    justify-content: center;
+    align-items: center;
 }
 
-/* ステータスボックスの調整 */
 .puzzle-stat-box {
     background: #f3f4f6;
     border: 1px solid #e5e7eb;
     border-radius: 8px;
     padding: 0.8rem;
     text-align: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
-.puzzle-stat-label {
-    font-size: 0.75rem;
-    color: #6b7280;
-    font-weight: 700;
-    margin-bottom: 0.2rem;
-}
-.puzzle-stat-value {
-    font-size: 1.2rem;
-    font-weight: 900;
-    color: var(--theme-friend);
+.puzzle-stat-label { font-size: 0.75rem; color: #6b7280; font-weight: 700; }
+.puzzle-stat-value { font-size: 1.2rem; font-weight: 900; color: var(--theme-friend); }
+
+#nextCanvas { background: #111827; border-radius: 4px; margin: 0 auto; display: block; }
+
+/* PC用のゲームオーバー画面 */
+.game-over-overlay {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8); z-index: 10;
+    display: none; flex-direction: column; justify-content: center; align-items: center;
+    color: white;
 }
 
-/* NEXTキャンバス */
-#nextCanvas {
-    background: #111827;
-    border-radius: 4px;
-    margin: 0 auto;
-    display: block;
-}
-
-/* --- モバイル専用調整 (768px以下) --- */
+/* --- モバイル専用: 全画面アプリモード (768px以下) --- */
 @media (max-width: 768px) {
-    /* 全画面固定 */
+    /* 1. 画面全体を固定 (スクロール禁止・アドレスバー対策) */
     body.game-mode-fullscreen {
         position: fixed;
-        overflow: hidden;
         width: 100%;
-        height: 100%;
-        background: #f9fafb; /* 背景色 */
+        height: 100dvh; /* Dynamic Viewport Height */
+        margin: 0; padding: 0;
+        background: #1a1a2e; /* 背景を暗く */
+        overflow: hidden;
     }
 
-    /* 不要なものを消す */
+    /* 2. 不要な要素を非表示 */
     body.game-mode-fullscreen .portal-header,
     body.game-mode-fullscreen footer,
     body.game-mode-fullscreen .back-to-portal-button,
-    body.game-mode-fullscreen .game-title {
+    body.game-mode-fullscreen .game-title,
+    .side-panel-left {
         display: none !important;
     }
 
-    /* コンテナを画面いっぱいに */
+    /* 3. メインコンテナのレイアウト変更 */
     body.game-mode-fullscreen .game-container {
-        max-width: none;
         width: 100%;
-        height: 100vh; /* 高さ100% */
-        margin: 0;
-        padding: 10px;
-        border: none;
-        border-radius: 0;
+        height: 100%;
+        max-width: none;
+        margin: 0; padding: 0;
+        border: none; border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+        
+        /* 縦方向のFlexboxで配置 */
         display: flex;
         flex-direction: column;
+    }
+
+    /* 4. 上部ステータスバー (横並び) */
+    .mobile-header-stats {
+        display: flex;
         justify-content: space-between;
+        align-items: center;
+        padding: 5px 10px;
+        background: #2d3748;
+        color: white;
+        height: 60px; /* 固定高さ */
+        flex-shrink: 0;
+    }
+    .mobile-stat-item { text-align: center; font-size: 0.8rem; }
+    .mobile-stat-item span { display: block; font-weight: bold; font-size: 1.1rem; color: #ec4899; }
+    
+    /* NEXT表示をヘッダー内に */
+    .mobile-next-area { 
+        background: #111827; border: 1px solid #4b5563; padding: 2px; border-radius: 4px; 
     }
 
-    /* 3カラムレイアウトの変更 */
+    /* 5. ゲーム画面エリア (残りスペースを占有) */
     .puzzle-layout {
-        flex: 1; /* 残りの高さを埋める */
-        align-items: flex-start; /* 上詰め */
-        gap: 10px;
-        margin-bottom: 10px;
+        flex-grow: 1; /* 余ったスペースを全部使う */
+        width: 100%;
+        margin: 0; padding: 10px;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden; /* はみ出し防止 */
     }
 
-    /* 左カラム（PC用ボタン）は隠す */
-    .side-panel-left {
-        display: none;
-    }
+    .side-panel-right { display: none; } /* PC用右パネルは隠す */
 
-    /* 中央カラム（キャンバス） */
+    /* キャンバスのサイズ調整 */
     .canvas-area {
-        height: auto;
-        /* 高さを制限してコントローラーの邪魔をしないように */
-        max-height: 60vh; 
         width: auto;
-        max-width: 65%; /* 画面の左側65%を使う */
-        border-width: 2px;
+        height: 100%; /* 親要素(puzzle-layout)の高さに合わせる */
+        aspect-ratio: 10 / 20; /* テトリスの比率を維持 */
+        max-width: 100%;
+        background: #111827;
+        border: 2px solid #4b5563;
     }
     .game-canvas {
-        height: 100%;
-        width: auto;
-        display: block;
+        width: 100%; height: 100%; object-fit: contain;
     }
 
-    /* 右カラム（ステータス）を画面右側に配置 */
-    .side-panel-right {
-        width: 30%; /* 画面の右側30%を使う */
-        min-width: auto;
-        gap: 5px;
-    }
-    
-    .puzzle-stat-box {
-        padding: 5px;
-    }
-    .puzzle-stat-label { font-size: 0.6rem; }
-    .puzzle-stat-value { font-size: 1rem; }
-    
-    /* モバイルパッド */
+    /* 6. モバイルコントローラー (下部固定) */
     .mobile-pad {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: 1fr 1fr 1fr 1fr; /* 4列 */
+        grid-template-rows: 60px 60px; /* 2行 */
         gap: 8px;
-        height: 25vh; /* 画面下部25%を使う */
+        padding: 10px;
+        padding-bottom: max(10px, env(safe-area-inset-bottom)); /* iPhone下のバー対策 */
+        background: #2d3748;
         width: 100%;
+        flex-shrink: 0;
     }
+
+    /* ボタン配置 */
+    /* 左回転 */
+    #rotateBtn { grid-column: 4; grid-row: 1; background: #ec4899; color: white; }
+    /* ハードドロップ */
+    #dropBtn   { grid-column: 4; grid-row: 2; background: #ef4444; color: white; }
+    /* 移動キー */
+    #leftBtn  { grid-column: 1; grid-row: 2; }
+    #downBtn  { grid-column: 2; grid-row: 2; }
+    #rightBtn { grid-column: 3; grid-row: 2; }
+    /* 機能キー */
+    .mobile-start-btn { grid-column: 1 / 3; grid-row: 1; background: #059669; color: white; font-weight: bold; }
+    .mobile-quit-btn  { grid-column: 3; grid-row: 1; background: #6b7280; color: white; font-size: 0.8rem; }
+
     .pad-btn {
-        padding: 0;
-        font-size: 1.5rem;
-        border-radius: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        border: none; border-radius: 8px;
+        background: #edf2f7; color: #2d3748;
+        font-size: 1.5rem; font-weight: bold;
+        box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+        display: flex; align-items: center; justify-content: center;
     }
-    
-    /* モバイル用終了ボタン（右カラムに追加） */
-    .mobile-quit-btn {
-        background: #6b7280;
-        color: white;
-        padding: 5px;
-        font-size: 0.8rem;
-        border-radius: 4px;
-        border: none;
-        margin-top: auto; /* 一番下に配置 */
-    }
+    .pad-btn:active { transform: translateY(2px); box-shadow: none; }
 }
 
-/* PCではモバイルパッドを消す */
+/* PCではモバイル要素を隠す */
 @media (min-width: 769px) {
-    .mobile-pad, .mobile-quit-btn { display: none; }
-    .game-container {
-        /* PCでもスクロールしないように高さ調整 */
-        height: 90vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
+    .mobile-pad, .mobile-header-stats { display: none; }
 }
