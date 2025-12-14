@@ -16,14 +16,26 @@
         <section id="dialysis-status" class="collapsible-section is-open" style="max-width:800px; margin:0 auto 2rem;">
             <div class="collapsible-header-wrapper" onclick="this.parentElement.classList.toggle('is-open')">
                 <span class="collapse-hint">▼ タップで開閉</span>
-                <h2>現在の透析状況</h2>
+                <!-- 文字を中央揃えにするクラスを追加 -->
+                <h2 style="text-align:center; width:100%;">現在の透析状況</h2>
             </div>
             <div class="collapsible-content">
                 <div class="status-container">
-                    <!-- ステータスは災害時にJSなどで書き換える想定の初期値 -->
-                    <div class="status-item"><h3>本院</h3><p class="status-ok">透析可</p></div>
-                    <div class="status-item"><h3>なかもず分院</h3><p class="status-ng">透析不可</p></div>
-                    <div class="status-item"><h3>三国ケ丘分院</h3><p class="status-ok">透析可</p></div>
+                    <!-- 本院（改行なしだが、CSSで高さを他と合わせる） -->
+                    <div class="status-item">
+                        <h3>本院</h3>
+                        <p class="status-ok">透析可</p>
+                    </div>
+                    <!-- なかもず分院（改行を追加） -->
+                    <div class="status-item">
+                        <h3>なかもず<br>分院</h3>
+                        <p class="status-ng">透析不可</p>
+                    </div>
+                    <!-- 三国ヶ丘分院（改行を追加） -->
+                    <div class="status-item">
+                        <h3>三国ヶ丘<br>分院</h3>
+                        <p class="status-ok">透析可</p>
+                    </div>
                 </div>
                 <p style="text-align:center; margin-top:1rem; font-size:0.9rem; color:#666;">※この情報は災害時などに随時更新されます。</p>
             </div>
@@ -246,7 +258,7 @@
 
                 <div class="quiz-section" style="margin-top:2rem;">
                     <h3 style="margin-bottom: 1.5rem; color: #333;">全国のハザードマップ</h3>
-                    <a href="https://disaportal.gsi.go.jp/" target="_blank" class="back-to-portal-button" style="margin:0; width:300px; background:#D90000;">ハザードマップポータルサイト</a>
+                    <a href="https://disaportal.gsi.go.jp/" target="_blank" class="back-to-portal-button" style="margin:0; width:300px; background:#D90000;">ハザードマップ<br>ポータルサイト</a>
                     <p style="margin-top: 1rem; font-size: 0.9em;">(※国土交通省のサイトが新しいウィンドウで開きます)</p>
                 </div>
             </section>

@@ -201,9 +201,11 @@ li { margin-bottom: 0.5rem; }
     display: flex;
     justify-content: center;
     background: var(--white);
-    padding: 1rem 1.5rem 0;
+    padding: 1rem 1rem 0; /* 横の余白を少し減らす */
     border-bottom: 1px solid var(--gray-border);
-    overflow-x: auto;
+    /* スクロール設定は残しつつ、基本は収まるように調整 */
+    overflow-x: auto; 
+    flex-wrap: nowrap;
 }
 
 .nav-button {
@@ -212,14 +214,21 @@ li { margin-bottom: 0.5rem; }
     border: 1px solid var(--gray-border);
     border-bottom: none;
     border-radius: 1rem 1rem 0 0;
-    padding: 1rem 1.5rem;
+    padding: 1rem 0.5rem; /* パディングを左右少し狭める */
     margin-right: 4px;
     font-weight: bold;
     cursor: pointer;
-    min-width: 120px;
+    
+    /* 修正箇所: 幅の自動調整 */
+    min-width: auto; /* 固定幅を解除 */
+    flex: 1;         /* 全てのタブを均等な幅に引き伸ばす */
     text-align: center;
     line-height: 1.4;
     white-space: normal;
+    
+    /* 文字が小さくなりすぎないように最小幅は確保しつつ、基本は均等割 */
+    min-width: 90px; 
+    max-width: 200px;
 }
 
 .nav-button:hover { background: #e5e7eb; }
@@ -557,11 +566,16 @@ li { margin-bottom: 0.5rem; }
 
 /* Q&A検索結果アイテム */
 .qa-search-item {
-    background: #fff; border: 1px solid #e5e7eb; border-radius: 0.8rem; margin-bottom: 1rem; overflow: hidden;
+    text-align: left; /* 左揃えを強制 */
 }
+
 .qa-search-question {
-    padding: 1.2rem 1.5rem; font-weight: 700; cursor: pointer; background: #f9fafb;
-    display: flex; justify-content: space-between; align-items: center;
+    justify-content: space-between; /* 矢印との配置は維持 */
+    text-align: left; /* 文字は左 */
+}
+
+.qa-search-answer {
+    text-align: left; /* 回答も左 */
 }
 .qa-search-question::before { content: "Q. "; color: #9ca3af; margin-right: 0.5rem; }
 .qa-search-question::after { content: '▼'; color: #9ca3af; transition: transform 0.3s; }
@@ -588,10 +602,53 @@ li { margin-bottom: 0.5rem; }
    8. その他 (ステータス, 緊急連絡, ゲーム)
    ========================================================================== */
 /* 透析ステータス */
-.status-container { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
-.status-item { border: 1px solid var(--gray-border); padding: 1rem; border-radius: 0.5rem; width: 160px; text-align: center; background: #fff; }
-.status-ok { color: var(--theme-shunt); font-weight: bold; font-size: 1.2rem; }
-.status-ng { color: var(--theme-disaster); font-weight: bold; font-size: 1.2rem; }
+.status-container {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+}
+
+.status-item {
+    border: 1px solid var(--gray-border);
+    border-radius: 1rem;
+    width: 160px;
+    background: #fff;
+    /* カード感を強調 */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+    padding: 0; /* パディングは内部で調整 */
+    overflow: hidden;
+    
+    /* 縦横中央揃え */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.status-item h3 {
+    margin: 0;
+    padding: 1rem 0.5rem;
+    width: 100%;
+    /* 名前エリアの高さを固定して、下のラインを揃える */
+    min-height: 80px; 
+    display: flex;
+    align-items: center; /* 上下中央 */
+    justify-content: center; /* 左右中央 */
+    text-align: center;
+    
+    border-bottom: 2px solid var(--bg-color); /* 下線 */
+    background: #fcfcfc;
+    font-size: 1.1rem;
+}
+
+.status-item p {
+    padding: 1rem;
+    margin: 0;
+    width: 100%;
+    text-align: center;
+}
 
 /* 緊急連絡先 */
 .emergency-btn {
