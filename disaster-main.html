@@ -14,11 +14,6 @@
 
         <!-- 透析状況（アコーディオン） -->
         <section id="dialysis-status" class="collapsible-section is-open" style="max-width:900px; margin:0 auto 2rem;">
-            <!-- 
-                修正点: style属性を追加 
-                display:flex; flex-direction:column; align-items:center; 
-                これにより、文字とヒントが縦に並び、左右中央に配置されます。
-            -->
             <div class="collapsible-header-wrapper" onclick="this.parentElement.classList.toggle('is-open')" 
                  style="display:flex; flex-direction:column; align-items:center; justify-content:center; padding:1.5rem;">
                 
@@ -56,9 +51,12 @@
         <!-- タブナビゲーション -->
         <nav class="page-nav">
             <button class="nav-button active" onclick="switchTab('info')">基本情報</button>
-            <button class="nav-button" onclick="switchTab('checklist')">備蓄リスト</button>
+            
+            <!-- 変更: onclickでページ遷移するように変更 -->
+            <button class="nav-button" onclick="location.href='disaster-stock.html'">備蓄リスト</button>
+            
             <button class="nav-button" onclick="switchTab('evacuation')">避難手段</button>
-            <button class="nav-button" onclick="switchTab('shelter')">ハザード<br>マップ</button>
+            <button class="nav-button" onclick="location.href='disaster-hazardmap.html'">ハザード<br>マップ</button>
             <button class="nav-button" onclick="switchTab('faq')">災害Q&A</button>
         </nav>
         
@@ -71,7 +69,7 @@
                     <p>災害はいつ起こるかわかりません。日頃から適切な準備をしておくことで、いざという時に自分や家族の命を守ることができます。</p>
                 </div>
 
-                <!-- ▼▼▼ 修正点: 防災ハンドブック（PDF）をここに移動しました ▼▼▼ -->
+                <!-- 防災ハンドブック（PDF） -->
                 <div class="pdf-collapsible">
                     <div class="pdf-collapsible-header" onclick="togglePdf()">
                         <span>📖 梶本クリニック 防災ハンドブックを見る</span>
@@ -99,45 +97,34 @@
                         </div>
                     </div>
                 </div>
-                <!-- ▲▲▲ ここまで ▲▲▲ -->
                 
                 <h3>防災の基本5つのポイント</h3>
                 
                 <div class="prevention-grid">
                     <!-- 1. ハザードマップ -->
-                    <div class="prevention-card">
+                    <a href="disaster-hazardmap.html" class="prevention-card" style="text-decoration:none; color:inherit; display:block;">
                         <div class="prevention-card-img-wrapper">
                             <img src="files/disaster/Check the hazard map.png" alt="ハザードマップの確認">
                         </div>
                         <div class="prevention-card-body">
                             <h3>ハザードマップの確認</h3>
-                            <p>お住まいの地域でどのような災害のリスクがあるかを確認し、避難場所や避難経路を家族で共有しておきましょう。</p>
+                            <p>お住まいの地域でどのような災害のリスクがあるかを確認し、避難場所や避難経路を家族で共有しておきましょう。<br><strong>(タップして詳細ページへ)</strong></p>
                         </div>
-                    </div>
+                    </a>
 
-                    <!-- 2. 非常用持ち出し袋 -->
-                    <div class="prevention-card">
+                    <!-- 2. 備蓄と非常用持ち出し袋 (統合版) -->
+                    <a href="disaster-stock.html" class="prevention-card" style="text-decoration:none; color:inherit; display:block;">
                         <div class="prevention-card-img-wrapper">
-                            <img src="files/disaster/Prepare an emergency bag.png" alt="非常用持ち出し袋の準備">
+                            <!-- 画像は「家庭での備蓄」のものを使用 -->
+                            <img src="files/disaster/Home stockpiles.png" alt="備蓄と非常用持ち出し袋">
                         </div>
                         <div class="prevention-card-body">
-                            <h3>非常用持ち出し袋の準備</h3>
-                            <p>避難時に最低限必要なものをリュックなどにまとめておきましょう。水、食料、常備薬、ラジオなどが基本です。</p>
+                            <h3>備蓄と非常用持ち出し袋</h3>
+                            <p>断水・停電に備えた水や食料、避難時に必要な持ち出し袋の準備は命を守る基本です。透析患者様特有のリストも確認できます。<br><strong>(タップしてリストを見る)</strong></p>
                         </div>
-                    </div>
+                    </a>
 
-                    <!-- 3. 家庭での備蓄 -->
-                    <div class="prevention-card">
-                        <div class="prevention-card-img-wrapper">
-                            <img src="files/disaster/Home stockpiles.png" alt="家庭での備蓄">
-                        </div>
-                        <div class="prevention-card-body">
-                            <h3>家庭での備蓄</h3>
-                            <p>断水や停電に備え、最低3日分、できれば1週間分の水と食料を備蓄しておきましょう。</p>
-                        </div>
-                    </div>
-
-                    <!-- 4. 家具の固定 -->
+                    <!-- 3. 家具の固定 -->
                     <div class="prevention-card">
                         <div class="prevention-card-img-wrapper">
                             <img src="files/disaster/fixing furniture.png" alt="家具の固定">
@@ -148,7 +135,7 @@
                         </div>
                     </div>
 
-                    <!-- 5. 安否確認 -->
+                    <!-- 4. 安否確認 -->
                     <div class="prevention-card">
                         <div class="prevention-card-img-wrapper">
                             <img src="files/disaster/Sharing methods for confirming safety.png" alt="安否確認方法の共有">
@@ -162,34 +149,7 @@
 
             </section>
 
-            <!-- ② 備蓄リスト -->
-            <section id="checklist" class="content-section">
-                <h2>透析患者さまのための備蓄リスト</h2>
-                <div class="intro-text">
-                    <p>災害時、透析の間隔が空いてしまう可能性を想定し、ご自身の体を守るための備えをしておきましょう。</p>
-                </div>
-                
-                <h3>透析患者として特に重要なもの</h3>
-                <ul>
-                    <li><strong>身体障害者手帳・保険証・各種受給者証</strong><br>すぐに取り出せるよう、コピーをまとめておくとスムーズに医療を受けられます。</li>
-                    <li><strong>普段飲んでいる薬(最低3日分)・お薬手帳</strong><br>薬が切れると急激に体調を崩すおそれがあります。必ず備えてください。</li>
-                    <li><strong>透析カード</strong><br>他施設で透析を受ける際に、ご自身の透析情報を正確に伝えるために不可欠です。</li>
-                </ul>
-
-                <h3>非常用食料・水(低カリウム・低食塩を意識)</h3>
-                <ul>
-                    <li><strong>飲料水(1人1日500mlが目安)</strong><br>普段より水分制限を意識しましょう。</li>
-                    <li><strong>低カリウム・低食塩の食品</strong><br>体調を悪化させずにカロリーを摂取できるものを選びましょう。(例:ビスケット、クッキー、飴など)</li>
-                    <li><strong>普段飲んでいるカリウムを下げる薬</strong><br>万が一、カリウムの高いものを口にしてしまった場合に備えましょう。</li>
-                </ul>
-
-                <h3>情報収集・生活のための備え</h3>
-                <ul>
-                    <li><strong>小銭(公衆電話用)</strong><br>携帯電話が使えない状況でも、公衆電話はつながりやすい重要なライフラインです。</li>
-                    <li><strong>携帯ラジオ(乾電池式)</strong><br>停電時でも情報を得るための必需品です。AM・FMの両方が聴けるものが役立ちます。</li>
-                    <li><strong>乾電池・モバイルバッテリー</strong><br>ラジオやスマートフォンの電源を確保するために重要です。</li>
-                </ul>
-            </section>
+            <!-- ② 備蓄リスト (削除済み: disaster-stock.htmlへ移動) -->
 
             <!-- ③ 避難手段 -->
             <section id="evacuation" class="content-section">
@@ -254,28 +214,7 @@
                 </div>
             </section>
 
-            <!-- ④ ハザードマップ -->
-            <section id="shelter" class="content-section">
-                <h2>お近くの避難場所を確認しましょう</h2>
-                <div class="intro-text">
-                    <p>お住まいの市区町村が公開しているハザードマップで、指定された避難場所や安全な避難経路を事前に確認しておくことが非常に重要です。</p>
-                </div>
-                
-                <div class="quiz-section" style="margin-top:2rem;">
-                    <h3 style="margin-bottom: 1.5rem; color: #333;">各市の防災マップ</h3>
-                    <div style="display:flex; flex-direction:column; gap:1rem; align-items:center;">
-                        <a href="https://www.city.osaka.lg.jp/kikikanrishitsu/page/0000139402.html" target="_blank" class="back-to-portal-button" style="margin:0; width:250px;">大阪市防災マップ</a>
-                        <a href="https://www.city.sakai.lg.jp/kurashi/bosai/kangaeru/pamphlet/bosai/bousai-map2703.html" target="_blank" class="back-to-portal-button" style="margin:0; width:250px;">堺市防災マップ</a>
-                        <a href="https://www.city.matsubara.lg.jp/docs/page2464.html" target="_blank" class="back-to-portal-button" style="margin:0; width:250px;">松原市防災マップ</a>
-                    </div>
-                </div>
-
-                <div class="quiz-section" style="margin-top:2rem;">
-                    <h3 style="margin-bottom: 1.5rem; color: #333;">全国のハザードマップ</h3>
-                    <a href="https://disaportal.gsi.go.jp/" target="_blank" class="back-to-portal-button" style="margin:0; width:300px; background:#D90000;">ハザードマップポータルサイト</a>
-                    <p style="margin-top: 1rem; font-size: 0.9em;">(※国土交通省のサイトが新しいウィンドウで開きます)</p>
-                </div>
-            </section>
+            <!-- ④ ハザードマップ (削除済み: disaster-hazardmap.htmlへ移動) -->
 
             <!-- ⑤ 災害Q&A -->
             <section id="faq" class="content-section qa-search-section" data-csv-path="files/data/qa-data.csv" data-category="災害">
@@ -321,7 +260,9 @@
             
             const buttons = document.querySelectorAll('.nav-button');
             for(let btn of buttons){
-                 if(btn.getAttribute('onclick').includes(id)) btn.classList.add('active');
+                 if(btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(id)) {
+                     btn.classList.add('active');
+                 }
             }
         }
 
