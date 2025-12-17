@@ -50,13 +50,9 @@
 
         <!-- タブナビゲーション -->
         <nav class="page-nav">
+            <!-- 修正: 備蓄リストとハザードマップのタブを削除 -->
             <button class="nav-button active" onclick="switchTab('info')">基本情報</button>
-            
-            <!-- 変更: onclickでページ遷移するように変更 -->
-            <button class="nav-button" onclick="location.href='disaster-stock.html'">備蓄リスト</button>
-            
             <button class="nav-button" onclick="switchTab('evacuation')">避難手段</button>
-            <button class="nav-button" onclick="location.href='disaster-hazardmap.html'">ハザード<br>マップ</button>
             <button class="nav-button" onclick="switchTab('faq')">災害Q&A</button>
         </nav>
         
@@ -112,10 +108,9 @@
                         </div>
                     </a>
 
-                    <!-- 2. 備蓄と非常用持ち出し袋 (統合版) -->
+                    <!-- 2. 備蓄と非常用持ち出し袋 -->
                     <a href="disaster-stock.html" class="prevention-card" style="text-decoration:none; color:inherit; display:block;">
                         <div class="prevention-card-img-wrapper">
-                            <!-- 画像は「家庭での備蓄」のものを使用 -->
                             <img src="files/disaster/Home stockpiles.png" alt="備蓄と非常用持ち出し袋">
                         </div>
                         <div class="prevention-card-body">
@@ -125,15 +120,15 @@
                     </a>
 
                     <!-- 3. 家具の固定 -->
-                    <div class="prevention-card">
+                    <a href="disaster-furniture.html" class="prevention-card" style="text-decoration:none; color:inherit; display:block;">
                         <div class="prevention-card-img-wrapper">
                             <img src="files/disaster/fixing furniture.png" alt="家具の固定">
                         </div>
                         <div class="prevention-card-body">
                             <h3>家具の固定</h3>
-                            <p>地震による家具の転倒を防ぐため、タンスや本棚などを壁に固定しましょう。</p>
+                            <p>地震による家具の転倒を防ぐため、タンスや本棚などを壁に固定しましょう。具体的な固定方法はこちら。<br><strong>(タップして対策方法を見る)</strong></p>
                         </div>
-                    </div>
+                    </a>
 
                     <!-- 4. 安否確認 -->
                     <div class="prevention-card">
@@ -148,8 +143,6 @@
                 </div>
 
             </section>
-
-            <!-- ② 備蓄リスト (削除済み: disaster-stock.htmlへ移動) -->
 
             <!-- ③ 避難手段 -->
             <section id="evacuation" class="content-section">
@@ -213,8 +206,6 @@
                     これらの避難手段は、職員の指示に従ってご使用ください。定期的に避難訓練を実施していますので、ぜひご参加ください。
                 </div>
             </section>
-
-            <!-- ④ ハザードマップ (削除済み: disaster-hazardmap.htmlへ移動) -->
 
             <!-- ⑤ 災害Q&A -->
             <section id="faq" class="content-section qa-search-section" data-csv-path="files/data/qa-data.csv" data-category="災害">
