@@ -19,7 +19,7 @@
         }
         .content-wrapper {
             padding: 0 1rem 3rem;
-            max-width: 800px; /* 読みやすい幅に調整 */
+            max-width: 800px;
             margin: 0 auto;
         }
 
@@ -39,7 +39,7 @@
             font-size: 1.4rem;
             margin-bottom: 1rem;
             color: #333;
-            background-color: #ffeaea; /* 薄い赤背景 */
+            background-color: #ffeaea;
             padding-top: 5px;
             padding-bottom: 5px;
         }
@@ -60,16 +60,18 @@
             font-weight: bold;
             color: #333;
         }
+        /* 画面表示用のチェックボックススタイル */
         .checklist-item input[type="checkbox"] {
             transform: scale(1.5);
             margin-right: 12px;
             margin-top: 4px;
             flex-shrink: 0;
+            cursor: pointer;
         }
         .item-note {
             display: block;
             margin-top: 4px;
-            margin-left: 32px; /* チェックボックスの分インデント */
+            margin-left: 32px;
             font-size: 0.9rem;
             font-weight: normal;
             color: #666;
@@ -109,11 +111,14 @@
             content: "🖨️ ";
         }
 
-        /* 印刷用スタイル（PDF化の際に適用されます） */
+        /* --- 印刷用スタイル --- */
         @media print {
             body {
                 background-color: white;
                 color: black;
+                /* 【修正】互換性のため標準プロパティを追加 */
+                -webkit-print-color-adjust: exact; 
+                print-color-adjust: exact;
             }
             .page-header-simple, .nav-back-container, .pdf-download-btn, footer {
                 display: none !important;
@@ -139,15 +144,21 @@
                 border-left: none;
                 padding-left: 0;
             }
-            /* 印刷時にチェックボックスを見やすく */
+            
+            /* チェックボックスの表示設定 */
             .checklist-item input[type="checkbox"] {
-                -webkit-appearance: none;
-                appearance: none;
-                width: 15px;
-                height: 15px;
-                border: 1px solid black;
+                -webkit-appearance: checkbox !important;
+                appearance: checkbox !important;
                 display: inline-block;
+                transform: scale(1.3);
                 margin-right: 10px;
+            }
+            
+            /* 改ページ設定 */
+            .checklist-item {
+                page-break-inside: avoid;
+                margin-bottom: 0.8rem;
+                padding-bottom: 0.8rem;
             }
         }
     </style>
@@ -164,8 +175,11 @@
             
             <!-- PDF保存ボタン -->
             <button onclick="window.print()" class="pdf-download-btn">
-                このリストをPDF保存 / 印刷する
+                チェック状態を保存して印刷 (PDF)
             </button>
+            <p style="text-align:center; font-size:0.9rem; margin-bottom:2rem; color:#666;">
+                ※チェックボックスをクリックしてチェックを入れてから上記のボタンを押すと、<br>チェックが入った状態で保存できます。
+            </p>
 
             <div class="checklist-container">
                 
@@ -313,7 +327,7 @@
                             <input type="checkbox"> 普段飲んでいる薬
                         </label>
                         <span class="highlight-note">
-                            透析者は薬が切れると体が苦しくなったり、急激に体調を崩したりするおそれがあります。
+                            透析者は薬が切れると体が苦しくなったり、急激に体調を崩したりするおそれがあります。必ず予備を持ち出せるようにしましょう。
                         </span>
                     </div>
 
@@ -373,5 +387,22 @@
             <p><small>&copy; 2025 医療法人 好輝会 梶本クリニック</small></p>
         </footer>
     </div>
+
+    <!-- 印刷時にチェック状態を確実に反映させるためのスクリプト -->
+    <script>
+        // 印刷（またはPDF保存）の直前に実行されるイベント
+        window.addEventListener('beforeprint', () => {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(box => {
+                // チェックされている場合、HTMLの属性として 'checked="checked"' を明示的に付与する
+                // これにより、プリンタドライバやPDF変換エンジンが状態を認識しやすくなります
+                if (box.checked) {
+                    box.setAttribute('checked', 'checked');
+                } else {
+                    box.removeAttribute('checked');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
