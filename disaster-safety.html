@@ -23,76 +23,80 @@
             margin: 0 auto;
         }
 
-        /* --- クリニック連絡先ボタンのスタイル --- */
-        .clinic-contacts {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            margin-bottom: 3rem;
-        }
-        .contact-link {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: white;
-            color: #333;
-            text-decoration: none;
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            border-left: 8px solid #28a745; /* 電話っぽさを表す緑 */
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .contact-link:active {
-            transform: scale(0.98);
-            background-color: #f0fff4;
-        }
-        .contact-name {
-            font-size: 1.2rem;
-            font-weight: bold;
-        }
-        .contact-number {
-            font-size: 0.9rem;
-            color: #666;
-            margin-top: 0.3rem;
-            display: block;
-        }
-        .contact-icon {
-            font-size: 1.5rem;
-            background: #e8f5e9;
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-        }
-
-        /* --- NTT 171 紹介カード --- */
+        /* --- NTT 171 紹介カード (メイン) --- */
         .ntt-card {
             background: white;
             padding: 2rem;
             border-radius: 12px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* 少し影を強調 */
             text-align: center;
+            border-top: 5px solid #009688;
         }
         .ntt-card h3 {
             margin-top: 0;
-            color: #009688; /* NTT西日本のイメージカラーに近い緑 */
+            color: #009688;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+        .ntt-desc {
+            text-align: left;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            color: #333;
         }
         .ntt-link-btn {
-            display: inline-block;
+            display: block;
             background-color: #009688;
             color: white;
-            padding: 0.8rem 2rem;
-            border-radius: 50px;
+            padding: 1rem;
+            border-radius: 8px;
             text-decoration: none;
             font-weight: bold;
+            font-size: 1.1rem;
             margin-top: 1rem;
             transition: opacity 0.3s;
+            text-align: center;
         }
         .ntt-link-btn:hover {
             opacity: 0.9;
+        }
+
+        /* --- クリニック連絡先 (控えめな表示) --- */
+        .clinic-info-area {
+            margin-top: 3rem;
+            background-color: #fff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        .clinic-info-area h2 {
+            font-size: 1.1rem;
+            color: #444;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+            margin-top: 0;
+        }
+        .clinic-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 0;
+            border-bottom: 1px dashed #eee;
+        }
+        .clinic-row:last-child {
+            border-bottom: none;
+        }
+        .clinic-name {
+            font-weight: bold;
+            color: #333;
+        }
+        .clinic-number {
+            font-family: monospace; /* 数字を読みやすく */
+            font-size: 1rem;
+            color: #333;
+            user-select: all; /* コピーしやすく */
         }
 
     </style>
@@ -107,57 +111,44 @@
 
         <main class="content-wrapper">
             
-            <!-- 1. クリニックへの連絡 -->
+            <!-- 1. 災害用伝言ダイヤル (171) - 最優先表示 -->
             <section>
-                <h2 style="border-left:6px solid #28a745; padding-left:10px; margin-bottom:1rem;">当院への電話連絡</h2>
-                <p style="margin-bottom:1.5rem; color:#666; font-size:0.95rem;">
-                    タップすると電話がかかります。<br>
-                    ※災害時は回線が混み合い、つながりにくい場合があります。
-                </p>
-                
-                <div class="clinic-contacts">
-                    <!-- 本院 (番号は公開情報を補完) -->
-                    <a href="tel:0722520555" class="contact-link">
-                        <div>
-                            <span class="contact-name">本院</span>
-                            <span class="contact-number">072-252-0555</span>
-                        </div>
-                        <span class="contact-icon">📞</span>
-                    </a>
-                    
-                    <!-- なかもず分院 -->
-                    <a href="tel:0722502960" class="contact-link">
-                        <div>
-                            <span class="contact-name">なかもず分院</span>
-                            <span class="contact-number">072-250-2960</span>
-                        </div>
-                        <span class="contact-icon">📞</span>
-                    </a>
-                    
-                    <!-- 三国ヶ丘分院 -->
-                    <a href="tel:0722758980" class="contact-link">
-                        <div>
-                            <span class="contact-name">三国ヶ丘分院</span>
-                            <span class="contact-number">072-275-8980</span>
-                        </div>
-                        <span class="contact-icon">📞</span>
+                <div class="ntt-card">
+                    <h3>災害用伝言ダイヤル（171）</h3>
+                    <div class="ntt-desc">
+                        <p>災害時は電話がつながりにくくなります。NTTの「災害用伝言ダイヤル」を利用して、ご家族や親戚と安否情報を共有してください。</p>
+                        <ul style="margin-top:1rem; padding-left:1.5rem;">
+                            <li><strong>録音:</strong> 171 → 1 → 電話番号</li>
+                            <li><strong>再生:</strong> 171 → 2 → 電話番号</li>
+                        </ul>
+                    </div>
+                    <a href="https://group.ntt/jp/disaster/service/171.html" target="_blank" class="ntt-link-btn">
+                        NTT ご利用方法のページへ ❐
                     </a>
                 </div>
             </section>
 
-            <!-- 2. 災害用伝言ダイヤル (171) -->
-            <section style="margin-top: 3rem;">
-                <h2 style="border-left:6px solid #009688; padding-left:10px; margin-bottom:1rem;">災害用伝言ダイヤル (171)</h2>
+            <!-- 2. クリニック連絡先 (下部に小さく表示・直接発信不可) -->
+            <section class="clinic-info-area">
+                <h2>当院の電話番号（参考）</h2>
+                <p style="margin-bottom:1rem;">
+                    ※災害時は回線混雑のため、つながりにくい場合があります。<br>
+                    ※電話番号をタップしても発信されません。必要な場合は番号を入力してご利用ください。
+                </p>
                 
-                <div class="ntt-card">
-                    <h3>災害用伝言ダイヤル（web171）</h3>
-                    <p style="text-align: left; margin-bottom: 1.5rem; line-height: 1.6;">
-                        電話がつながらない時、NTTの災害用伝言ダイヤルを利用して安否情報の録音・再生ができます。<br>
-                        家族や親戚と連絡を取るための重要な手段です。体験利用も可能ですので、使い道を確認しておきましょう。
-                    </p>
-                    <a href="https://group.ntt/jp/disaster/service/171.html" target="_blank" class="ntt-link-btn">
-                        NTT ご利用方法のページへ ❐
-                    </a>
+                <div class="clinic-row">
+                    <span class="clinic-name">本院</span>
+                    <span class="clinic-number">072-252-0555</span>
+                </div>
+                
+                <div class="clinic-row">
+                    <span class="clinic-name">なかもず分院</span>
+                    <span class="clinic-number">072-250-2960</span>
+                </div>
+                
+                <div class="clinic-row">
+                    <span class="clinic-name">三国ヶ丘分院</span>
+                    <span class="clinic-number">072-275-8980</span>
                 </div>
             </section>
 
