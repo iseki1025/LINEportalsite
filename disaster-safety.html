@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>安否確認・連絡先 | 災害情報ポータル</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* ページ特有のスタイル */
+        body {
+            background-color: #f3f4f6;
+        }
+        .page-header-simple {
+            background-color: #d9534f;
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .content-wrapper {
+            padding: 0 1rem 3rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* --- クリニック連絡先ボタンのスタイル --- */
+        .clinic-contacts {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+        .contact-link {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+            color: #333;
+            text-decoration: none;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-left: 8px solid #28a745; /* 電話っぽさを表す緑 */
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .contact-link:active {
+            transform: scale(0.98);
+            background-color: #f0fff4;
+        }
+        .contact-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        .contact-number {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 0.3rem;
+            display: block;
+        }
+        .contact-icon {
+            font-size: 1.5rem;
+            background: #e8f5e9;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        /* --- NTT 171 紹介カード --- */
+        .ntt-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        .ntt-card h3 {
+            margin-top: 0;
+            color: #009688; /* NTT西日本のイメージカラーに近い緑 */
+        }
+        .ntt-link-btn {
+            display: inline-block;
+            background-color: #009688;
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 1rem;
+            transition: opacity 0.3s;
+        }
+        .ntt-link-btn:hover {
+            opacity: 0.9;
+        }
+
+    </style>
+</head>
+<body class="theme-disaster">
+    <div class="container">
+        
+        <!-- ヘッダー -->
+        <header class="page-header-simple">
+            <h1>安否確認・連絡先</h1>
+        </header>
+
+        <main class="content-wrapper">
+            
+            <!-- 1. クリニックへの連絡 -->
+            <section>
+                <h2 style="border-left:6px solid #28a745; padding-left:10px; margin-bottom:1rem;">当院への電話連絡</h2>
+                <p style="margin-bottom:1.5rem; color:#666; font-size:0.95rem;">
+                    タップすると電話がかかります。<br>
+                    ※災害時は回線が混み合い、つながりにくい場合があります。
+                </p>
+                
+                <div class="clinic-contacts">
+                    <!-- 本院 (番号は公開情報を補完) -->
+                    <a href="tel:0722520555" class="contact-link">
+                        <div>
+                            <span class="contact-name">本院</span>
+                            <span class="contact-number">072-252-0555</span>
+                        </div>
+                        <span class="contact-icon">📞</span>
+                    </a>
+                    
+                    <!-- なかもず分院 -->
+                    <a href="tel:0722502960" class="contact-link">
+                        <div>
+                            <span class="contact-name">なかもず分院</span>
+                            <span class="contact-number">072-250-2960</span>
+                        </div>
+                        <span class="contact-icon">📞</span>
+                    </a>
+                    
+                    <!-- 三国ヶ丘分院 -->
+                    <a href="tel:0722758980" class="contact-link">
+                        <div>
+                            <span class="contact-name">三国ヶ丘分院</span>
+                            <span class="contact-number">072-275-8980</span>
+                        </div>
+                        <span class="contact-icon">📞</span>
+                    </a>
+                </div>
+            </section>
+
+            <!-- 2. 災害用伝言ダイヤル (171) -->
+            <section style="margin-top: 3rem;">
+                <h2 style="border-left:6px solid #009688; padding-left:10px; margin-bottom:1rem;">災害用伝言ダイヤル (171)</h2>
+                
+                <div class="ntt-card">
+                    <h3>災害用伝言ダイヤル（web171）</h3>
+                    <p style="text-align: left; margin-bottom: 1.5rem; line-height: 1.6;">
+                        電話がつながらない時、NTTの災害用伝言ダイヤルを利用して安否情報の録音・再生ができます。<br>
+                        家族や親戚と連絡を取るための重要な手段です。体験利用も可能ですので、使い道を確認しておきましょう。
+                    </p>
+                    <a href="https://group.ntt/jp/disaster/service/171.html" target="_blank" class="ntt-link-btn">
+                        NTT ご利用方法のページへ ❐
+                    </a>
+                </div>
+            </section>
+
+            <!-- ポータルに戻るボタン -->
+            <div class="nav-back-container" style="text-align: center; margin-top: 3rem;">
+                <a href="#" onclick="history.back(); return false;" class="back-to-portal-button">災害情報ポータルへ戻る</a>
+            </div>
+
+        </main>
+
+        <footer>
+            <p><small>&copy; 2025 医療法人 好輝会 梶本クリニック</small></p>
+        </footer>
+    </div>
+</body>
+</html>

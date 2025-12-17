@@ -50,7 +50,6 @@
 
         <!-- タブナビゲーション -->
         <nav class="page-nav">
-            <!-- 修正: 備蓄リストとハザードマップのタブを削除 -->
             <button class="nav-button active" onclick="switchTab('info')">基本情報</button>
             <button class="nav-button" onclick="switchTab('evacuation')">避難手段</button>
             <button class="nav-button" onclick="switchTab('faq')">災害Q&A</button>
@@ -130,16 +129,16 @@
                         </div>
                     </a>
 
-                    <!-- 4. 安否確認 -->
-                    <div class="prevention-card">
+                    <!-- 4. 安否確認 (修正: リンクタグに変更) -->
+                    <a href="disaster-safety.html" class="prevention-card" style="text-decoration:none; color:inherit; display:block;">
                         <div class="prevention-card-img-wrapper">
                             <img src="files/disaster/Sharing methods for confirming safety.png" alt="安否確認方法の共有">
                         </div>
                         <div class="prevention-card-body">
                             <h3>安否確認方法の共有</h3>
-                            <p>災害時には電話が繋がりにくくなります。災害用伝言ダイヤル(171)やSNSなど、家族で安否確認の方法を決めておきましょう。</p>
+                            <p>災害時には電話が繋がりにくくなります。災害用伝言ダイヤル(171)や当院への連絡先はこちらから確認できます。<br><strong>(タップして連絡先を見る)</strong></p>
                         </div>
-                    </div>
+                    </a>
                 </div>
 
             </section>
